@@ -33,10 +33,10 @@ const server = http.createServer((req, res) => {
     // Inicializar serviços
     console.log("⏳ Inicializando Google Sheets...");
     await inicializarPlanilha();
-    
+
     console.log("⏳ Inicializando WhatsApp Bot...");
     await iniciarBot();
-    
+
     console.log("✅ Bot WhatsApp iniciado com sucesso!");
   } catch (error) {
     console.error("❌ Falha na inicialização:", error);
