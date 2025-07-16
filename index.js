@@ -31,13 +31,13 @@ const server = http.createServer((req, res) => {
     });
 
     // Inicializar serviços
-    console.log("⏳ Aguardando configuração das credenciais Google...");
+    console.log("⏳ Inicializando Google Sheets...");
+    await inicializarPlanilha();
     
-    // Temporariamente comentado até configurar credenciais
-    // await inicializarPlanilha();
-    // await iniciarBot();
+    console.log("⏳ Inicializando WhatsApp Bot...");
+    await iniciarBot();
     
-    console.log("✅ Servidor HTTP iniciado. Configure GOOGLE_CREDENTIALS para ativar o bot.");
+    console.log("✅ Bot WhatsApp iniciado com sucesso!");
   } catch (error) {
     console.error("❌ Falha na inicialização:", error);
     process.exit(1);
