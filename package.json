@@ -1,0 +1,30 @@
+{
+  "name": "chatbot-wpp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "keywords": [
+    "whatsapp",
+    "chatbot",
+    "bot"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Chatbot para WhatsApp com integração Google Sheets",
+  "dependencies": {
+    "google-auth-library": "^10.1.0",
+    "google-spreadsheet": "^4.1.5",
+    "venom-bot": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
