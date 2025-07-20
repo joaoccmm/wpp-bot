@@ -1,4 +1,4 @@
-const { iniciarBot, getCurrentQR, getQRUrl } = require("./bot/whatsapp");
+const { iniciarBot, getCurrentQR, getQRUrl, getQRImage, clearQRData } = require("./bot/whatsapp");
 const { inicializarPlanilha } = require("./google/sheets");
 const http = require("http");
 
@@ -40,8 +40,9 @@ const server = http.createServer((req, res) => {
     // Endpoint para visualizar QR Code
     const qr = getCurrentQR();
     const qrUrl = getQRUrl();
+    const qrImage = getQRImage();
     
-    if (!qr && !qrUrl) {
+    if (!qr && !qrUrl && !qrImage) {
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(`
         <!DOCTYPE html>
@@ -51,15 +52,28 @@ const server = http.createServer((req, res) => {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <style>
-            body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-            .status { color: green; font-weight: bold; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-align: center; padding: 20px; background: #f0f2f5; }
+            .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .status { color: #00a884; font-weight: bold; font-size: 18px; margin: 20px 0; }
+            .icon { font-size: 48px; margin: 20px 0; }
+            a { color: #00a884; text-decoration: none; padding: 10px 20px; background: #e7f3ff; border-radius: 8px; display: inline-block; margin: 10px; }
+            a:hover { background: #d0ebff; }
           </style>
+          <script>
+            setTimeout(() => location.reload(), 10000); // Refresh mais rápido
+          </script>
         </head>
         <body>
-          <h1>🔗 WhatsApp Bot</h1>
-          <div class="status">✅ Bot já conectado ou QR não disponível</div>
-          <p>O bot já está conectado ao WhatsApp ou não há QR code no momento.</p>
-          <p><a href="/health">Ver Status</a></p>
+          <div class="container">
+            <div class="icon">✅</div>
+            <h1>WhatsApp Bot</h1>
+            <div class="status">Bot já conectado!</div>
+            <p>O bot já está conectado ao WhatsApp ou não há QR code disponível no momento.</p>
+            <p>
+              <a href="/health">📊 Ver Status</a>
+              <a href="/qr">🔄 Atualizar</a>
+            </p>
+          </div>
         </body>
         </html>
       `);
@@ -73,39 +87,76 @@ const server = http.createServer((req, res) => {
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
           <style>
-            body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-            .qr-container { background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0; }
-            .qr-ascii { font-family: monospace; font-size: 12px; line-height: 1; white-space: pre; }
-            .url { background: #e8f4fd; padding: 10px; border-radius: 5px; margin: 20px 0; word-break: break-all; }
-            .refresh { background: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-align: center; padding: 20px; background: #f0f2f5; }
+            .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 15px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .qr-container { background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 20px 0; }
+            .qr-image { max-width: 300px; height: auto; border-radius: 10px; }
+            .qr-ascii { font-family: 'Courier New', monospace; font-size: 8px; line-height: 0.8; white-space: pre; background: #000; color: #fff; padding: 10px; border-radius: 5px; overflow: hidden; }
+            .instructions { background: #e7f3ff; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left; }
+            .refresh { background: #00a884; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; margin: 10px; display: inline-block; font-weight: bold; }
+            .refresh:hover { background: #008c6f; }
+            .url-info { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 14px; }
+            .countdown { color: #666; font-size: 12px; margin-top: 20px; }
           </style>
           <script>
-            setTimeout(() => location.reload(), 30000); // Auto refresh em 30s
+            let countdown = 15;
+            const countdownEl = document.getElementById('countdown');
+            
+            function updateCountdown() {
+              if (countdownEl) {
+                countdownEl.textContent = countdown;
+                countdown--;
+                if (countdown < 0) {
+                  location.reload();
+                }
+              }
+            }
+            
+            setInterval(updateCountdown, 1000);
+            setTimeout(() => location.reload(), 15000);
           </script>
         </head>
         <body>
-          <h1>📱 WhatsApp QR Code</h1>
-          <p>Escaneie este QR code com seu WhatsApp</p>
-          
-          ${qrUrl ? `
-            <div class="url">
-              <strong>🔗 URL do QR:</strong><br>
-              <a href="${qrUrl}" target="_blank">${qrUrl}</a>
+          <div class="container">
+            <h1>📱 Conectar WhatsApp</h1>
+            <p>Escaneie este QR code com seu WhatsApp</p>
+            
+            <div class="instructions">
+              <h3>📋 Como conectar:</h3>
+              <ol style="text-align: left;">
+                <li>Abra o WhatsApp no seu celular</li>
+                <li>Toque em <strong>Mais opções</strong> (⋮) > <strong>Dispositivos conectados</strong></li>
+                <li>Toque em <strong>Conectar um dispositivo</strong></li>
+                <li>Aponte seu celular para esta tela para escanear o código</li>
+              </ol>
             </div>
-          ` : ''}
-          
-          ${qr ? `
-            <div class="qr-container">
-              <div class="qr-ascii">${qr}</div>
-            </div>
-          ` : ''}
-          
-          <p>
-            <a href="/qr" class="refresh">🔄 Atualizar</a>
-            <a href="/health" class="refresh">📊 Status</a>
-          </p>
-          
-          <p><small>Esta página será atualizada automaticamente em 30 segundos</small></p>
+            
+            ${qrImage ? `
+              <div class="qr-container">
+                <img src="${qrImage}" alt="QR Code" class="qr-image">
+              </div>
+            ` : ''}
+            
+            ${qrUrl && qrUrl !== "URL muito longa - veja QR code na interface web" && qrUrl.length < 200 ? `
+              <div class="url-info">
+                <strong>🔗 URL alternativa:</strong><br>
+                <small style="word-break: break-all;">${qrUrl}</small>
+              </div>
+            ` : ''}
+            
+            ${qr && !qrImage ? `
+              <div class="qr-container">
+                <div class="qr-ascii">${qr.length > 1000 ? qr.substring(0, 1000) + '...' : qr}</div>
+              </div>
+            ` : ''}
+            
+            <p>
+              <a href="/qr" class="refresh">🔄 Atualizar QR</a>
+              <a href="/health" class="refresh" style="background: #6c757d;">📊 Status</a>
+            </p>
+            
+            <p class="countdown">Atualização automática em <span id="countdown">15</span> segundos</p>
+          </div>
         </body>
         </html>
       `);

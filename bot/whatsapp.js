@@ -1,12 +1,14 @@
 const venom = require("venom-bot");
+const QRCode = require("qrcode");
 const fluxoCadastro = require("../flows/cadastro");
 const fluxoEndereco = require("../flows/endereco");
 const { fluxoPerguntas } = require("../flows/fluxoPerguntas");
 const { getEstado } = require("../utils/estados");
 
-// Variável global para armazenar o QR code
+// Variáveis globais para armazenar o QR code
 let currentQRCode = null;
 let qrCodeUrl = null;
+let qrCodeImage = null; // Base64 da imagem do QR
 
 async function iniciarBot() {
   console.log("🚀 Iniciando Venom Bot...");
@@ -32,28 +34,62 @@ async function iniciarBot() {
     autoClose: false,
     
     // Callback personalizado para QR Code
-    catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
+    catchQR: async (base64Qr, asciiQR, attempts, urlCode) => {
       console.log("📱 QR CODE GERADO!");
       console.log("═".repeat(50));
-      console.log("🔗 URL do QR Code:", urlCode);
-      console.log("📱 Tentativa:", attempts);
+      console.log("� Tentativa:", attempts);
+      
+      // Processar URL (encurtar se muito grande)
+      let processedUrl = urlCode;
+      if (urlCode && urlCode.length > 100) {
+        // Se a URL for muito grande, usar apenas uma parte
+        console.log("⚠️  URL muito longa, usando dados base64 direto");
+        processedUrl = "URL muito longa - veja QR code na interface web";
+      } else if (urlCode) {
+        console.log("🔗 URL do QR Code:", urlCode);
+      }
+      
       console.log("═".repeat(50));
       
       // Armazenar para endpoint web
       currentQRCode = asciiQR;
-      qrCodeUrl = urlCode;
+      qrCodeUrl = processedUrl;
+      qrCodeImage = base64Qr; // Usar a imagem base64 diretamente
       
-      // Tentar exibir o QR de forma mais legível
-      if (asciiQR) {
+      // Tentar gerar QR code como imagem se temos dados válidos
+      try {
+        if (urlCode && urlCode.length < 2000) { // Limite seguro para QR
+          const qrDataUrl = await QRCode.toDataURL(urlCode, {
+            width: 400,
+            margin: 2,
+            color: {
+              dark: '#000000',
+              light: '#FFFFFF'
+            }
+          });
+          qrCodeImage = qrDataUrl;
+          console.log("✅ QR Code gerado como imagem");
+        } else if (base64Qr) {
+          // Usar o base64 que o venom já gerou
+          qrCodeImage = `data:image/png;base64,${base64Qr}`;
+          console.log("✅ Usando QR Code do Venom");
+        }
+      } catch (error) {
+        console.log("⚠️  Erro ao gerar QR como imagem:", error.message);
+        qrCodeImage = base64Qr ? `data:image/png;base64,${base64Qr}` : null;
+      }
+      
+      // Exibir QR ASCII (limitado para não quebrar terminal)
+      if (asciiQR && asciiQR.length < 2000) {
         console.log("QR CODE ASCII:");
-        console.log(asciiQR.replace(/\n/g, '\n'));
+        console.log(asciiQR.substring(0, 1000) + (asciiQR.length > 1000 ? "..." : ""));
       }
       
       console.log("═".repeat(50));
-      console.log("💡 DICAS:");
-      console.log("1. Acesse /qr no navegador para ver o QR Code");
-      console.log("2. Use a URL acima para gerar o QR em sites online");
-      console.log("3. Escaneie com o WhatsApp Web");
+      console.log("💡 COMO CONECTAR:");
+      console.log("1. 🌐 Acesse /qr no seu navegador");
+      console.log("2. 📱 Escaneie o QR Code com WhatsApp");
+      console.log("3. 🔄 A página atualiza automaticamente");
       console.log("═".repeat(50));
     },
     
@@ -124,8 +160,20 @@ function getQRUrl() {
   return qrCodeUrl;
 }
 
+function getQRImage() {
+  return qrCodeImage;
+}
+
+function clearQRData() {
+  currentQRCode = null;
+  qrCodeUrl = null;
+  qrCodeImage = null;
+}
+
 module.exports = { 
   iniciarBot, 
   getCurrentQR, 
-  getQRUrl 
+  getQRUrl,
+  getQRImage,
+  clearQRData
 };
