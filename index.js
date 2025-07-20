@@ -1,4 +1,10 @@
-const { iniciarBot, getCurrentQR, getQRUrl, getQRImage, clearQRData } = require("./bot/whatsapp");
+const {
+  iniciarBot,
+  getCurrentQR,
+  getQRUrl,
+  getQRImage,
+  clearQRData,
+} = require("./bot/whatsapp");
 const { inicializarPlanilha } = require("./google/sheets");
 const http = require("http");
 
@@ -9,7 +15,7 @@ const HOST = process.env.HOST || "0.0.0.0";
 console.log(`🚀 Configuração de servidor:`);
 console.log(`   PORT: ${PORT}`);
 console.log(`   HOST: ${HOST}`);
-console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+console.log(`   NODE_ENV: ${process.env.NODE_ENV || "development"}`);
 
 // Estado da aplicação
 let appStatus = {
@@ -18,17 +24,17 @@ let appStatus = {
   bot: false,
   errors: [],
   port: PORT,
-  host: HOST
+  host: HOST,
 };
 
 // Criar servidor HTTP para health check
 const server = http.createServer((req, res) => {
   // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  if (req.method === 'OPTIONS') {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
     res.writeHead(200);
     res.end();
     return;
@@ -45,20 +51,22 @@ const server = http.createServer((req, res) => {
         environment: {
           port: PORT,
           host: HOST,
-          railway_url: process.env.RAILWAY_STATIC_URL || 'not set'
-        }
+          railway_url: process.env.RAILWAY_STATIC_URL || "not set",
+        },
       })
     );
   } else if (req.url === "/ping" || req.url === "/test") {
     // Endpoint simples para testar se o servidor está funcionando
     res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end(`PONG - Servidor funcionando!\nTimestamp: ${new Date().toISOString()}\nPORT: ${PORT}\nHOST: ${HOST}`);
+    res.end(
+      `PONG - Servidor funcionando!\nTimestamp: ${new Date().toISOString()}\nPORT: ${PORT}\nHOST: ${HOST}`
+    );
   } else if (req.url === "/qr") {
     // Endpoint para visualizar QR Code
     const qr = getCurrentQR();
     const qrUrl = getQRUrl();
     const qrImage = getQRImage();
-    
+
     if (!qr && !qrUrl && !qrImage) {
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(`
@@ -148,24 +156,40 @@ const server = http.createServer((req, res) => {
               </ol>
             </div>
             
-            ${qrImage ? `
+            ${
+              qrImage
+                ? `
               <div class="qr-container">
                 <img src="${qrImage}" alt="QR Code" class="qr-image">
               </div>
-            ` : ''}
+            `
+                : ""
+            }
             
-            ${qrUrl && qrUrl !== "URL muito longa - veja QR code na interface web" && qrUrl.length < 200 ? `
+            ${
+              qrUrl &&
+              qrUrl !== "URL muito longa - veja QR code na interface web" &&
+              qrUrl.length < 200
+                ? `
               <div class="url-info">
                 <strong>🔗 URL alternativa:</strong><br>
                 <small style="word-break: break-all;">${qrUrl}</small>
               </div>
-            ` : ''}
+            `
+                : ""
+            }
             
-            ${qr && !qrImage ? `
+            ${
+              qr && !qrImage
+                ? `
               <div class="qr-container">
-                <div class="qr-ascii">${qr.length > 1000 ? qr.substring(0, 1000) + '...' : qr}</div>
+                <div class="qr-ascii">${
+                  qr.length > 1000 ? qr.substring(0, 1000) + "..." : qr
+                }</div>
               </div>
-            ` : ''}
+            `
+                : ""
+            }
             
             <p>
               <a href="/qr" class="refresh">🔄 Atualizar QR</a>
@@ -180,7 +204,11 @@ const server = http.createServer((req, res) => {
     }
   } else {
     res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("WhatsApp Chatbot está rodando! Status: " + JSON.stringify(appStatus, null, 2) + "\n\nAcesse /qr para ver o QR Code\nAcesse /health para ver o status");
+    res.end(
+      "WhatsApp Chatbot está rodando! Status: " +
+        JSON.stringify(appStatus, null, 2) +
+        "\n\nAcesse /qr para ver o QR Code\nAcesse /health para ver o status"
+    );
   }
 });
 
@@ -198,20 +226,22 @@ const server = http.createServer((req, res) => {
     });
 
     // Adicionar handlers de erro para o servidor
-    server.on('error', (err) => {
+    server.on("error", (err) => {
       console.error(`❌ Erro no servidor HTTP:`, err);
       appStatus.errors.push(`Server: ${err.message}`);
     });
 
     // Aguardar um pouco para garantir que o servidor está rodando
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Inicializar Google Sheets (com timeout)
     console.log("⏳ Inicializando Google Sheets...");
     try {
       await Promise.race([
         inicializarPlanilha(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout Google Sheets')), 30000))
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Timeout Google Sheets")), 30000)
+        ),
       ]);
       appStatus.sheets = true;
       console.log("✅ Google Sheets inicializado");
@@ -225,7 +255,9 @@ const server = http.createServer((req, res) => {
     try {
       await Promise.race([
         iniciarBot(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout WhatsApp Bot')), 60000))
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Timeout WhatsApp Bot")), 60000)
+        ),
       ]);
       appStatus.bot = true;
       console.log("✅ Bot WhatsApp iniciado com sucesso!");
@@ -238,7 +270,7 @@ const server = http.createServer((req, res) => {
   } catch (error) {
     console.error("❌ Falha crítica na inicialização:", error);
     appStatus.errors.push(`Inicialização crítica: ${error.message}`);
-    
+
     // Não fazer exit se o servidor HTTP estiver funcionando
     if (!appStatus.server) {
       process.exit(1);
