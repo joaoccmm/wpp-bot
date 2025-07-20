@@ -10,3 +10,8 @@ coverage
 tokens/
 session_data/
 *.log
+.vscode/
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
