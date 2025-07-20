@@ -2,15 +2,23 @@ const { iniciarBot, getCurrentQR, getQRUrl, getQRImage, clearQRData } = require(
 const { inicializarPlanilha } = require("./google/sheets");
 const http = require("http");
 
-// Configuração para Railway
+// Configuração para Railway e outros serviços de cloud
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "0.0.0.0";
+
+console.log(`🚀 Configuração de servidor:`);
+console.log(`   PORT: ${PORT}`);
+console.log(`   HOST: ${HOST}`);
+console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
 
 // Estado da aplicação
 let appStatus = {
   server: false,
   sheets: false,
   bot: false,
-  errors: []
+  errors: [],
+  port: PORT,
+  host: HOST
 };
 
 // Criar servidor HTTP para health check
@@ -33,9 +41,18 @@ const server = http.createServer((req, res) => {
         status: "OK",
         timestamp: new Date().toISOString(),
         service: "WhatsApp Chatbot",
-        components: appStatus
+        components: appStatus,
+        environment: {
+          port: PORT,
+          host: HOST,
+          railway_url: process.env.RAILWAY_STATIC_URL || 'not set'
+        }
       })
     );
+  } else if (req.url === "/ping" || req.url === "/test") {
+    // Endpoint simples para testar se o servidor está funcionando
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end(`PONG - Servidor funcionando!\nTimestamp: ${new Date().toISOString()}\nPORT: ${PORT}\nHOST: ${HOST}`);
   } else if (req.url === "/qr") {
     // Endpoint para visualizar QR Code
     const qr = getCurrentQR();
@@ -171,13 +188,23 @@ const server = http.createServer((req, res) => {
 (async () => {
   try {
     // Iniciar servidor HTTP PRIMEIRO
-    server.listen(PORT, "0.0.0.0", () => {
-      console.log(`🌐 Servidor HTTP rodando na porta ${PORT}`);
+    server.listen(PORT, HOST, () => {
+      console.log(`🌐 Servidor HTTP rodando em ${HOST}:${PORT}`);
+      console.log(`📡 Acesse: http://localhost:${PORT}`);
+      if (process.env.RAILWAY_STATIC_URL) {
+        console.log(`🚀 Railway URL: ${process.env.RAILWAY_STATIC_URL}`);
+      }
       appStatus.server = true;
     });
 
+    // Adicionar handlers de erro para o servidor
+    server.on('error', (err) => {
+      console.error(`❌ Erro no servidor HTTP:`, err);
+      appStatus.errors.push(`Server: ${err.message}`);
+    });
+
     // Aguardar um pouco para garantir que o servidor está rodando
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Inicializar Google Sheets (com timeout)
     console.log("⏳ Inicializando Google Sheets...");
