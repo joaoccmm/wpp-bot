@@ -1,6 +1,22 @@
 # 🤖 Chatbot WhatsApp
 
-Chatbot para WhatsApp com integração ao Google Sheets para cadastro de usuários.
+Chatbot para Wha## 📊 Recursos
+
+- ✅ Interface web para QR Code
+- ✅ QR Code como imagem (fácil escaneamento)
+- ✅ Auto-refresh da página
+- ✅ Design responsivo (mobile/desktop)
+- ✅ Tratamento de URLs longas
+- ✅ Logs organizados e informativos
+
+## 🔧 Desenvolvimento Local
+
+```bash
+npm install
+npm run dev
+```
+
+## 📈 Performanceção ao Google Sheets para cadastro de usuários.
 
 ## 🚀 Deploy no Railway
 
@@ -20,31 +36,33 @@ git push origin master
 4. Selecione "Deploy from GitHub repo"
 5. Escolha o repositório `wpp-bot`
 
-### 3. Configurar variáveis de ambiente
+### 3. Conectar WhatsApp
 
-No painel do Railway, vá em Variables e adicione:
+Após o deploy bem-sucedido:
 
-```
-GOOGLE_CREDENTIALS={"type":"service_account","project_id":"botcadastrowhatsapp",...}
-```
+1. **Acesse**: `https://seu-app.railway.app/qr`
+2. **Escaneie**: O QR Code com seu WhatsApp
+3. **Aguarde**: A conexão ser estabelecida
 
-### 4. Health Check
+#### 📱 Como escanear:
+- Abra WhatsApp > ⋮ Mais > Dispositivos conectados
+- Toque em "Conectar um dispositivo"
+- Escaneie o QR Code na tela
 
-O bot estará disponível em: `https://seu-app.railway.app`
-Health check: `https://seu-app.railway.app/health`
+### 4. Monitoramento
 
-## 📦 Estrutura do Projeto
+- **Status**: `https://seu-app.railway.app/health`
+- **QR Code**: `https://seu-app.railway.app/qr` (se precisar reconectar)
+- **Homepage**: `https://seu-app.railway.app`
 
-```
-├── bot/              # Lógica do WhatsApp
-├── flows/            # Fluxos de conversa
-├── google/           # Integração Google Sheets
-├── utils/            # Utilitários
-├── index.js          # Arquivo principal
-├── package.json      # Dependências
-├── Dockerfile        # Container Docker
-└── railway.json      # Configuração Railway
-```
+## � Recursos
+
+- ✅ Interface web para QR Code
+- ✅ QR Code como imagem (fácil escaneamento)
+- ✅ Auto-refresh da página
+- ✅ Design responsivo (mobile/desktop)
+- ✅ Tratamento de URLs longas
+- ✅ Logs organizados e informativos
 
 ## 🔧 Desenvolvimento Local
 
@@ -53,8 +71,16 @@ npm install
 npm run dev
 ```
 
-## 📊 Monitoramento
+## � Performance
 
-- CPU: ~0.05 vCPU
-- RAM: ~200-300MB
-- Estimativa: 500-1000 chats/dia no plano gratuito
+- **CPU**: ~0.05 vCPU
+- **RAM**: ~200-300MB  
+- **Estimativa**: 500-1000 chats/dia no plano gratuito Railway
+
+## 🛠️ Tecnologias
+
+- Node.js 20.x
+- Venom-bot (WhatsApp automation)
+- Google Sheets API
+- QRCode generation
+- Docker containerization
