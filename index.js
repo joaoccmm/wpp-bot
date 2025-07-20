@@ -1,4 +1,4 @@
-const iniciarBot = require("./bot/whatsapp");
+const { iniciarBot, getCurrentQR, getQRUrl } = require("./bot/whatsapp");
 const { inicializarPlanilha } = require("./google/sheets");
 const http = require("http");
 
@@ -36,9 +36,83 @@ const server = http.createServer((req, res) => {
         components: appStatus
       })
     );
+  } else if (req.url === "/qr") {
+    // Endpoint para visualizar QR Code
+    const qr = getCurrentQR();
+    const qrUrl = getQRUrl();
+    
+    if (!qr && !qrUrl) {
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>WhatsApp QR Code</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+            .status { color: green; font-weight: bold; }
+          </style>
+        </head>
+        <body>
+          <h1>🔗 WhatsApp Bot</h1>
+          <div class="status">✅ Bot já conectado ou QR não disponível</div>
+          <p>O bot já está conectado ao WhatsApp ou não há QR code no momento.</p>
+          <p><a href="/health">Ver Status</a></p>
+        </body>
+        </html>
+      `);
+    } else {
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>WhatsApp QR Code</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+            .qr-container { background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0; }
+            .qr-ascii { font-family: monospace; font-size: 12px; line-height: 1; white-space: pre; }
+            .url { background: #e8f4fd; padding: 10px; border-radius: 5px; margin: 20px 0; word-break: break-all; }
+            .refresh { background: #007cba; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+          </style>
+          <script>
+            setTimeout(() => location.reload(), 30000); // Auto refresh em 30s
+          </script>
+        </head>
+        <body>
+          <h1>📱 WhatsApp QR Code</h1>
+          <p>Escaneie este QR code com seu WhatsApp</p>
+          
+          ${qrUrl ? `
+            <div class="url">
+              <strong>🔗 URL do QR:</strong><br>
+              <a href="${qrUrl}" target="_blank">${qrUrl}</a>
+            </div>
+          ` : ''}
+          
+          ${qr ? `
+            <div class="qr-container">
+              <div class="qr-ascii">${qr}</div>
+            </div>
+          ` : ''}
+          
+          <p>
+            <a href="/qr" class="refresh">🔄 Atualizar</a>
+            <a href="/health" class="refresh">📊 Status</a>
+          </p>
+          
+          <p><small>Esta página será atualizada automaticamente em 30 segundos</small></p>
+        </body>
+        </html>
+      `);
+    }
   } else {
     res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("WhatsApp Chatbot está rodando! Status: " + JSON.stringify(appStatus, null, 2));
+    res.end("WhatsApp Chatbot está rodando! Status: " + JSON.stringify(appStatus, null, 2) + "\n\nAcesse /qr para ver o QR Code\nAcesse /health para ver o status");
   }
 });
 

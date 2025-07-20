@@ -4,7 +4,13 @@ const fluxoEndereco = require("../flows/endereco");
 const { fluxoPerguntas } = require("../flows/fluxoPerguntas");
 const { getEstado } = require("../utils/estados");
 
+// Variável global para armazenar o QR code
+let currentQRCode = null;
+let qrCodeUrl = null;
+
 async function iniciarBot() {
+  console.log("🚀 Iniciando Venom Bot...");
+  
   const client = await venom.create({
     session: "chatbot-wpp",
     multidevice: true,
@@ -16,9 +22,63 @@ async function iniciarBot() {
       "--disable-extensions",
       "--disable-gpu",
       "--disable-dev-shm-usage",
+      "--no-first-run",
+      "--disable-default-apps",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
     ],
-    logQR: true,
+    logQR: false, // Desabilitamos o log padrão
     autoClose: false,
+    
+    // Callback personalizado para QR Code
+    catchQR: (base64Qr, asciiQR, attempts, urlCode) => {
+      console.log("📱 QR CODE GERADO!");
+      console.log("═".repeat(50));
+      console.log("🔗 URL do QR Code:", urlCode);
+      console.log("📱 Tentativa:", attempts);
+      console.log("═".repeat(50));
+      
+      // Armazenar para endpoint web
+      currentQRCode = asciiQR;
+      qrCodeUrl = urlCode;
+      
+      // Tentar exibir o QR de forma mais legível
+      if (asciiQR) {
+        console.log("QR CODE ASCII:");
+        console.log(asciiQR.replace(/\n/g, '\n'));
+      }
+      
+      console.log("═".repeat(50));
+      console.log("💡 DICAS:");
+      console.log("1. Acesse /qr no navegador para ver o QR Code");
+      console.log("2. Use a URL acima para gerar o QR em sites online");
+      console.log("3. Escaneie com o WhatsApp Web");
+      console.log("═".repeat(50));
+    },
+    
+    // Status da conexão
+    statusFind: (statusSession, session) => {
+      console.log("📊 Status da sessão:", statusSession, "| Sessão:", session);
+      
+      if (statusSession === 'qrReadSuccess') {
+        console.log("✅ QR Code escaneado com sucesso!");
+        currentQRCode = null;
+        qrCodeUrl = null;
+      }
+      
+      if (statusSession === 'autocloseCalled') {
+        console.log("🔄 Sessão fechada automaticamente");
+      }
+      
+      if (statusSession === 'notLogged') {
+        console.log("❌ Não logado - QR Code necessário");
+      }
+      
+      if (statusSession === 'browserClose') {
+        console.log("🌐 Browser fechado");
+      }
+    }
   });
 
   client.onMessage(async (msg) => {
@@ -51,7 +111,21 @@ async function iniciarBot() {
     }
   });
 
-  console.log("Bot iniciado com sucesso!");
+  console.log("✅ Bot WhatsApp configurado e pronto!");
+  return client;
 }
 
-module.exports = iniciarBot;
+// Funções para acessar QR code externamente
+function getCurrentQR() {
+  return currentQRCode;
+}
+
+function getQRUrl() {
+  return qrCodeUrl;
+}
+
+module.exports = { 
+  iniciarBot, 
+  getCurrentQR, 
+  getQRUrl 
+};
