@@ -202,12 +202,55 @@ const server = http.createServer((req, res) => {
         </html>
       `);
     }
+  } else if (req.url === "/debug-credentials") {
+    // Endpoint para debugar credenciais Google
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    
+    let debugOutput = "🔍 Debug Credenciais Google\n";
+    debugOutput += "=".repeat(40) + "\n\n";
+    
+    // Verificar variável de ambiente
+    debugOutput += "1. Variável GOOGLE_CREDENTIALS:\n";
+    debugOutput += `   Existe: ${!!process.env.GOOGLE_CREDENTIALS}\n`;
+    debugOutput += `   Tipo: ${typeof process.env.GOOGLE_CREDENTIALS}\n`;
+    
+    if (process.env.GOOGLE_CREDENTIALS) {
+      debugOutput += `   Tamanho: ${process.env.GOOGLE_CREDENTIALS.length} chars\n`;
+      debugOutput += `   Primeiros 100 chars: ${process.env.GOOGLE_CREDENTIALS.substring(0, 100)}\n`;
+      debugOutput += `   Últimos 50 chars: ${process.env.GOOGLE_CREDENTIALS.slice(-50)}\n`;
+      
+      try {
+        const parsed = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+        debugOutput += "\n2. ✅ JSON parseado com sucesso!\n";
+        debugOutput += `   Campos: ${Object.keys(parsed).join(', ')}\n`;
+        debugOutput += `   project_id: ${parsed.project_id}\n`;
+        debugOutput += `   client_email: ${parsed.client_email}\n`;
+        debugOutput += `   private_key existe: ${!!parsed.private_key}\n`;
+      } catch (error) {
+        debugOutput += `\n2. ❌ Erro no parse JSON: ${error.message}\n`;
+      }
+    } else {
+      debugOutput += "   ❌ Variável não encontrada!\n";
+    }
+    
+    // Verificar todas as vars que contenham GOOGLE
+    debugOutput += "\n3. Todas as variáveis relacionadas:\n";
+    Object.keys(process.env).forEach(key => {
+      if (key.toUpperCase().includes('GOOGLE')) {
+        debugOutput += `   ${key}: ${process.env[key] ? 'EXISTE' : 'VAZIO'}\n`;
+      }
+    });
+    
+    debugOutput += "\n" + "=".repeat(40) + "\n";
+    debugOutput += new Date().toISOString();
+    
+    res.end(debugOutput);
   } else {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end(
       "WhatsApp Chatbot está rodando! Status: " +
         JSON.stringify(appStatus, null, 2) +
-        "\n\nAcesse /qr para ver o QR Code\nAcesse /health para ver o status"
+        "\n\nAcesse /qr para ver o QR Code\nAcesse /health para ver o status\nAcesse /debug-credentials para debug"
     );
   }
 });
