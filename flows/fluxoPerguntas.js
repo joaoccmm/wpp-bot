@@ -407,8 +407,7 @@ async function fluxoPerguntas(client, msg) {
 
   switch (etapa3) {
     case "inicio":
-      await client.sendText(id, mensagens.inicio);
-      // Vai direto para a primeira pergunta
+      // Remove a mensagem introdutória e vai direto para a primeira pergunta
       await avancar("menoridade", mensagens.perguntaMenorIdade);
       break;
 
