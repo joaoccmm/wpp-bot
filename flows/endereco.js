@@ -1,5 +1,4 @@
 const { getEstado, setEstado } = require("../utils/estados");
-const mensagensPerguntas = require("./fluxoPerguntas").mensagens; // para pegar a mensagem inicial
 
 const mensagensEndereco = {
   cep: "6️⃣ Informe seu *CEP* (somente números):",
@@ -85,8 +84,10 @@ async function fluxoEndereco(client, msg) {
           estado.etapa3 = "inicio";
           setEstado(id, estado);
 
-          // Removida a segunda mensagem - vai direto para as perguntas
-          await client.sendText(id, mensagensPerguntas.inicio);
+          // A mensagem introdutória será enviada automaticamente pelo fluxoPerguntas
+          // junto com a primeira pergunta - não precisa enviar aqui
+          const { fluxoPerguntas } = require("./fluxoPerguntas");
+          await fluxoPerguntas(client, { ...msg, body: "" });
         } catch (e) {
           console.error("Erro ao confirmar endereço:", e);
           await client.sendText(
