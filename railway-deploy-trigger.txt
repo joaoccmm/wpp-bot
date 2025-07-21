@@ -1,0 +1,2 @@
+Deploy trigger para forçar redeploy no Railway após configurar GOOGLE_CREDENTIALS
+Timestamp: 2025-07-21
