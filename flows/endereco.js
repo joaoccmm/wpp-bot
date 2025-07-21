@@ -85,10 +85,7 @@ async function fluxoEndereco(client, msg) {
           estado.etapa3 = "inicio";
           setEstado(id, estado);
 
-          await client.sendText(
-            id,
-            "📨 Endereço confirmado! Agora vamos para a terceira e última etapa."
-          );
+          // Removida a segunda mensagem - vai direto para as perguntas
           await client.sendText(id, mensagensPerguntas.inicio);
         } catch (e) {
           console.error("Erro ao confirmar endereço:", e);

@@ -1265,13 +1265,61 @@ async function fluxoPerguntas(client, msg) {
         estado.pergunta31 = userRaw;
         setEstado(id, estado);
         console.log(
-          `🏁 PERGUNTA FINAL (31) RESPONDIDA - Finalizando fluxo e salvando dados`
+          `📝 PERGUNTA 31 RESPONDIDA - Avançando para solicitação de documento`
         );
-        await salvarDadosCompletos(client, id, estado);
+
+        // Avançar para etapa de documento
+        estado.etapa3 = "documento";
+        setEstado(id, estado);
+        await client.sendText(
+          id,
+          "📄 *ÚLTIMA ETAPA*\n\n" +
+            "Para finalizar seu cadastro, preciso que envie uma foto de um *documento oficial com foto* (RG, CNH ou Carteira de Trabalho).\n\n" +
+            "📸 *Envie 2 fotos:*\n" +
+            "• 1ª foto: Frente do documento\n" +
+            "• 2ª foto: Verso do documento\n\n" +
+            "⚠️ *Importante:* As fotos não serão salvas, apenas verificadas para validação."
+        );
       } else {
         await client.sendText(
           id,
           "Por favor, escolha uma das opções: Dr. Igor, Matheus, Aline, Simony ou João Victor."
+        );
+      }
+      break;
+    }
+
+    case "documento": {
+      // Contar quantas fotos foram enviadas
+      if (!estado.documentos_enviados) {
+        estado.documentos_enviados = 0;
+      }
+
+      if (msg.type === "image") {
+        estado.documentos_enviados++;
+        setEstado(id, estado);
+
+        if (estado.documentos_enviados === 1) {
+          await client.sendText(
+            id,
+            "✅ *1ª foto recebida!* (Frente)\n\n📸 Agora envie a *2ª foto* (verso do documento)."
+          );
+        } else if (estado.documentos_enviados >= 2) {
+          await client.sendText(
+            id,
+            "✅ *2ª foto recebida!* (Verso)\n\n🎉 Documentos verificados com sucesso!"
+          );
+
+          console.log(
+            `🏁 DOCUMENTOS ENVIADOS - Finalizando fluxo e salvando dados`
+          );
+          await salvarDadosCompletos(client, id, estado);
+        }
+      } else {
+        await client.sendText(
+          id,
+          "📄 Por favor, envie uma *foto* do documento. " +
+            `Você já enviou ${estado.documentos_enviados}/2 fotos.`
         );
       }
       break;

@@ -6,11 +6,11 @@ const mensagens = {
     "💡 *Dica importante:* Digite *cancelar* a qualquer momento para encerrar a conversa.\n\n" +
     "Digite *Sim* para começar ou *Cancelar* para sair.",
   nome: "1️⃣ Qual é o seu nome completo?\n\n_Digite 'cancelar' para sair a qualquer momento._",
-  cpf: "2️⃣ Por favor, me informe seu CPF (apenas números):\n\n_Digite 'cancelar' para sair a qualquer momento._",
+  cpf: "2️⃣ Por favor, me informe seu CPF (apenas números ou no formato xxx.xxx.xxx-xx):\n\n_Digite 'cancelar' para sair a qualquer momento._",
   nascimento:
     "3️⃣ Informe sua data de nascimento (DD/MM/AAAA):\n\n_Digite 'cancelar' para sair a qualquer momento._",
   telefone:
-    "4️⃣ Informe seu número de telefone com DDD:\n\n_Digite 'cancelar' para sair a qualquer momento._",
+    "4️⃣ Informe seu número de telefone com DDD:\n\n*Formatos aceitos:*\n• 11987654321 (apenas números)\n• 11 9876-5432\n• 11 9876 5432\n\n_Digite 'cancelar' para sair a qualquer momento._",
   email:
     "5️⃣ Informe seu e-mail:\n\n_Digite 'cancelar' para sair a qualquer momento._",
   confirmacao: (dados) => {
@@ -76,11 +76,21 @@ async function fluxoCadastro(client, msg) {
       break;
 
     case "cpf":
-      if (!/^\d{11}$/.test(msg.body || "")) {
-        await client.sendText(id, "CPF inválido. Digite os 11 números.");
+      const cpfInput = msg.body || "";
+      // Remover pontos e hífen para validação
+      const cpfLimpo = cpfInput.replace(/[.-]/g, "");
+
+      // Validar se tem 11 dígitos após limpeza
+      if (!/^\d{11}$/.test(cpfLimpo)) {
+        await client.sendText(
+          id,
+          "CPF inválido. Digite 11 números ou no formato xxx.xxx.xxx-xx"
+        );
         return;
       }
-      estado.cpf = msg.body || "";
+
+      // Salvar CPF limpo (apenas números)
+      estado.cpf = cpfLimpo;
       estado.etapa = "nascimento";
       setEstado(id, estado);
       await client.sendText(id, mensagens.nascimento);
@@ -98,11 +108,21 @@ async function fluxoCadastro(client, msg) {
       break;
 
     case "telefone":
-      if (!/^\d{10,11}$/.test(msg.body || "")) {
-        await client.sendText(id, "Número inválido. Use DDD + número.");
+      const telefoneInput = msg.body || "";
+      // Remover espaços, traços e parênteses para validação
+      const telefoneLimpo = telefoneInput.replace(/[\s\-\(\)]/g, "");
+
+      // Validar se tem 10 ou 11 dígitos após limpeza
+      if (!/^\d{10,11}$/.test(telefoneLimpo)) {
+        await client.sendText(
+          id,
+          "Número inválido. Use DDD + número (10 ou 11 dígitos).\n\n*Exemplos:*\n• 11987654321\n• 11 9876-5432\n• 11 9876 5432"
+        );
         return;
       }
-      estado.telefone = msg.body || "";
+
+      // Salvar telefone limpo (apenas números)
+      estado.telefone = telefoneLimpo;
       estado.etapa = "email";
       setEstado(id, estado);
       await client.sendText(id, mensagens.email);

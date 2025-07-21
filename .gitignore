@@ -18,6 +18,7 @@ session_data/
 
 # Google credentials (será configurado como variável de ambiente)
 credenciais-google.json
+railway-credentials.json
 
 # Logs
 *.log
