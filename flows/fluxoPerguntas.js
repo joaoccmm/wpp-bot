@@ -68,9 +68,6 @@ async function salvarDadosCompletos(client, id, estado) {
       outros_usos_recursos_hidricos: estado.pergunta24_2,
       outros_usos_descricao: estado.pergunta24_3,
       quando_percebeu_problemas_hidricos: estado.pergunta24_4,
-      uso_terra_afetado_2: estado.pergunta25,
-      como_terra_afetada: estado.pergunta25_1,
-      quando_percebeu_perda_terra: estado.pergunta25_2,
       outros_prejuizos_materiais: estado.pergunta26,
       especificar_prejuizos_materiais: estado.pergunta26_1,
       indenizacao_recebida: estado.pergunta27,
@@ -190,8 +187,8 @@ const mensagens = {
     "7️⃣.4️⃣ Para onde você se mudou? (responda com letras):\n" +
     "a) Local próprio/familiar\nb) Organização externa\nc) Samarco/Renova",
   pergunta19:
-    "8️⃣ Após o rompimento da barragem de Mariana, você perdeu sua principal fonte de alimento?\n" +
-    "📌 Exemplo: Se você dependia da pesca, da lavoura, da horta ou da criação de animais para se alimentar e perdeu isso após o desastre.\n👉 Sim ou Não",
+    "8️⃣ Após o rompimento da barragem de Mariana, você perdeu sua principal fonte de alimento?\n\n" +
+    "📌 Exemplo: Se você dependia da pesca, da lavoura, da horta ou da criação de animais para se alimentar e perdeu isso após o desastre.\n\n👉 Sim ou Não",
   pergunta19_1:
     "8️⃣.1️⃣ Quando ocorreu essa perda?\n👉 Responda com o mês e o ano (ex: 11/2015)",
   pergunta19_2: "8️⃣.2️⃣ Essa perda ainda continua até hoje?\n👉 Sim ou Não",
@@ -206,7 +203,7 @@ const mensagens = {
   pergunta19_4:
     "8️⃣.4️⃣ Por favor, descreva quais foram essas despesas.\n👉 Escreva sua resposta em uma frase curta",
   pergunta20:
-    "9️⃣ Sua capacidade de gerar renda foi afetada pelo rompimento da barragem de Mariana?\n👉 Sim ou Não",
+    "9️⃣ Sua renda foi afetada pelo rompimento da barragem de Mariana?\n👉 Sim ou Não",
   pergunta20_1:
     "9️⃣.1️⃣ Sua renda foi afetada devido a quais motivos?\n" +
     "👉 Responda com as letras correspondentes (ex: A, C, F)\n\n" +
@@ -285,7 +282,7 @@ const mensagens = {
   pergunta23_3:
     "1️⃣2️⃣.3️⃣ Quando você percebeu que essas perdas estavam relacionadas ao rompimento?\n👉 Informe o mês e o ano (ex: 11/2015)",
   pergunta24:
-    "1️⃣3️⃣ Como o rompimento da barragem afetou seu uso de rios ou do mar?\n👉 Sim ou Não",
+    "1️⃣3️⃣ O rompimento da barragem afetou o seu uso de rios ou do mar?\n👉 Sim ou Não",
   pergunta24_1:
     "1️⃣3️⃣.1️⃣ Atividades de Pesca\n" +
     "👉 Responda com as letras correspondentes (ex: A, B, C)\n\n" +
@@ -306,25 +303,10 @@ const mensagens = {
     "1️⃣3️⃣.3️⃣ Descreva quais foram:\n👉 Escreva sua resposta em uma frase curta",
   pergunta24_4:
     "1️⃣3️⃣.4️⃣ Quando você percebeu que esses problemas estavam relacionados ao rompimento?\n👉 Informe o mês e o ano (ex: 11/2015)",
-  pergunta25:
-    "1️⃣4️⃣ Seu uso e aproveitamento da terra foi afetado pelo rompimento da barragem de Mariana?\n👉 Sim ou Não",
-  pergunta25_1:
-    "1️⃣4️⃣.1️⃣ Como seu uso da terra foi afetado?\n" +
-    "👉 Marque todas as opções que se aplicam (ex: a, c, f)\n\n" +
-    "a) Cultivo para consumo próprio\n" +
-    "b) Criação de animais\n" +
-    "c) Esportes\n" +
-    "d) Lugar de encontro/socialização\n" +
-    "e) Poluição de uma parte importante e constante da minha vida\n" +
-    "f) Impacto em atividades/cerimônias tradicionais\n" +
-    "g) Outros\n\n" +
-    '📌 Se marcou "g - Outros", descreva quais foram:\n👉 Responda com uma frase curta',
-  pergunta25_2:
-    "1️⃣4️⃣.2️⃣ Quando você percebeu que a perda da terra estava relacionada ao rompimento?\n👉 Responda com mês e ano (ex: 11/2015)",
   pergunta26:
-    "1️⃣5️⃣ O rompimento da barragem te gerou outros prejuízos materiais, de qualquer tipo?\n👉 Sim ou Não",
+    "1️⃣4️⃣ O rompimento da barragem te gerou outros prejuízos materiais, de qualquer tipo?\n👉 Sim ou Não",
   pergunta26_1:
-    "1️⃣5️⃣.1️⃣ Por favor, especifique quais foram esses prejuízos materiais.\n" +
+    "1️⃣4️⃣.1️⃣ Por favor, especifique quais foram esses prejuízos materiais.\n" +
     "👉 Você pode citar, por exemplo:\n\n" +
     "Danos a eletrodomésticos (ex: máquina de lavar, geladeira, freezer)\n" +
     "Danos a sistemas de irrigação\n" +
@@ -332,7 +314,7 @@ const mensagens = {
     "Corrosão de bombas d'água ou motores\n" +
     "Outros equipamentos danificados pelo uso da água contaminada",
   pergunta27:
-    "1️⃣7️⃣ Você recebeu alguma indenização em dinheiro antes de 2024 por meio de algum dos seguintes programas ou sistemas?\n" +
+    "1️⃣5️⃣ Você recebeu alguma indenização em dinheiro antes de 2024 por meio de algum dos seguintes programas ou sistemas?\n" +
     "👉 Marque todas as opções que se aplicam (ex: A, C)\n\n" +
     "A) Auxílio Financeiro Emergencial (AFE)\n" +
     "B) Programa de Indenização Mediada – PIM (valor de R$ 1.000)\n" +
@@ -340,37 +322,37 @@ const mensagens = {
     "D) Outra forma de indenização da Renova ou Samarco que não está listada acima\n" +
     "E) Não recebi nenhuma indenização",
   pergunta28:
-    "1️⃣8️⃣ Você aderiu a alguma das iniciativas indenizatórias da Repactuação assinada em novembro de 2024?\n👉 Sim ou Não",
+    "1️⃣6️⃣ Você aderiu a alguma das iniciativas indenizatórias da Repactuação assinada em novembro de 2024?\n👉 Sim ou Não",
   pergunta28_1:
-    "1️⃣8️⃣.1️⃣ Qual tipo de iniciativa você ingressou ou está aguardando análise?\n" +
+    "1️⃣6️⃣.1️⃣ Qual tipo de iniciativa você ingressou ou está aguardando análise?\n" +
     "👉 Responda com as letras correspondentes (ex: A, B, C)\n\n" +
     "a) PIM-AFE\n" +
     "b) PID (R$ 35.000)\n" +
-    "c) Novel\n" +
+    "C) Recebi pelo Sistema Judicial Simplificado (Sistema Novel – por exemplo: R$ 15.000 pelo dano água)\n" +
     "d) Pescadores profissionais e agricultores familiares (R$ 95.000)\n" +
     "e) Dano Água\n" +
     "f) PTR-Mariana\n" +
     "g) Compensação Individual para moradores de Mariana (R$ 35.000)",
   pergunta28_2:
-    "1️⃣8️⃣.2️⃣ Você recebeu alguma proposta de indenização dessas iniciativas?\n👉 Sim ou Não",
+    "1️⃣6️⃣.2️⃣ Você recebeu alguma proposta de indenização dessas iniciativas?\n👉 Sim ou Não",
   pergunta28_3:
-    "1️⃣8️⃣.3️⃣ Você recebeu alguma indenização referente a algum desses programas?\n👉 Sim ou Não",
+    "1️⃣6️⃣.3️⃣ Você recebeu alguma indenização referente a algum desses programas?\n👉 Sim ou Não",
   pergunta29:
-    "1️⃣9️⃣ Você é ou era morador de Bento Rodrigues ou Paracatu de Baixo no momento do desastre?\n👉 Sim ou Não",
+    "1️⃣7️⃣ Você é ou era morador de Bento Rodrigues ou Paracatu de Baixo no momento do desastre?\n👉 Sim ou Não",
   pergunta30:
-    "2️⃣0️⃣ Você recebeu algum tipo de compensação não financeira de natureza socioeconômica ou ambiental da Samarco/Renova antes de 2024 (além do reassentamento)?\n👉 Sim ou Não",
+    "1️⃣8️⃣ Você recebeu algum tipo de compensação não financeira de natureza socioeconômica ou ambiental da Samarco/Renova antes de 2024 (além do reassentamento)?\n👉 Sim ou Não",
   pergunta30_1:
-    "2️⃣0️⃣.1️⃣ Você se cadastrou para receber esse tipo de compensação não financeira?\n👉 Sim ou Não",
+    "1️⃣8️⃣.1️⃣ Você se cadastrou para receber esse tipo de compensação não financeira?\n👉 Sim ou Não",
   pergunta30_2:
-    "2️⃣0️⃣.2️⃣ A Samarco/Renova entrou em contato com você para tratar do recebimento dessa compensação não financeira?\n👉 Sim ou Não",
+    "1️⃣8️⃣.2️⃣ A Samarco/Renova entrou em contato com você para tratar do recebimento dessa compensação não financeira?\n👉 Sim ou Não",
   pergunta31:
-    "2️⃣1️⃣ Antes de finalizar, gostaria de saber quem te indicou para participar deste processo.\n" +
-    "👉 Escolha uma das opções abaixo:\n\n" +
-    "Dr. Igor\n" +
-    "Matheus\n" +
-    "Aline\n" +
-    "Simony\n" +
-    "João Victor",
+    "1️⃣9️⃣ Antes de finalizar, gostaria de saber quem te indicou para participar deste processo.\n" +
+    "Escolha uma das opções abaixo:\n\n" +
+    "👉 Dr. Igor\n" +
+    "👉 Matheus\n" +
+    "👉 Aline\n" +
+    "👉 Simony\n" +
+    "👉 João Victor",
   // MENSAGEM REMOVIDA - NÃO USAR
   // final: "✅ Obrigado! Suas informações foram registradas com sucesso.\n\nEntraremos em contato em breve com os próximos passos. ✈️",
 };
@@ -1006,7 +988,7 @@ async function fluxoPerguntas(client, msg) {
       } else if (["nao", "não", "n"].includes(userMessage)) {
         estado.pergunta24 = userRaw;
         setEstado(id, estado);
-        await avancar("pergunta25", mensagens.pergunta25);
+        await avancar("pergunta26", mensagens.pergunta26);
       } else {
         await client.sendText(id, "Por favor, responda com *Sim* ou *Não*.");
       }
@@ -1062,54 +1044,11 @@ async function fluxoPerguntas(client, msg) {
       if (userMessage.length > 0) {
         estado.pergunta24_4 = userRaw;
         setEstado(id, estado);
-        await avancar("pergunta25", mensagens.pergunta25);
+        await avancar("pergunta26", mensagens.pergunta26);
       } else {
         await client.sendText(
           id,
           "Por favor, informe quando percebeu os problemas."
-        );
-      }
-      break;
-
-    case "pergunta25":
-      if (["sim", "s"].includes(userMessage)) {
-        estado.pergunta25 = userRaw;
-        setEstado(id, estado);
-        await avancar("pergunta25_1", mensagens.pergunta25_1);
-      } else if (["nao", "não", "n"].includes(userMessage)) {
-        estado.pergunta25 = userRaw;
-        setEstado(id, estado);
-        await avancar("pergunta26", mensagens.pergunta26);
-      } else {
-        await client.sendText(id, "Por favor, responda com *Sim* ou *Não*.");
-      }
-      break;
-
-    case "pergunta25_1":
-      if (
-        /^[a-g]+(,[a-g]+)*$/.test(userMessage.replace(/\s/g, "")) ||
-        userMessage.length > 0
-      ) {
-        estado.pergunta25_1 = userRaw;
-        setEstado(id, estado);
-        await avancar("pergunta25_2", mensagens.pergunta25_2);
-      } else {
-        await client.sendText(
-          id,
-          "Por favor, responda com as letras indicadas."
-        );
-      }
-      break;
-
-    case "pergunta25_2":
-      if (userMessage.length > 0) {
-        estado.pergunta25_2 = userRaw;
-        setEstado(id, estado);
-        await avancar("pergunta26", mensagens.pergunta26);
-      } else {
-        await client.sendText(
-          id,
-          "Por favor, informe quando percebeu a perda."
         );
       }
       break;
@@ -1314,21 +1253,27 @@ async function fluxoPerguntas(client, msg) {
           estado.etapa3 = "contrato";
           setEstado(id, estado);
 
-          console.log(`📄 DOCUMENTOS VERIFICADOS - Enviando contrato para assinatura`);
-          
+          console.log(
+            `📄 DOCUMENTOS VERIFICADOS - Enviando contrato para assinatura`
+          );
+
           // Enviar o arquivo PDF
           try {
-            await client.sendFile(id, './contrato-padrao.pdf', 'contrato-padrao.pdf');
-            
+            await client.sendFile(
+              id,
+              "./contrato-padrao.pdf",
+              "contrato-padrao.pdf"
+            );
+
             // Enviar instruções para assinatura
             await client.sendText(
               id,
               "📋 *ÚLTIMA ETAPA - CONTRATO*\n\n" +
-              "Por favor, leia o arquivo PDF que acabei de enviar.\n\n" +
-              "⚠️ *IMPORTANTE:* Após ler todo o contrato, digite exatamente a mensagem abaixo:\n\n" +
-              `💬 *COPIE E COLE:*\n` +
-              `"Eu *${estado.nome}*, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."\n\n` +
-              "🔍 *Atenção:* Digite a mensagem completa e exata para finalizar seu cadastro."
+                "Por favor, leia o arquivo PDF que acabei de enviar.\n\n" +
+                "⚠️ *IMPORTANTE:* Após ler todo o contrato, digite exatamente a mensagem abaixo:\n\n" +
+                `💬 *COPIE E COLE:*\n` +
+                `"Eu *${estado.nome}*, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."\n\n` +
+                "🔍 *Atenção:* Digite a mensagem completa e exata para finalizar seu cadastro."
             );
           } catch (error) {
             console.error("❌ Erro ao enviar contrato:", error);
@@ -1352,48 +1297,57 @@ async function fluxoPerguntas(client, msg) {
     case "contrato": {
       const mensagemEsperada = `Eu ${estado.nome}, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome.`;
       const mensagemRecebida = userMessage.trim();
-      
+
       // Normalizar as mensagens para comparação (remover acentos, espaços extras, etc)
-      const normalizar = (str) => str
-        .toLowerCase()
-        .replace(/\s+/g, ' ')
-        .replace(/[áàâãä]/g, 'a')
-        .replace(/[éèêë]/g, 'e')
-        .replace(/[íìîï]/g, 'i')
-        .replace(/[óòôõö]/g, 'o')
-        .replace(/[úùûü]/g, 'u')
-        .replace(/[ç]/g, 'c')
-        .trim();
-      
+      const normalizar = (str) =>
+        str
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .replace(/[áàâãä]/g, "a")
+          .replace(/[éèêë]/g, "e")
+          .replace(/[íìîï]/g, "i")
+          .replace(/[óòôõö]/g, "o")
+          .replace(/[úùûü]/g, "u")
+          .replace(/[ç]/g, "c")
+          .trim();
+
       const esperadaNormalizada = normalizar(mensagemEsperada);
       const recebidaNormalizada = normalizar(mensagemRecebida);
-      
+
       // Verificar se a mensagem contém os elementos essenciais
       const contemNome = recebidaNormalizada.includes(normalizar(estado.nome));
-      const contemConcordo = recebidaNormalizada.includes('concordo');
-      const contemAutorizo = recebidaNormalizada.includes('autorizo');
-      const contemDrIgor = recebidaNormalizada.includes('dr. igor') || recebidaNormalizada.includes('dr igor');
-      const contemAssine = recebidaNormalizada.includes('assine');
-      
-      if (contemNome && contemConcordo && contemAutorizo && contemDrIgor && contemAssine) {
+      const contemConcordo = recebidaNormalizada.includes("concordo");
+      const contemAutorizo = recebidaNormalizada.includes("autorizo");
+      const contemDrIgor =
+        recebidaNormalizada.includes("dr. igor") ||
+        recebidaNormalizada.includes("dr igor");
+      const contemAssine = recebidaNormalizada.includes("assine");
+
+      if (
+        contemNome &&
+        contemConcordo &&
+        contemAutorizo &&
+        contemDrIgor &&
+        contemAssine
+      ) {
         await client.sendText(
           id,
           "✅ *CONTRATO ACEITO!*\n\n" +
-          "🎉 Parabéns! Seu cadastro foi finalizado com sucesso.\n\n" +
-          "📝 Todos os seus dados foram registrados e o Dr. Igor foi autorizado a assinar em seu nome.\n\n" +
-          "✨ *Obrigado por participar do processo!*"
+            "🎉 Parabéns! Seu cadastro foi finalizado com sucesso.\n\n" +
+            "📝 Todos os seus dados foram registrados e o Dr. Igor foi autorizado a assinar em seu nome.\n\n" +
+            "✨ *Obrigado por participar do processo!*"
         );
-        
+
         console.log(`🏁 CONTRATO ACEITO - Finalizando cadastro completo`);
         await salvarDadosCompletos(client, id, estado);
       } else {
         await client.sendText(
           id,
           "❌ *Mensagem incorreta.*\n\n" +
-          "Por favor, copie e cole exatamente a mensagem solicitada:\n\n" +
-          `💬 *COPIE ESTA MENSAGEM:*\n` +
-          `"Eu *${estado.nome}*, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."\n\n` +
-          "🔍 É importante digitar a mensagem completa e correta."
+            "Por favor, copie e cole exatamente a mensagem solicitada:\n\n" +
+            `💬 *COPIE ESTA MENSAGEM:*\n` +
+            `"Eu *${estado.nome}*, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."\n\n` +
+            "🔍 É importante digitar a mensagem completa e correta."
         );
       }
       break;
