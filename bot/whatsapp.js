@@ -132,7 +132,7 @@ async function iniciarBot() {
 
       const id = msg.from;
       const userMessage = msg.body.toLowerCase().trim();
-      
+
       // Log para debug
       console.log(`📨 Mensagem recebida de ${id}: "${msg.body}"`);
       console.log(`🔄 Processando como: "${userMessage}"`);
@@ -182,7 +182,7 @@ async function iniciarBot() {
         from: msg.from,
         body: msg.body,
         isGroupMsg: msg.isGroupMsg,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
 
       // Em caso de erro, também oferecer opção de cancelar

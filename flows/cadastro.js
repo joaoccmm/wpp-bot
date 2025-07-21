@@ -3,7 +3,11 @@ const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 // Helper para enviar mensagens com log
 async function sendMessage(client, id, message) {
   try {
-    console.log(`📤 Enviando para ${id}: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}`);
+    console.log(
+      `📤 Enviando para ${id}: ${message.substring(0, 100)}${
+        message.length > 100 ? "..." : ""
+      }`
+    );
     await client.sendText(id, message);
     console.log(`✅ Mensagem enviada com sucesso`);
   } catch (error) {
@@ -62,11 +66,17 @@ async function fluxoCadastro(client, msg) {
 
   switch (estado.etapa) {
     case "confirmar_inicio":
-      if (["sim", "s", "ok", "começar", "comecar", "iniciar"].includes(userMessage)) {
+      if (
+        ["sim", "s", "ok", "começar", "comecar", "iniciar"].includes(
+          userMessage
+        )
+      ) {
         estado.etapa = "nome";
         setEstado(id, estado);
         await sendMessage(client, id, mensagens.nome);
-      } else if (["cancelar", "não", "nao", "n", "sair"].includes(userMessage)) {
+      } else if (
+        ["cancelar", "não", "nao", "n", "sair"].includes(userMessage)
+      ) {
         limparEstado(id);
         await sendMessage(
           client,
@@ -174,9 +184,9 @@ async function fluxoCadastro(client, msg) {
         await client.sendText(
           id,
           "❓ Por favor, responda com:\n\n" +
-          "• *SIM* para confirmar os dados\n" +
-          "• *NÃO* para fazer correções\n\n" +
-          "_Você também pode usar: S, Sim, N, Não, Nao_"
+            "• *SIM* para confirmar os dados\n" +
+            "• *NÃO* para fazer correções\n\n" +
+            "_Você também pode usar: S, Sim, N, Não, Nao_"
         );
       }
       break;

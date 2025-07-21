@@ -319,7 +319,7 @@ const mensagens = {
     "👉 Marque todas as opções que se aplicam (ex: A, C)\n\n" +
     "A) Auxílio Financeiro Emergencial (AFE)\n" +
     "B) Programa de Indenização Mediada – PIM (valor de R$ 1.000)\n" +
-    "C) Sistema Simplificado Judicial da 12ª Vara Federal (Sistema Novel)\n" +
+    "C) Sistema Judicial Simplificado (Sistema Novel – por exemplo: R$ 15.000 pelo dano água)\n" +
     "D) Outra forma de indenização da Renova ou Samarco que não está listada acima\n" +
     "E) Não recebi nenhuma indenização",
   pergunta28:
@@ -1268,11 +1268,11 @@ async function fluxoPerguntas(client, msg) {
               path.join(process.cwd(), "contrato-padrao.pdf"),
               "./contrato-padrao.pdf",
               "contrato-padrao.pdf",
-              "/app/contrato-padrao.pdf" // Caminho específico para Docker/Railway
+              "/app/contrato-padrao.pdf", // Caminho específico para Docker/Railway
             ];
-            
+
             let contractPath = null;
-            
+
             // Tentar encontrar o arquivo em diferentes localizações
             for (const testPath of possiblePaths) {
               console.log(`🔍 Testando caminho: ${testPath}`);
@@ -1288,53 +1288,76 @@ async function fluxoPerguntas(client, msg) {
               console.log("📂 Conteúdo do diretório atual:", process.cwd());
               try {
                 const files = fs.readdirSync(process.cwd());
-                console.log("📄 Arquivos encontrados:", files.filter(f => f.endsWith('.pdf')));
+                console.log(
+                  "📄 Arquivos encontrados:",
+                  files.filter((f) => f.endsWith(".pdf"))
+                );
                 console.log("📁 Todos os arquivos:", files.slice(0, 20)); // Primeiros 20 arquivos
               } catch (e) {
                 console.log("❌ Erro ao listar arquivos:", e.message);
               }
-              
-              throw new Error("Arquivo contrato-padrao.pdf não encontrado em nenhum local");
+
+              throw new Error(
+                "Arquivo contrato-padrao.pdf não encontrado em nenhum local"
+              );
             }
 
             // Verificar se o arquivo tem conteúdo
             const stats = fs.statSync(contractPath);
             console.log(`📊 Tamanho do arquivo: ${stats.size} bytes`);
-            
+
             if (stats.size === 0) {
               throw new Error("Arquivo PDF está vazio");
             }
 
             // Tentar diferentes métodos de envio
             console.log(`📤 Enviando arquivo PDF: ${contractPath}`);
-            
+
             // Primeiro, tentar com sendFile padrão
             try {
-              await client.sendFile(id, contractPath, "contrato-padrao.pdf", "Contrato de Representação Legal");
+              await client.sendFile(
+                id,
+                contractPath,
+                "contrato-padrao.pdf",
+                "Contrato de Representação Legal"
+              );
               console.log("✅ PDF enviado com sucesso via sendFile");
             } catch (sendFileError) {
-              console.log("⚠️ sendFile falhou, tentando método alternativo:", sendFileError.message);
-              
+              console.log(
+                "⚠️ sendFile falhou, tentando método alternativo:",
+                sendFileError.message
+              );
+
               // Método alternativo: ler arquivo e enviar como buffer
               try {
                 const fileBuffer = fs.readFileSync(contractPath);
                 console.log(`📊 Buffer criado com ${fileBuffer.length} bytes`);
-                
-                await client.sendFile(id, fileBuffer, "contrato-padrao.pdf", "Contrato de Representação Legal");
+
+                await client.sendFile(
+                  id,
+                  fileBuffer,
+                  "contrato-padrao.pdf",
+                  "Contrato de Representação Legal"
+                );
                 console.log("✅ PDF enviado com sucesso via buffer");
               } catch (bufferError) {
-                console.log("⚠️ Buffer também falhou, tentando método base64:", bufferError.message);
-                
+                console.log(
+                  "⚠️ Buffer também falhou, tentando método base64:",
+                  bufferError.message
+                );
+
                 // Último recurso: converter para base64 e enviar
                 const fileBuffer = fs.readFileSync(contractPath);
-                const base64Data = fileBuffer.toString('base64');
-                console.log(`📊 Base64 criado com ${base64Data.length} caracteres`);
-                
+                const base64Data = fileBuffer.toString("base64");
+                console.log(
+                  `📊 Base64 criado com ${base64Data.length} caracteres`
+                );
+
                 // Enviar como documento usando base64
                 await client.sendFileFromBase64(
-                  id, 
-                  base64Data, 
-                  "contrato-padrao.pdf", 
+                  id,
+                  base64Data,
+                  "contrato-padrao.pdf",
                   "Contrato de Representação Legal"
                 );
                 console.log("✅ PDF enviado com sucesso via base64");
@@ -1351,9 +1374,8 @@ async function fluxoPerguntas(client, msg) {
                 `"Eu *${estado.nome}*, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."\n\n` +
                 "🔍 *Atenção:* Digite a mensagem completa e exata para finalizar seu cadastro."
             );
-            
+
             console.log("✅ Instruções do contrato enviadas");
-            
           } catch (error) {
             console.error("❌ ERRO DETALHADO AO ENVIAR CONTRATO:");
             console.error("   Mensagem:", error.message);
@@ -1363,7 +1385,10 @@ async function fluxoPerguntas(client, msg) {
             console.error("📂 __dirname:", __dirname);
             console.error("🌍 NODE_ENV:", process.env.NODE_ENV);
             console.error("🚂 RAILWAY:", !!process.env.RAILWAY_ENVIRONMENT);
-            console.error("🐳 DOCKER:", !!process.env.DOCKER_CONTAINER || fs.existsSync('/.dockerenv'));
+            console.error(
+              "🐳 DOCKER:",
+              !!process.env.DOCKER_CONTAINER || fs.existsSync("/.dockerenv")
+            );
 
             await client.sendText(
               id,
