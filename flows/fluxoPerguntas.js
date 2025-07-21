@@ -1310,16 +1310,90 @@ async function fluxoPerguntas(client, msg) {
             "✅ *2ª foto recebida!* (Verso)\n\n🎉 Documentos verificados com sucesso!"
           );
 
-          console.log(
-            `🏁 DOCUMENTOS ENVIADOS - Finalizando fluxo e salvando dados`
-          );
-          await salvarDadosCompletos(client, id, estado);
+          // Avançar para etapa do contrato
+          estado.etapa3 = "contrato";
+          setEstado(id, estado);
+
+          console.log(`📄 DOCUMENTOS VERIFICADOS - Enviando contrato para assinatura`);
+          
+          // Enviar o arquivo PDF
+          try {
+            await client.sendFile(id, './contrato-padrao.pdf', 'contrato-padrao.pdf');
+            
+            // Enviar instruções para assinatura
+            await client.sendText(
+              id,
+              "📋 *ÚLTIMA ETAPA - CONTRATO*\n\n" +
+              "Por favor, leia o arquivo PDF que acabei de enviar.\n\n" +
+              "⚠️ *IMPORTANTE:* Após ler todo o contrato, digite exatamente a mensagem abaixo:\n\n" +
+              `💬 *COPIE E COLE:*\n` +
+              `"Eu *${estado.nome}*, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."\n\n` +
+              "🔍 *Atenção:* Digite a mensagem completa e exata para finalizar seu cadastro."
+            );
+          } catch (error) {
+            console.error("❌ Erro ao enviar contrato:", error);
+            await client.sendText(
+              id,
+              "❌ Erro ao enviar contrato. Tentando finalizar cadastro..."
+            );
+            await salvarDadosCompletos(client, id, estado);
+          }
         }
       } else {
         await client.sendText(
           id,
           "📄 Por favor, envie uma *foto* do documento. " +
             `Você já enviou ${estado.documentos_enviados}/2 fotos.`
+        );
+      }
+      break;
+    }
+
+    case "contrato": {
+      const mensagemEsperada = `Eu ${estado.nome}, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome.`;
+      const mensagemRecebida = userMessage.trim();
+      
+      // Normalizar as mensagens para comparação (remover acentos, espaços extras, etc)
+      const normalizar = (str) => str
+        .toLowerCase()
+        .replace(/\s+/g, ' ')
+        .replace(/[áàâãä]/g, 'a')
+        .replace(/[éèêë]/g, 'e')
+        .replace(/[íìîï]/g, 'i')
+        .replace(/[óòôõö]/g, 'o')
+        .replace(/[úùûü]/g, 'u')
+        .replace(/[ç]/g, 'c')
+        .trim();
+      
+      const esperadaNormalizada = normalizar(mensagemEsperada);
+      const recebidaNormalizada = normalizar(mensagemRecebida);
+      
+      // Verificar se a mensagem contém os elementos essenciais
+      const contemNome = recebidaNormalizada.includes(normalizar(estado.nome));
+      const contemConcordo = recebidaNormalizada.includes('concordo');
+      const contemAutorizo = recebidaNormalizada.includes('autorizo');
+      const contemDrIgor = recebidaNormalizada.includes('dr. igor') || recebidaNormalizada.includes('dr igor');
+      const contemAssine = recebidaNormalizada.includes('assine');
+      
+      if (contemNome && contemConcordo && contemAutorizo && contemDrIgor && contemAssine) {
+        await client.sendText(
+          id,
+          "✅ *CONTRATO ACEITO!*\n\n" +
+          "🎉 Parabéns! Seu cadastro foi finalizado com sucesso.\n\n" +
+          "📝 Todos os seus dados foram registrados e o Dr. Igor foi autorizado a assinar em seu nome.\n\n" +
+          "✨ *Obrigado por participar do processo!*"
+        );
+        
+        console.log(`🏁 CONTRATO ACEITO - Finalizando cadastro completo`);
+        await salvarDadosCompletos(client, id, estado);
+      } else {
+        await client.sendText(
+          id,
+          "❌ *Mensagem incorreta.*\n\n" +
+          "Por favor, copie e cole exatamente a mensagem solicitada:\n\n" +
+          `💬 *COPIE ESTA MENSAGEM:*\n` +
+          `"Eu *${estado.nome}*, li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."\n\n` +
+          "🔍 É importante digitar a mensagem completa e correta."
         );
       }
       break;
