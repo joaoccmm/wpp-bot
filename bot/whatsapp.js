@@ -132,6 +132,10 @@ async function iniciarBot() {
 
       const id = msg.from;
       const userMessage = msg.body.toLowerCase().trim();
+      
+      // Log para debug
+      console.log(`📨 Mensagem recebida de ${id}: "${msg.body}"`);
+      console.log(`🔄 Processando como: "${userMessage}"`);
 
       // 🚫 COMANDO CANCELAR - Funciona em qualquer estágio
       if (userMessage === "cancelar" || userMessage === "cancelar.") {
@@ -173,7 +177,13 @@ async function iniciarBot() {
         await fluxoCadastro(client, msg);
       }
     } catch (err) {
-      console.error("Erro no processamento da mensagem:", err);
+      console.error("❌ Erro no processamento da mensagem:", err);
+      console.error("📋 Detalhes da mensagem:", {
+        from: msg.from,
+        body: msg.body,
+        isGroupMsg: msg.isGroupMsg,
+        timestamp: new Date().toISOString()
+      });
 
       // Em caso de erro, também oferecer opção de cancelar
       try {
@@ -184,7 +194,7 @@ async function iniciarBot() {
             "Digite *cancelar* para reiniciar ou tente novamente."
         );
       } catch (sendError) {
-        console.error("Erro ao enviar mensagem de erro:", sendError);
+        console.error("❌ Erro ao enviar mensagem de erro:", sendError);
       }
     }
   });

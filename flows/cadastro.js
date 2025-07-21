@@ -1,9 +1,22 @@
 const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 
+// Helper para enviar mensagens com log
+async function sendMessage(client, id, message) {
+  try {
+    console.log(`📤 Enviando para ${id}: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}`);
+    await client.sendText(id, message);
+    console.log(`✅ Mensagem enviada com sucesso`);
+  } catch (error) {
+    console.error(`❌ Erro ao enviar mensagem para ${id}:`, error);
+    throw error;
+  }
+}
+
 const mensagens = {
   boasVindas:
-    "Olá! 👋\n\nSou o assistente virtual do Dr. Igor Rodrigues e vou te ajudar no cadastro.\n\n" +
-    "💡 *Dica importante:* Digite *cancelar* a qualquer momento para encerrar a conversa.\n\n" +
+    "👋 *Olá!*\n\n" +
+    "Sou o assistente virtual do Dr. Igor Rodrigues e vou te ajudar no cadastro.\n\n" +
+    "💡 *Dica:* Digite *cancelar* a qualquer momento para encerrar.\n\n" +
     "Digite *Sim* para começar ou *Cancelar* para sair.",
   nome: "1️⃣ Qual é o seu nome completo?",
   cpf: "2️⃣ Por favor, me informe seu CPF:",
@@ -19,7 +32,7 @@ const mensagens = {
       `📱 *Telefone:* ${dados.telefone}\n` +
       `📧 *E-mail:* ${dados.email}\n\n` +
       `❓ *Os dados estão corretos?*\n\n` +
-      `👉 Sim ou Não`
+      `👉 Digite *Sim* para confirmar ou *Não* para corrigir`
     );
   },
   corrigirDados:
@@ -43,21 +56,28 @@ async function fluxoCadastro(client, msg) {
 
   if (!estado) {
     setEstado(id, { etapa: "confirmar_inicio" });
-    await client.sendText(id, mensagens.boasVindas);
+    await sendMessage(client, id, mensagens.boasVindas);
     return;
   }
 
   switch (estado.etapa) {
     case "confirmar_inicio":
-      if (["sim", "s"].includes(userMessage)) {
+      if (["sim", "s", "ok", "começar", "comecar", "iniciar"].includes(userMessage)) {
         estado.etapa = "nome";
         setEstado(id, estado);
-        await client.sendText(id, mensagens.nome);
-      } else {
+        await sendMessage(client, id, mensagens.nome);
+      } else if (["cancelar", "não", "nao", "n", "sair"].includes(userMessage)) {
         limparEstado(id);
-        await client.sendText(
+        await sendMessage(
+          client,
           id,
-          "Tudo bem. Quando quiser começar, é só mandar mensagem!"
+          "✅ Tudo bem! Quando quiser começar, é só mandar mensagem!"
+        );
+      } else {
+        await sendMessage(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* para começar o cadastro\n• *CANCELAR* para sair"
         );
       }
       break;
@@ -153,7 +173,10 @@ async function fluxoCadastro(client, msg) {
       } else {
         await client.sendText(
           id,
-          "Por favor, responda com *SIM* para confirmar ou *NÃO* para corrigir."
+          "❓ Por favor, responda com:\n\n" +
+          "• *SIM* para confirmar os dados\n" +
+          "• *NÃO* para fazer correções\n\n" +
+          "_Você também pode usar: S, Sim, N, Não, Nao_"
         );
       }
       break;
