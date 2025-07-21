@@ -5,14 +5,11 @@ const mensagens = {
     "Olá! 👋\n\nSou o assistente virtual do Dr. Igor Rodrigues e vou te ajudar no cadastro.\n\n" +
     "💡 *Dica importante:* Digite *cancelar* a qualquer momento para encerrar a conversa.\n\n" +
     "Digite *Sim* para começar ou *Cancelar* para sair.",
-  nome: "1️⃣ Qual é o seu nome completo?\n\n_Digite 'cancelar' para sair a qualquer momento._",
-  cpf: "2️⃣ Por favor, me informe seu CPF (apenas números ou no formato xxx.xxx.xxx-xx):\n\n_Digite 'cancelar' para sair a qualquer momento._",
-  nascimento:
-    "3️⃣ Informe sua data de nascimento (DD/MM/AAAA):\n\n_Digite 'cancelar' para sair a qualquer momento._",
-  telefone:
-    "4️⃣ Informe seu número de telefone com DDD:\n\n*Formatos aceitos:*\n• 11987654321 (apenas números)\n• 11 9876-5432\n• 11 9876 5432\n\n_Digite 'cancelar' para sair a qualquer momento._",
-  email:
-    "5️⃣ Informe seu e-mail:\n\n_Digite 'cancelar' para sair a qualquer momento._",
+  nome: "1️⃣ Qual é o seu nome completo?",
+  cpf: "2️⃣ Por favor, me informe seu CPF:",
+  nascimento: "3️⃣ Informe sua data de nascimento (DD/MM/AAAA):",
+  telefone: "4️⃣ Informe seu número de telefone com DDD:",
+  email: "5️⃣ Informe seu e-mail:",
   confirmacao: (dados) => {
     return (
       `📋 *CONFIRMAÇÃO DOS DADOS*\n\n` +
@@ -22,10 +19,7 @@ const mensagens = {
       `📱 *Telefone:* ${dados.telefone}\n` +
       `📧 *E-mail:* ${dados.email}\n\n` +
       `❓ *Os dados estão corretos?*\n\n` +
-      `Digite:\n` +
-      `✅ *SIM* - para continuar\n` +
-      `❌ *NÃO* - para corrigir\n` +
-      `🚫 *cancelar* - para sair`
+      `👉 Sim ou Não`
     );
   },
   corrigirDados:

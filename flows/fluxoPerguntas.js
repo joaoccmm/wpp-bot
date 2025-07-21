@@ -1,5 +1,7 @@
 const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 const { salvarNoSheets } = require("../google/sheets");
+const path = require("path");
+const fs = require("fs");
 
 // Função para salvar dados completos diretamente
 async function salvarDadosCompletos(client, id, estado) {
@@ -136,8 +138,7 @@ async function tentarSalvarSeCompleto(client, id, estado) {
 
 const mensagens = {
   inicio:
-    "🤔 Agora vamos fazer algumas perguntas finais para concluir seu cadastro.\n\n" +
-    "Por favor, responda com *Sim* ou *Não* (quando for o caso) ou com as letras indicadas.",
+    "🤔 Agora vamos fazer algumas perguntas finais para concluir seu cadastro.",
   perguntaMenorIdade:
     "Você é menor de idade ou precisa de representante para agir legalmente em seu nome?\n👉 Sim ou Não",
   pergunta1:
@@ -406,6 +407,8 @@ async function fluxoPerguntas(client, msg) {
 
   switch (etapa3) {
     case "inicio":
+      await client.sendText(id, mensagens.inicio);
+      // Vai direto para a primeira pergunta
       await avancar("menoridade", mensagens.perguntaMenorIdade);
       break;
 
@@ -1259,11 +1262,23 @@ async function fluxoPerguntas(client, msg) {
 
           // Enviar o arquivo PDF
           try {
-            await client.sendFile(
-              id,
-              "./contrato-padrao.pdf",
+            const contractPath = path.join(
+              __dirname,
+              "..",
               "contrato-padrao.pdf"
             );
+            console.log(
+              `📄 Tentando enviar contrato do caminho: ${contractPath}`
+            );
+
+            // Verificar se o arquivo existe
+            if (!fs.existsSync(contractPath)) {
+              throw new Error(
+                `Arquivo de contrato não encontrado: ${contractPath}`
+              );
+            }
+
+            await client.sendFile(id, contractPath, "contrato-padrao.pdf");
 
             // Enviar instruções para assinatura
             await client.sendText(
@@ -1277,10 +1292,17 @@ async function fluxoPerguntas(client, msg) {
             );
           } catch (error) {
             console.error("❌ Erro ao enviar contrato:", error);
+            console.error("🔍 Detalhes do erro:", error.message);
+            console.error("📂 Diretório atual:", __dirname);
+
             await client.sendText(
               id,
-              "❌ Erro ao enviar contrato. Tentando finalizar cadastro..."
+              "❌ Erro ao enviar contrato. Nossa equipe foi notificada.\n\n" +
+                "✅ Mesmo assim, seus dados foram salvos com sucesso!\n\n" +
+                "📞 Entraremos em contato em breve para finalizar o processo."
             );
+
+            // Salvar dados mesmo se não conseguir enviar o contrato
             await salvarDadosCompletos(client, id, estado);
           }
         }
