@@ -6,6 +6,7 @@ const {
   clearQRData,
 } = require("./bot/whatsapp");
 const { inicializarPlanilha } = require("./google/sheets");
+const { inicializarProtecoes, gerarRelatorioAtividade } = require("./config/seguranca");
 const http = require("http");
 
 // Configuração para Railway e outros serviços de cloud
@@ -16,6 +17,10 @@ console.log(`🚀 Configuração de servidor:`);
 console.log(`   PORT: ${PORT}`);
 console.log(`   HOST: ${HOST}`);
 console.log(`   NODE_ENV: ${process.env.NODE_ENV || "development"}`);
+console.log(`   RAILWAY: ${process.env.RAILWAY_ENVIRONMENT ? '✅' : '❌'}`);
+
+// Inicializar sistema de proteção anti-banimento
+inicializarProtecoes();
 
 // Estado da aplicação
 let appStatus = {
@@ -61,6 +66,11 @@ const server = http.createServer((req, res) => {
     res.end(
       `PONG - Servidor funcionando!\nTimestamp: ${new Date().toISOString()}\nPORT: ${PORT}\nHOST: ${HOST}`
     );
+  } else if (req.url === "/seguranca" || req.url === "/security") {
+    // Endpoint para monitorar proteções anti-bot
+    res.writeHead(200, { "Content-Type": "application/json" });
+    const relatorio = gerarRelatorioAtividade();
+    res.end(JSON.stringify(relatorio, null, 2));
   } else if (req.url === "/qr") {
     // Endpoint para visualizar QR Code
     const qr = getCurrentQR();

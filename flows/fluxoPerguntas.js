@@ -1,7 +1,50 @@
 const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 const { salvarNoSheets } = require("../google/sheets");
+const { protecao } = require("../utils/protecaoAntiBot");
 const path = require("path");
 const fs = require("fs");
+
+// Função para enviar mensagem com proteção anti-bot
+async function enviarMensagemSegura(client, id, mensagem, tipo = 'normal') {
+  // Verificar se deve aguardar (muitas mensagens recentes)
+  if (protecao.deveAguardar(id)) {
+    console.log('🛡️ Aguardando para evitar detecção de bot...');
+    await protecao.delayAleatorio('transicao_etapa', id);
+  }
+
+  // Aplicar delay baseado no tipo
+  await protecao.delayInteligente(tipo, id, { 
+    client, 
+    chatId: id, 
+    mensagemLonga: mensagem.length > 100 
+  });
+
+  // Simular digitação antes de enviar
+  await protecao.simularDigitando(client, id);
+
+  // Adicionar variação natural na mensagem
+  const mensagemVariada = protecao.adicionarVariacaoNatural(mensagem);
+
+  // Enviar mensagem
+  await client.sendText(id, mensagemVariada);
+  
+  // Registrar atividade
+  protecao.registrarAtividade(id);
+}
+
+// Função para enviar arquivo com proteção
+async function enviarArquivoSeguro(client, id, caminhoArquivo, caption = '') {
+  console.log('📄 Preparando envio de arquivo com proteção anti-bot');
+  
+  // Delay específico para arquivos
+  await protecao.delayEnvioArquivo(id);
+  
+  // Simular digitação mais longa para arquivo
+  await protecao.simularDigitando(client, id, 8000);
+  
+  // Tentar envio do arquivo com múltiplas estratégias
+  return await enviarPDFContrato(client, id);
+}
 
 // Função para salvar dados completos diretamente
 async function salvarDadosCompletos(client, id, estado) {
@@ -402,13 +445,13 @@ async function fluxoPerguntas(client, msg) {
     });
     estado.etapa3 = proximaEtapa;
     setEstado(id, estado);
-    await client.sendText(id, mensagem);
+    await enviarMensagemSegura(client, id, mensagem, 'pergunta_sensivel');
   };
 
   switch (etapa3) {
     case "inicio":
       // Enviar mensagem introdutória e automaticamente a primeira pergunta
-      await client.sendText(id, mensagens.inicio);
+      await enviarMensagemSegura(client, id, mensagens.inicio, 'inicio_conversa');
       await avancar("menoridade", mensagens.perguntaMenorIdade);
       break;
 
@@ -426,7 +469,7 @@ async function fluxoPerguntas(client, msg) {
         setEstado(id, estado);
         await avancar("pergunta1", mensagens.pergunta1);
       } else {
-        await client.sendText(id, "Por favor, responda com *Sim* ou *Não*.");
+        await enviarMensagemSegura(client, id, "Por favor, responda com *Sim* ou *Não*.", 'resposta_rapida');
       }
       break;
 
@@ -438,7 +481,7 @@ async function fluxoPerguntas(client, msg) {
         console.log(`✅ Pergunta1 salva: ${userRaw}`);
         await avancar("pergunta2", mensagens.pergunta2);
       } else {
-        await client.sendText(id, "Por favor, responda com *Sim* ou *Não*.");
+        await enviarMensagemSegura(client, id, "Por favor, responda com *Sim* ou *Não*.", 'resposta_rapida');
       }
       break;
 
@@ -1312,6 +1355,10 @@ async function fluxoPerguntas(client, msg) {
 
             // Tentar diferentes métodos de envio
             console.log(`📤 Enviando arquivo PDF: ${contractPath}`);
+            
+            // Delay crítico antes de enviar arquivo
+            console.log('🛡️ Aplicando proteção anti-bot para envio de PDF...');
+            await protecao.delayEnvioArquivo(id);
 
             // Primeiro, tentar com sendFile padrão
             try {
@@ -1364,6 +1411,12 @@ async function fluxoPerguntas(client, msg) {
               }
             }
 
+            // Delay crítico antes de enviar instruções de contrato
+            await protecao.delayAleatorio('pergunta_sensivel', id);
+            
+            // Simular digitação longa para mensagem importante
+            await protecao.simularDigitando(client, id, 10000);
+            
             // Enviar instruções para assinatura
             await client.sendText(
               id,
