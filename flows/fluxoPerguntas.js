@@ -1,35 +1,28 @@
 const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 const { salvarNoSheets } = require("../google/sheets");
 const { protecao } = require("../utils/protecaoAntiBot");
+const { protecaoSimples } = require("../utils/protecaoSimples");
 const path = require("path");
 const fs = require("fs");
 
-// Função para enviar mensagem com proteção anti-bot
+// Função para enviar mensagem com proteção anti-bot (versão simplificada para debug)
 async function enviarMensagemSegura(client, id, mensagem, tipo = 'normal') {
-  // Verificar se deve aguardar (muitas mensagens recentes)
-  if (protecao.deveAguardar(id)) {
-    console.log('🛡️ Aguardando para evitar detecção de bot...');
-    await protecao.delayAleatorio('transicao_etapa', id);
+  try {
+    console.log(`� [DEBUG] Enviando mensagem para ${id}: ${mensagem.substring(0, 50)}...`);
+    
+    // Delay simples de 1-2 segundos
+    const delay = Math.floor(Math.random() * 1000) + 1000; // 1-2 segundos
+    await new Promise(resolve => setTimeout(resolve, delay));
+    
+    // Enviar mensagem diretamente
+    await client.sendText(id, mensagem);
+    
+    console.log(`✅ [DEBUG] Mensagem enviada com sucesso para ${id}`);
+    
+  } catch (error) {
+    console.error(`❌ [DEBUG] Erro ao enviar mensagem para ${id}:`, error);
+    throw error;
   }
-
-  // Aplicar delay baseado no tipo
-  await protecao.delayInteligente(tipo, id, { 
-    client, 
-    chatId: id, 
-    mensagemLonga: mensagem.length > 100 
-  });
-
-  // Simular digitação antes de enviar
-  await protecao.simularDigitando(client, id);
-
-  // Adicionar variação natural na mensagem
-  const mensagemVariada = protecao.adicionarVariacaoNatural(mensagem);
-
-  // Enviar mensagem
-  await client.sendText(id, mensagemVariada);
-  
-  // Registrar atividade
-  protecao.registrarAtividade(id);
 }
 
 // Função para enviar arquivo com proteção
@@ -445,7 +438,9 @@ async function fluxoPerguntas(client, msg) {
     });
     estado.etapa3 = proximaEtapa;
     setEstado(id, estado);
+    console.log(`📤 Enviando mensagem: "${mensagem.substring(0, 50)}..."`);
     await enviarMensagemSegura(client, id, mensagem, 'pergunta_sensivel');
+    console.log(`✅ Função avancar concluída para etapa "${proximaEtapa}"`);
   };
 
   switch (etapa3) {
@@ -465,9 +460,12 @@ async function fluxoPerguntas(client, msg) {
         );
         limparEstado(id);
       } else if (/^(nao|não|n|❌)$/i.test(userMessage)) {
+        console.log('📝 Usuário respondeu NÃO para menor de idade');
         estado.menorIdade = userRaw;
         setEstado(id, estado);
+        console.log('💾 Estado salvo, avançando para pergunta1...');
         await avancar("pergunta1", mensagens.pergunta1);
+        console.log('✅ Pergunta1 enviada com sucesso');
       } else {
         await enviarMensagemSegura(client, id, "Por favor, responda com *Sim* ou *Não*.", 'resposta_rapida');
       }

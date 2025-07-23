@@ -24,31 +24,31 @@ class ProtecaoAntiBot {
         
         switch (tipo) {
             case 'inicio_conversa':
-                min = 2000; max = 5000; // 2-5 segundos
+                min = 1000; max = 3000; // 1-3 segundos (reduzido)
                 break;
             case 'pergunta_sensivel':
-                min = 15000; max = 30000; // 15-30 segundos
+                min = 3000; max = 8000; // 3-8 segundos (reduzido drasticamente)
                 break;
             case 'envio_arquivo':
-                min = 8000; max = 15000; // 8-15 segundos
+                min = 5000; max = 10000; // 5-10 segundos (reduzido)
                 break;
             case 'transicao_etapa':
-                min = 5000; max = 12000; // 5-12 segundos
+                min = 2000; max = 5000; // 2-5 segundos (reduzido)
                 break;
             case 'resposta_rapida':
-                min = 1000; max = 3000; // 1-3 segundos
+                min = 500; max = 1500; // 0.5-1.5 segundos
                 break;
             case 'digitando':
-                min = 3000; max = 8000; // 3-8 segundos
+                min = 1000; max = 3000; // 1-3 segundos (reduzido)
                 break;
             default:
-                min = 2000; max = 6000; // 2-6 segundos
+                min = 1000; max = 3000; // 1-3 segundos (reduzido)
         }
 
         // Adicionar variação baseada no histórico do usuário
         if (userId && this.precisaDelayMaior(userId)) {
-            min += 3000;
-            max += 8000;
+            min += 1000; // Reduzido de 3000
+            max += 2000; // Reduzido de 8000
         }
 
         const delay = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -213,7 +213,7 @@ class ProtecaoAntiBot {
 // Instância global para usar em todo o projeto
 const protecao = new ProtecaoAntiBot();
 
-module.exports = {
+module.exports = {  
     protecao,
     ProtecaoAntiBot
 };
