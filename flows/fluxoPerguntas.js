@@ -2,6 +2,7 @@ const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 const { salvarNoSheets } = require("../google/sheets");
 const { protecao } = require("../utils/protecaoAntiBot");
 const { protecaoSimples } = require("../utils/protecaoSimples");
+const { enviarMensagemRobusta } = require("../utils/envioRobusto");
 const path = require("path");
 const fs = require("fs");
 
@@ -439,7 +440,7 @@ async function fluxoPerguntas(client, msg) {
     estado.etapa3 = proximaEtapa;
     setEstado(id, estado);
     console.log(`📤 Enviando mensagem: "${mensagem.substring(0, 50)}..."`);
-    await enviarMensagemSegura(client, id, mensagem, 'pergunta_sensivel');
+    await enviarComSeguranca(client, id, mensagem);
     console.log(`✅ Função avancar concluída para etapa "${proximaEtapa}"`);
   };
 
@@ -1545,7 +1546,23 @@ async function fluxoPerguntas(client, msg) {
   }
 }
 
+// Função helper para envio mais simples
+async function enviarComSeguranca(client, id, mensagem) {
+  console.log(`📤 [SIMPLES] Enviando: ${mensagem.substring(0, 50)}...`);
+  
+  try {
+    // Delay mínimo
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    await client.sendText(id, mensagem);
+    console.log(`✅ [SIMPLES] Enviado com sucesso`);
+  } catch (error) {
+    console.error(`❌ [SIMPLES] Erro:`, error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   fluxoPerguntas,
   mensagens,
+  enviarComSeguranca
 };
