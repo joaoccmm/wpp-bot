@@ -27,12 +27,12 @@ const mensagensEndereco = {
   complemento: "9️⃣ Informe o *complemento* (ou digite 'nenhum'):",
   bairro: "🔟 Informe o *bairro*:",
   confirmacao: (estado) =>
-    `📦 *Confirmação de Endereço*\n\n` +
+    `� *Confirmação de Endereço*\n\n` +
     `*CEP:* ${estado.cep}\n` +
-    `*Rua:* ${estado.rua}, Nº ${estado.numero}\n` +
+    `*Endereço:* ${estado.rua}, Nº ${estado.numero}\n` +
     `*Complemento:* ${estado.complemento}\n` +
     `*Bairro:* ${estado.bairro}\n\n` +
-    `Essas informações estão corretas?\n\n✅ *Sim*  |  ❌ *Não*`,
+    `As informações estão corretas?\n\n✅ *Sim*  |  ❌ *Não*`,
 };
 
 async function fluxoEndereco(client, msg) {

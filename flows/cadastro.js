@@ -41,11 +41,14 @@ const mensagens = {
     "Sou o assistente virtual do Dr. Igor Rodrigues e vou te ajudar no cadastro.\n\n" +
     "💡 *Dica:* Digite *cancelar* a qualquer momento para encerrar.\n\n" +
     "Digite *Sim* para começar ou *Cancelar* para sair.",
+  
+  // Perguntas básicas do cadastro
   nome: "1️⃣ Qual é o seu nome completo?",
   cpf: "2️⃣ Por favor, me informe seu CPF:",
   nascimento: "3️⃣ Informe sua data de nascimento (DD/MM/AAAA):",
   telefone: "4️⃣ Informe seu número de telefone com DDD:",
   email: "5️⃣ Informe seu e-mail:",
+  
   confirmacao: (dados) => {
     return (
       `📋 *CONFIRMAÇÃO DOS DADOS*\n\n` +
@@ -58,16 +61,17 @@ const mensagens = {
       `👉 Digite *Sim* para confirmar ou *Não* para corrigir`
     );
   },
+  
+  // Mensagem de correção simplificada
   corrigirDados:
     `🔄 *Vamos corrigir seus dados!*\n\n` +
-    `Qual dado você gostaria de alterar?\n\n` +
-    `Digite:\n` +
-    `1️⃣ *nome* - para alterar o nome\n` +
-    `2️⃣ *cpf* - para alterar o CPF\n` +
-    `3️⃣ *nascimento* - para alterar a data\n` +
-    `4️⃣ *telefone* - para alterar o telefone\n` +
-    `5️⃣ *email* - para alterar o e-mail\n` +
-    `🔄 *tudo* - para refazer tudo do início`,
+    `Digite o nome do campo que deseja alterar:\n\n` +
+    `• *nome* - para alterar o nome\n` +
+    `• *cpf* - para alterar o CPF\n` +
+    `• *nascimento* - para alterar a data\n` +
+    `• *telefone* - para alterar o telefone\n` +
+    `• *email* - para alterar o e-mail\n` +
+    `• *tudo* - para refazer tudo do início`,
 };
 
 async function fluxoCadastro(client, msg) {
