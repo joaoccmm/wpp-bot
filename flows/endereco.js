@@ -2,13 +2,18 @@ const { getEstado, setEstado } = require("../utils/estados");
 const { protecao } = require("../utils/protecaoAntiBot");
 
 // Função helper para envio seguro de mensagens
-async function enviarMensagemSeguraEndereco(client, id, mensagem, tipo = 'normal') {
-  await protecao.delayInteligente(tipo, id, { 
-    client, 
-    chatId: id, 
-    mensagemLonga: mensagem.length > 50 
+async function enviarMensagemSeguraEndereco(
+  client,
+  id,
+  mensagem,
+  tipo = "normal"
+) {
+  await protecao.delayInteligente(tipo, id, {
+    client,
+    chatId: id,
+    mensagemLonga: mensagem.length > 50,
   });
-  
+
   await protecao.simularDigitando(client, id);
   const mensagemVariada = protecao.adicionarVariacaoNatural(mensagem);
   await client.sendText(id, mensagemVariada);
@@ -40,7 +45,12 @@ async function fluxoEndereco(client, msg) {
   if (!estado.etapaEndereco) {
     estado.etapaEndereco = "cep";
     setEstado(id, estado);
-    await enviarMensagemSeguraEndereco(client, id, mensagensEndereco.cep, 'transicao_etapa');
+    await enviarMensagemSeguraEndereco(
+      client,
+      id,
+      mensagensEndereco.cep,
+      "transicao_etapa"
+    );
     return;
   }
 

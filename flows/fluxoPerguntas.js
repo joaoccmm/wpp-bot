@@ -7,19 +7,20 @@ const path = require("path");
 const fs = require("fs");
 
 // Função para enviar mensagem com proteção anti-bot (versão simplificada para debug)
-async function enviarMensagemSegura(client, id, mensagem, tipo = 'normal') {
+async function enviarMensagemSegura(client, id, mensagem, tipo = "normal") {
   try {
-    console.log(`� [DEBUG] Enviando mensagem para ${id}: ${mensagem.substring(0, 50)}...`);
-    
+    console.log(
+      `� [DEBUG] Enviando mensagem para ${id}: ${mensagem.substring(0, 50)}...`
+    );
+
     // Delay simples de 1-2 segundos
     const delay = Math.floor(Math.random() * 1000) + 1000; // 1-2 segundos
-    await new Promise(resolve => setTimeout(resolve, delay));
-    
+    await new Promise((resolve) => setTimeout(resolve, delay));
+
     // Enviar mensagem diretamente
     await client.sendText(id, mensagem);
-    
+
     console.log(`✅ [DEBUG] Mensagem enviada com sucesso para ${id}`);
-    
   } catch (error) {
     console.error(`❌ [DEBUG] Erro ao enviar mensagem para ${id}:`, error);
     throw error;
@@ -27,15 +28,15 @@ async function enviarMensagemSegura(client, id, mensagem, tipo = 'normal') {
 }
 
 // Função para enviar arquivo com proteção
-async function enviarArquivoSeguro(client, id, caminhoArquivo, caption = '') {
-  console.log('📄 Preparando envio de arquivo com proteção anti-bot');
-  
+async function enviarArquivoSeguro(client, id, caminhoArquivo, caption = "") {
+  console.log("📄 Preparando envio de arquivo com proteção anti-bot");
+
   // Delay específico para arquivos
   await protecao.delayEnvioArquivo(id);
-  
+
   // Simular digitação mais longa para arquivo
   await protecao.simularDigitando(client, id, 8000);
-  
+
   // Tentar envio do arquivo com múltiplas estratégias
   return await enviarPDFContrato(client, id);
 }
@@ -447,7 +448,12 @@ async function fluxoPerguntas(client, msg) {
   switch (etapa3) {
     case "inicio":
       // Enviar mensagem introdutória e automaticamente a primeira pergunta
-      await enviarMensagemSegura(client, id, mensagens.inicio, 'inicio_conversa');
+      await enviarMensagemSegura(
+        client,
+        id,
+        mensagens.inicio,
+        "inicio_conversa"
+      );
       await avancar("menoridade", mensagens.perguntaMenorIdade);
       break;
 
@@ -461,14 +467,19 @@ async function fluxoPerguntas(client, msg) {
         );
         limparEstado(id);
       } else if (/^(nao|não|n|❌)$/i.test(userMessage)) {
-        console.log('📝 Usuário respondeu NÃO para menor de idade');
+        console.log("📝 Usuário respondeu NÃO para menor de idade");
         estado.menorIdade = userRaw;
         setEstado(id, estado);
-        console.log('💾 Estado salvo, avançando para pergunta1...');
+        console.log("💾 Estado salvo, avançando para pergunta1...");
         await avancar("pergunta1", mensagens.pergunta1);
-        console.log('✅ Pergunta1 enviada com sucesso');
+        console.log("✅ Pergunta1 enviada com sucesso");
       } else {
-        await enviarMensagemSegura(client, id, "Por favor, responda com *Sim* ou *Não*.", 'resposta_rapida');
+        await enviarMensagemSegura(
+          client,
+          id,
+          "Por favor, responda com *Sim* ou *Não*.",
+          "resposta_rapida"
+        );
       }
       break;
 
@@ -480,7 +491,12 @@ async function fluxoPerguntas(client, msg) {
         console.log(`✅ Pergunta1 salva: ${userRaw}`);
         await avancar("pergunta2", mensagens.pergunta2);
       } else {
-        await enviarMensagemSegura(client, id, "Por favor, responda com *Sim* ou *Não*.", 'resposta_rapida');
+        await enviarMensagemSegura(
+          client,
+          id,
+          "Por favor, responda com *Sim* ou *Não*.",
+          "resposta_rapida"
+        );
       }
       break;
 
@@ -1354,9 +1370,9 @@ async function fluxoPerguntas(client, msg) {
 
             // Tentar diferentes métodos de envio
             console.log(`📤 Enviando arquivo PDF: ${contractPath}`);
-            
+
             // Delay crítico antes de enviar arquivo
-            console.log('🛡️ Aplicando proteção anti-bot para envio de PDF...');
+            console.log("🛡️ Aplicando proteção anti-bot para envio de PDF...");
             await protecao.delayEnvioArquivo(id);
 
             // Primeiro, tentar com sendFile padrão
@@ -1411,11 +1427,11 @@ async function fluxoPerguntas(client, msg) {
             }
 
             // Delay crítico antes de enviar instruções de contrato
-            await protecao.delayAleatorio('pergunta_sensivel', id);
-            
+            await protecao.delayAleatorio("pergunta_sensivel", id);
+
             // Simular digitação longa para mensagem importante
             await protecao.simularDigitando(client, id, 10000);
-            
+
             // Enviar instruções para assinatura
             await client.sendText(
               id,
@@ -1549,10 +1565,10 @@ async function fluxoPerguntas(client, msg) {
 // Função helper para envio mais simples
 async function enviarComSeguranca(client, id, mensagem) {
   console.log(`📤 [SIMPLES] Enviando: ${mensagem.substring(0, 50)}...`);
-  
+
   try {
     // Delay mínimo
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     await client.sendText(id, mensagem);
     console.log(`✅ [SIMPLES] Enviado com sucesso`);
   } catch (error) {
@@ -1564,5 +1580,5 @@ async function enviarComSeguranca(client, id, mensagem) {
 module.exports = {
   fluxoPerguntas,
   mensagens,
-  enviarComSeguranca
+  enviarComSeguranca,
 };

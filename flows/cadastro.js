@@ -2,32 +2,32 @@ const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 const { protecao } = require("../utils/protecaoAntiBot");
 
 // Helper para enviar mensagens com log e proteção anti-bot
-async function sendMessage(client, id, message, tipo = 'normal') {
+async function sendMessage(client, id, message, tipo = "normal") {
   try {
     console.log(
       `📤 Enviando para ${id}: ${message.substring(0, 100)}${
         message.length > 100 ? "..." : ""
       }`
     );
-    
+
     // Aplicar proteções anti-bot
-    await protecao.delayInteligente(tipo, id, { 
-      client, 
-      chatId: id, 
-      mensagemLonga: message.length > 100 
+    await protecao.delayInteligente(tipo, id, {
+      client,
+      chatId: id,
+      mensagemLonga: message.length > 100,
     });
-    
+
     // Simular digitação
     await protecao.simularDigitando(client, id);
-    
+
     // Adicionar variação natural
     const mensagemVariada = protecao.adicionarVariacaoNatural(message);
-    
+
     await client.sendText(id, mensagemVariada);
-    
+
     // Registrar atividade
     protecao.registrarAtividade(id);
-    
+
     console.log(`✅ Mensagem enviada com sucesso com proteção anti-bot`);
   } catch (error) {
     console.error(`❌ Erro ao enviar mensagem para ${id}:`, error);
@@ -79,7 +79,7 @@ async function fluxoCadastro(client, msg) {
 
   if (!estado) {
     setEstado(id, { etapa: "confirmar_inicio" });
-    await sendMessage(client, id, mensagens.boasVindas, 'inicio_conversa');
+    await sendMessage(client, id, mensagens.boasVindas, "inicio_conversa");
     return;
   }
 

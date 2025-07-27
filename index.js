@@ -6,7 +6,10 @@ const {
   clearQRData,
 } = require("./bot/whatsapp");
 const { inicializarPlanilha } = require("./google/sheets");
-const { inicializarProtecoes, gerarRelatorioAtividade } = require("./config/seguranca");
+const {
+  inicializarProtecoes,
+  gerarRelatorioAtividade,
+} = require("./config/seguranca");
 const http = require("http");
 
 // Configuração para Railway e outros serviços de cloud
@@ -17,7 +20,7 @@ console.log(`🚀 Configuração de servidor:`);
 console.log(`   PORT: ${PORT}`);
 console.log(`   HOST: ${HOST}`);
 console.log(`   NODE_ENV: ${process.env.NODE_ENV || "development"}`);
-console.log(`   RAILWAY: ${process.env.RAILWAY_ENVIRONMENT ? '✅' : '❌'}`);
+console.log(`   RAILWAY: ${process.env.RAILWAY_ENVIRONMENT ? "✅" : "❌"}`);
 
 // Inicializar sistema de proteção anti-banimento
 inicializarProtecoes();
