@@ -1899,122 +1899,107 @@ async function salvarDadosCompletos(client, id, estado) {
   try {
     // Preparar dados para salvamento
     const dadosParaSalvar = {
+      // DADOS BÁSICOS
       timestamp: new Date().toISOString(),
-      id: id,
-      nome: estado.nome || "",
+      whatsapp_id: id,
+      nome_completo: estado.nome || "",
       cpf: estado.cpf || "",
-      nascimento: estado.nascimento || "",
+      data_nascimento: estado.nascimento || "",
       telefone: estado.telefone || "",
       email: estado.email || "",
+      
+      // ENDEREÇO
       cep: estado.cep || "",
-      rua: estado.rua || "",
-      numero: estado.numero || "",
-      complemento: estado.complemento || "",
-      bairro: estado.bairro || "",
+      endereco_rua: estado.rua || "",
+      endereco_numero: estado.numero || "",
+      endereco_complemento: estado.complemento || "",
+      endereco_bairro: estado.bairro || "",
 
-      // Dados de saúde física
-      saude_problemas: estado.saudeProblemas || false,
-      saude_tipos: estado.saudeTipos ? estado.saudeTipos.join("; ") : "",
-      saude_outros: estado.saudeOutros || "",
-      saude_continua: estado.saudeContinua || false,
-      saude_quando_mes: estado.saudeQuando?.mes || "",
-      saude_quando_ano: estado.saudeQuando?.ano || "",
-      saude_quando_descricao: estado.saudeQuando?.descricao || "",
-      saude_diagnostico: estado.saudeDiagnostico || false,
-      saude_diagnostico_qual: estado.saudeDiagnosticoQual || "",
-      saude_renda_afetou: estado.saudeRenda || false,
-      saude_renda_continua: estado.saudeRendaContinua || false,
+      // SAÚDE FÍSICA
+      teve_problemas_fisicos: estado.saudeProblemas || false,
+      tipos_problemas_fisicos: estado.saudeTipos ? estado.saudeTipos.join('; ') : "",
+      outros_problemas_fisicos: estado.saudeOutros || "",
+      sintomas_continuam: estado.saudeContinua || false,
+      data_inicio_sintomas: estado.saudeQuando ? `${estado.saudeQuando.mes}/${estado.saudeQuando.ano}` : "",
+      descricao_inicio_sintomas: estado.saudeQuando?.descricao || "",
+      teve_diagnostico_medico: estado.saudeDiagnostico || false,
+      qual_diagnostico: estado.saudeDiagnosticoQual || "",
+      afetou_trabalho_renda: estado.saudeRenda || false,
+      ainda_afeta_trabalho: estado.saudeRendaContinua || false,
 
-      // Dados emocionais/psicológicos
-      emocional_problemas: estado.emocionalProblemas || false,
-      emocional_tipos: estado.emocionalTipos
-        ? estado.emocionalTipos.join("; ")
-        : "",
-      emocional_outros: estado.emocionalOutros || "",
-      emocional_quando_mes: estado.emocionalQuando?.mes || "",
-      emocional_quando_ano: estado.emocionalQuando?.ano || "",
-      emocional_existe: estado.emocionalExiste || false,
-      emocional_atrapalhou: estado.emocionalAtrapalhou || false,
-      emocional_atestado: estado.emocionalAtestado || false,
-      emocional_gastos: estado.emocionalGastos || 0,
+      // SAÚDE EMOCIONAL/PSICOLÓGICA
+      teve_problemas_emocionais: estado.emocionalProblemas || false,
+      tipos_problemas_emocionais: estado.emocionalTipos ? estado.emocionalTipos.join('; ') : "",
+      outros_problemas_emocionais: estado.emocionalOutros || "",
+      data_inicio_emocional: estado.emocionalQuando ? `${estado.emocionalQuando.mes}/${estado.emocionalQuando.ano}` : "",
+      sintomas_emocionais_existem: estado.emocionalExiste || false,
+      atrapalhou_vida_trabalho: estado.emocionalAtrapalhou || false,
+      teve_atestado_medico: estado.emocionalAtestado || false,
+      gasto_mensal_tratamento: estado.emocionalGastos || 0,
 
-      // Dados de perda de bens
-      bens_perda: estado.bensPerda || false,
-      bens_tipos: estado.bensTipos ? estado.bensTipos.join("; ") : "",
-      bens_valor_antes: estado.bensValorAntes || 0,
-      bens_valor_depois: estado.bensValorDepois || 0,
-      bens_quando_mes: estado.bensQuando?.mes || "",
-      bens_quando_ano: estado.bensQuando?.ano || "",
-      bens_perda_valor:
-        estado.bensValorAntes && estado.bensValorDepois
-          ? estado.bensValorAntes - estado.bensValorDepois
-          : 0,
+      // PERDA DE BENS
+      teve_perda_bens: estado.bensPerda || false,
+      tipos_bens_perdidos: estado.bensTipos ? estado.bensTipos.join('; ') : "",
+      valor_bens_antes: estado.bensValorAntes || 0,
+      valor_bens_depois: estado.bensValorDepois || 0,
+      valor_prejuizo_bens: estado.bensValorAntes && estado.bensValorDepois ? (estado.bensValorAntes - estado.bensValorDepois) : 0,
+      data_perda_bens: estado.bensQuando ? `${estado.bensQuando.mes}/${estado.bensQuando.ano}` : "",
 
-      // Dados de mudança de casa
-      mudanca_casa: estado.mudancaCasa || false,
-      mudanca_motivo: estado.mudancaMotivo
-        ? estado.mudancaMotivo.join("; ")
-        : "",
-      mudanca_outros: estado.mudancaOutros || "",
-      mudanca_quando_mes: estado.mudancaQuando?.mes || "",
-      mudanca_quando_ano: estado.mudancaQuando?.ano || "",
-      mudanca_voltou: estado.mudancaVoltou || false,
-      mudanca_moradia_tipo: estado.mudancaMoradia || "",
-      mudanca_gastos: estado.mudancaGastos || false,
+      // MUDANÇA DE CASA
+      precisou_mudar_casa: estado.mudancaCasa || false,
+      motivos_mudanca: estado.mudancaMotivo ? estado.mudancaMotivo.join('; ') : "",
+      outros_motivos_mudanca: estado.mudancaOutros || "",
+      data_mudanca: estado.mudancaQuando ? `${estado.mudancaQuando.mes}/${estado.mudancaQuando.ano}` : "",
+      conseguiu_voltar: estado.mudancaVoltou || false,
+      tipo_nova_moradia: estado.mudancaMoradia || "",
+      teve_gastos_mudanca: estado.mudancaGastos || false,
 
-      // Dados de alimentação
-      alimentacao_fonte_perda: estado.alimentacaoFonte || false,
-      alimentacao_quando_mes: estado.alimentacaoQuando?.mes || "",
-      alimentacao_quando_ano: estado.alimentacaoQuando?.ano || "",
-      alimentacao_sem_fonte: estado.alimentacaoSemFonte || false,
-      alimentacao_gastos_tipos: estado.alimentacaoGastos
-        ? estado.alimentacaoGastos.join("; ")
-        : "",
-      alimentacao_outros: estado.alimentacaoOutros || "",
-      alimentacao_valor_mensal: estado.alimentacaoValor || 0,
+      // ALIMENTAÇÃO
+      perdeu_fonte_alimentacao: estado.alimentacaoFonte || false,
+      data_perda_alimentacao: estado.alimentacaoQuando ? `${estado.alimentacaoQuando.mes}/${estado.alimentacaoQuando.ano}` : "",
+      ainda_sem_fonte_alimentacao: estado.alimentacaoSemFonte || false,
+      tipos_gastos_alimentacao: estado.alimentacaoGastos ? estado.alimentacaoGastos.join('; ') : "",
+      outros_gastos_alimentacao: estado.alimentacaoOutros || "",
+      valor_mensal_alimentacao: estado.alimentacaoValor || 0,
 
-      // Dados de custo de vida
-      custo_vida_aumento: estado.custoVidaAumento || false,
-      custo_vida_tipos: estado.custoVidaTipos ? estado.custoVidaTipos.join('; ') : "",
-      custo_vida_quando_mes: estado.custoVidaQuando?.mes || "",
-      custo_vida_quando_ano: estado.custoVidaQuando?.ano || "",
-      custo_vida_valor_mensal: estado.custoVidaValor || 0,
+      // CUSTO DE VIDA
+      custo_vida_aumentou: estado.custoVidaAumento || false,
+      categorias_custo_aumentado: estado.custoVidaTipos ? estado.custoVidaTipos.join('; ') : "",
+      data_aumento_custo: estado.custoVidaQuando ? `${estado.custoVidaQuando.mes}/${estado.custoVidaQuando.ano}` : "",
+      valor_mensal_extra: estado.custoVidaValor || 0,
 
-      // Dados de prejuízo na renda
-      renda_prejudicada: estado.rendaPrejuizo || false,
-      renda_motivos: estado.rendaMotivos ? estado.rendaMotivos.join('; ') : "",
-      renda_quando_mes: estado.rendaQuando?.mes || "",
-      renda_quando_ano: estado.rendaQuando?.ano || "",
-      renda_valor_perdido: estado.rendaValor || 0,
+      // PREJUÍZO NA RENDA
+      renda_foi_prejudicada: estado.rendaPrejuizo || false,
+      motivos_perda_renda: estado.rendaMotivos ? estado.rendaMotivos.join('; ') : "",
+      data_inicio_perda_renda: estado.rendaQuando ? `${estado.rendaQuando.mes}/${estado.rendaQuando.ano}` : "",
+      valor_mensal_perdido: estado.rendaValor || 0,
 
-      // Dados de problemas com água
-      agua_problemas: estado.aguaProblemas || false,
-      agua_tipos: estado.aguaTipos ? estado.aguaTipos.join('; ') : "",
-      agua_continua: estado.aguaContinua || false,
-      agua_tempo_descricao: estado.aguaTempo || "",
-      agua_gastos_tipos: estado.aguaGastos ? estado.aguaGastos.join('; ') : "",
-      agua_outros: estado.aguaOutros || "",
-      agua_valor_mensal: estado.aguaValor || 0,
+      // PROBLEMAS COM ÁGUA
+      teve_problemas_agua: estado.aguaProblemas || false,
+      tipos_problemas_agua: estado.aguaTipos ? estado.aguaTipos.join('; ') : "",
+      problemas_agua_continuam: estado.aguaContinua || false,
+      periodo_problemas_agua: estado.aguaTempo || "",
+      tipos_gastos_agua: estado.aguaGastos ? estado.aguaGastos.join('; ') : "",
+      outros_gastos_agua: estado.aguaOutros || "",
+      valor_mensal_agua: estado.aguaValor || 0,
 
-      // Dados de uso do rio e terra
-      rio_terra_perdeu_rio: estado.rioTerraRio || false,
-      rio_terra_perdeu_terra: estado.rioTerraTerra || false,
-      rio_terra_usos: estado.rioTerraUsos ? estado.rioTerraUsos.join('; ') : "",
-      rio_terra_outros: estado.rioTerraOutros || "",
-      rio_terra_quando_mes: estado.rioTerraQuando?.mes || "",
-      rio_terra_quando_ano: estado.rioTerraQuando?.ano || "",
+      // USO DO RIO E TERRA
+      perdeu_uso_rio: estado.rioTerraRio || false,
+      perdeu_uso_terra: estado.rioTerraTerra || false,
+      tipos_uso_perdidos: estado.rioTerraUsos ? estado.rioTerraUsos.join('; ') : "",
+      outros_usos_perdidos: estado.rioTerraOutros || "",
+      data_perda_uso: estado.rioTerraQuando ? `${estado.rioTerraQuando.mes}/${estado.rioTerraQuando.ano}` : "",
 
-      // Dados de indenizações ou ações
-      indenizacao_processou: estado.indenizacaoProcesso || false,
-      indenizacao_tipos_recebidas: estado.indenizacaoRecebidas ? estado.indenizacaoRecebidas.join('; ') : "",
-      indenizacao_quando_mes: estado.indenizacaoQuando?.mes || "",
-      indenizacao_quando_ano: estado.indenizacaoQuando?.ano || "",
-      indenizacao_cadastrado: estado.indenizacaoCadastrado || false,
-      indenizacao_foi_contatado: estado.indenizacaoContato || false,
+      // INDENIZAÇÕES E AÇÕES
+      processou_samarco_renova: estado.indenizacaoProcesso || false,
+      indenizacoes_recebidas: estado.indenizacaoRecebidas ? estado.indenizacaoRecebidas.join('; ') : "",
+      data_ultima_indenizacao: estado.indenizacaoQuando ? `${estado.indenizacaoQuando.mes}/${estado.indenizacaoQuando.ano}` : "",
+      cadastrado_para_receber: estado.indenizacaoCadastrado || false,
+      foi_contatado_renova: estado.indenizacaoContato || false,
 
-      status: "questionario_completo",
-      observacoes:
-        "Questionário completo: todas as seções de impactos e indenizações foram preenchidas",
+      // STATUS E OBSERVAÇÕES
+      status_questionario: "questionario_completo",
+      observacoes: "Questionário completo com todas as seções de impactos preenchidas"
     };
 
     console.log("📊 Dados preparados:", dadosParaSalvar);
