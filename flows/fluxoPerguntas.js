@@ -258,6 +258,35 @@ const mensagens = {
     "_Exemplo: 300 (para R$ 300,00)_\n" +
     "_Digite 0 se não tem gastos extras_",
 
+  // SEÇÃO 7: AUMENTO NO CUSTO DE VIDA
+  custoVidaAumento:
+    "💰 *7. Aumento no Custo de Vida*\n\n" +
+    "Depois do desastre, muita gente começou a gastar mais com transporte, moradia, alimentação etc. Isso aconteceu com você?\n\n" +
+    "❓ *Seu custo de vida aumentou?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
+  custoVidaTipos:
+    "📊 *7.1 Marque com o que aumentou:*\n\n" +
+    "Digite o *número* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
+    "*1)* Alimentação\n" +
+    "*2)* Moradia\n" +
+    "*3)* Transporte\n" +
+    "*4)* Lazer\n" +
+    "*5)* Vestuário\n\n" +
+    "_Exemplo: 1,3,5 ou 2,4_",
+
+  custoVidaQuando:
+    "📅 *7.2 Desde quando?*\n\n" +
+    "Digite o mês e ano:\n\n" +
+    "_Formato: MM/AAAA_\n" +
+    "_Exemplo: 11/2015_",
+
+  custoVidaValor:
+    "💸 *7.3 Gastos mensais aproximados:*\n\n" +
+    "Digite o valor total em reais dos gastos mensais extras (apenas números):\n\n" +
+    "_Exemplo: 500 (para R$ 500,00)_\n" +
+    "_Digite 0 se não consegue estimar_",
+
   // Mensagens finais
   final:
     "✅ *Cadastro Finalizado!*\n\nSuas informações foram registradas com sucesso.\n\nEntraremos em contato em breve!",
@@ -1108,21 +1137,118 @@ async function fluxoPerguntas(client, msg) {
       break;
 
     case "secao7":
-      // Aqui você pode adicionar a próxima seção (seção 7)
+      // Iniciar seção 7 - Aumento no Custo de Vida
+      await avancar("custo_vida_aumento", mensagens.custoVidaAumento);
+      break;
+
+    case "custo_vida_aumento":
+      if (["sim", "s", "ok", "aumentou", "sim aumentou"].includes(userMessage)) {
+        estado.custoVidaAumento = true;
+        await avancar("custo_vida_tipos", mensagens.custoVidaTipos);
+      } else if (["não", "nao", "n", "não aumentou"].includes(userMessage)) {
+        estado.custoVidaAumento = false;
+        // Pular para próxima seção (seção 8)
+        await avancar("secao8", "✅ *Seção Custo de Vida registrada!*\n\nVamos para a próxima seção...");
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se o custo de vida aumentou\n• *NÃO* se não aumentou"
+        );
+      }
+      break;
+
+    case "custo_vida_tipos":
+      // Processar seleção de tipos de gastos
+      const tiposCustoMap = {
+        '1': 'Alimentação',
+        '2': 'Moradia',
+        '3': 'Transporte',
+        '4': 'Lazer',
+        '5': 'Vestuário'
+      };
+
+      const tiposCustoSelecionados = userRaw.toLowerCase()
+        .replace(/[^1-5,]/g, '')
+        .split(',')
+        .map(opt => opt.trim())
+        .filter(opt => opt in tiposCustoMap);
+
+      if (tiposCustoSelecionados.length === 0) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
+          "Digite os números dos gastos que aumentaram\n\n" +
+          "_Exemplo: 1,3,5 ou 2,4_"
+        );
+        return;
+      }
+
+      const tiposCustoTexto = tiposCustoSelecionados.map(opt => tiposCustoMap[opt]);
+      estado.custoVidaTipos = tiposCustoTexto;
+
+      console.log(`✅ Tipos de custo aumentado: ${tiposCustoTexto.join(', ')}`);
+
+      await avancar("custo_vida_quando", mensagens.custoVidaQuando);
+      break;
+
+    case "custo_vida_quando":
+      // Validar formato MM/AAAA
+      const regexDataCusto = /^(\d{1,2})\/(\d{4})$/;
+      const matchDataCusto = userRaw.match(regexDataCusto);
+      
+      if (!matchDataCusto) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Formato inválido. Use:\n\n*MM/AAAA*\n\n_Exemplo: 11/2015_"
+        );
+        return;
+      }
+
+      const [, mesCusto, anoCusto] = matchDataCusto;
+      estado.custoVidaQuando = {
+        mes: mesCusto.padStart(2, '0'),
+        ano: anoCusto
+      };
+
+      await avancar("custo_vida_valor", mensagens.custoVidaValor);
+      break;
+
+    case "custo_vida_valor":
+      // Validar valor numérico
+      const valorCustoLimpo = userRaw.replace(/[^\d]/g, '');
+      
+      if (!/^\d+$/.test(valorCustoLimpo)) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Digite apenas números:\n\n_Exemplo: 500 (para R$ 500,00)_\n_Digite 0 se não consegue estimar_"
+        );
+        return;
+      }
+
+      estado.custoVidaValor = parseInt(valorCustoLimpo);
+      
+      // Finalizar seção 7
+      await avancar("secao8", "✅ *Seção Custo de Vida concluída!*\n\nVamos para a próxima seção...");
+      break;
+
+    case "secao8":
+      // Aqui você pode adicionar a próxima seção (seção 8)
       await client.sendText(
         id,
         "⚠️ *Questionário em desenvolvimento*\n\n" +
-          "Próximas seções serão adicionadas em breve.\n" +
-          "Seus dados de todas as seções foram salvos!\n\n" +
-          "Obrigado pela paciência! 🙏"
+        "Próximas seções serão adicionadas em breve.\n" +
+        "Seus dados de todas as seções foram salvos!\n\n" +
+        "Obrigado pela paciência! 🙏"
       );
 
       // Salvar dados e finalizar por enquanto
       await salvarDadosCompletos(client, id, estado);
       limparEstado(id);
-      break;
-
-    default:
+      break;    default:
       console.log(`⚠️ Etapa não reconhecida: ${etapa3}`);
       await client.sendText(
         id,
@@ -1217,9 +1343,16 @@ async function salvarDadosCompletos(client, id, estado) {
       alimentacao_outros: estado.alimentacaoOutros || "",
       alimentacao_valor_mensal: estado.alimentacaoValor || 0,
 
-      status: "secoes_completas_ate_alimentacao",
+      // Dados de custo de vida
+      custo_vida_aumento: estado.custoVidaAumento || false,
+      custo_vida_tipos: estado.custoVidaTipos ? estado.custoVidaTipos.join('; ') : "",
+      custo_vida_quando_mes: estado.custoVidaQuando?.mes || "",
+      custo_vida_quando_ano: estado.custoVidaQuando?.ano || "",
+      custo_vida_valor_mensal: estado.custoVidaValor || 0,
+
+      status: "secoes_completas_ate_custo_vida",
       observacoes:
-        "Seções de saúde física, emocional, perda de bens, mudança de casa e alimentação concluídas",
+        "Seções de saúde física, emocional, perda de bens, mudança de casa, alimentação e custo de vida concluídas",
     };
 
     console.log("📊 Dados preparados:", dadosParaSalvar);
