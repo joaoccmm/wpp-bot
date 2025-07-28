@@ -36,19 +36,26 @@ async function sendMessage(client, id, message, tipo = "normal") {
 }
 
 const mensagens = {
-  boasVindas:
-    "👋 *Olá!*\n\n" +
-    "Sou o assistente virtual do Dr. Igor Rodrigues e vou te ajudar no cadastro.\n\n" +
-    "💡 *Dica:* Digite *cancelar* a qualquer momento para encerrar.\n\n" +
-    "Digite *Sim* para começar ou *Cancelar* para sair.",
-  
+  saudacaoInicial:
+    "Olá! 👋 Sou a assistente virtual do Dr. Igor, responsável por realizar seu cadastro no processo jurídico relacionado à Holanda.\n\n" +
+    "Este procedimento leva entre 10 e 15 minutos e é fundamental para dar continuidade ao seu atendimento.\n\n" +
+    "Caso você esteja respondendo por outra pessoa, por favor, responda com base nos dados e vivências dela.\n\n" +
+    "Se desejar encerrar o atendimento a qualquer momento, digite *cancelar*.",
+
+  boasVindas: "Vamos começar?\n👉 Sim ou Não",
+
+  maiorIdade: "Você é maior de idade (18 anos ou mais)?\n👉 Sim ou Não",
+
+  incapacidade:
+    "Você está respondendo por uma pessoa considerada *incapaz* ou que possua alguma *dificuldade que comprometa seu entendimento ou comunicação*?\n👉 Sim ou Não",
+
   // Perguntas básicas do cadastro
   nome: "1️⃣ Qual é o seu nome completo?",
   cpf: "2️⃣ Por favor, me informe seu CPF:",
   nascimento: "3️⃣ Informe sua data de nascimento (DD/MM/AAAA):",
   telefone: "4️⃣ Informe seu número de telefone com DDD:",
   email: "5️⃣ Informe seu e-mail:",
-  
+
   confirmacao: (dados) => {
     return (
       `📋 *CONFIRMAÇÃO DOS DADOS*\n\n` +
@@ -61,7 +68,7 @@ const mensagens = {
       `👉 Digite *Sim* para confirmar ou *Não* para corrigir`
     );
   },
-  
+
   // Mensagem de correção simplificada
   corrigirDados:
     `🔄 *Vamos corrigir seus dados!*\n\n` +
@@ -83,6 +90,10 @@ async function fluxoCadastro(client, msg) {
 
   if (!estado) {
     setEstado(id, { etapa: "confirmar_inicio" });
+    // Enviar primeira mensagem
+    await sendMessage(client, id, mensagens.saudacaoInicial, "inicio_conversa");
+    // Aguardar um pouco e enviar segunda mensagem
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     await sendMessage(client, id, mensagens.boasVindas, "inicio_conversa");
     return;
   }
@@ -94,9 +105,9 @@ async function fluxoCadastro(client, msg) {
           userMessage
         )
       ) {
-        estado.etapa = "nome";
+        estado.etapa = "verificar_maioridade";
         setEstado(id, estado);
-        await sendMessage(client, id, mensagens.nome);
+        await sendMessage(client, id, mensagens.maiorIdade);
       } else if (
         ["cancelar", "não", "nao", "n", "sair"].includes(userMessage)
       ) {
@@ -111,6 +122,54 @@ async function fluxoCadastro(client, msg) {
           client,
           id,
           "❓ Por favor, responda:\n\n• *SIM* para começar o cadastro\n• *CANCELAR* para sair"
+        );
+      }
+      break;
+
+    case "verificar_maioridade":
+      if (["sim", "s", "ok", "maior", "18"].includes(userMessage)) {
+        estado.maiorIdade = true;
+        estado.etapa = "verificar_incapacidade";
+        setEstado(id, estado);
+        await sendMessage(client, id, mensagens.incapacidade);
+      } else if (
+        ["não", "nao", "n", "menor", "não sou"].includes(userMessage)
+      ) {
+        estado.maiorIdade = false;
+        limparEstado(id);
+        await sendMessage(
+          client,
+          id,
+          "📞 *Obrigado pela informação!*\n\nEm casos de menor de idade, alguém da nossa equipe entrará em contato diretamente para orientações específicas.\n\nAguarde nosso contato! 😊"
+        );
+      } else {
+        await sendMessage(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se você tem 18 anos ou mais\n• *NÃO* se você é menor de idade"
+        );
+      }
+      break;
+
+    case "verificar_incapacidade":
+      if (["sim", "s", "ok", "incapaz", "dificuldade"].includes(userMessage)) {
+        estado.incapacidade = true;
+        limparEstado(id);
+        await sendMessage(
+          client,
+          id,
+          "📞 *Obrigado pela informação!*\n\nEm casos de incapacidade ou dificuldades de entendimento/comunicação, alguém da nossa equipe entrará em contato diretamente para orientações específicas.\n\nAguarde nosso contato! 😊"
+        );
+      } else if (["não", "nao", "n", "capaz", "normal"].includes(userMessage)) {
+        estado.incapacidade = false;
+        estado.etapa = "nome";
+        setEstado(id, estado);
+        await sendMessage(client, id, mensagens.nome);
+      } else {
+        await sendMessage(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se está respondendo por pessoa incapaz ou com dificuldades\n• *NÃO* se a pessoa tem plena capacidade"
         );
       }
       break;
