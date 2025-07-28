@@ -287,6 +287,150 @@ const mensagens = {
     "_Exemplo: 500 (para R$ 500,00)_\n" +
     "_Digite 0 se não consegue estimar_",
 
+  // SEÇÃO 8: PREJUÍZO NA RENDA
+  rendaPrejuizo:
+    "👷 *8. Prejuízo na Renda*\n\n" +
+    "Queremos entender se você perdeu renda por causa da tragédia.\n\n" +
+    "❓ *Sua renda foi prejudicada?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
+  rendaMotivos:
+    "💼 *8.1 Por quê?*\n\n" +
+    "Digite o *número* correspondente ao motivo (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
+    "*1)* Pesca\n" +
+    "*2)* Agricultura\n" +
+    "*3)* Pecuária\n" +
+    "*4)* Fechamento da Samarco\n" +
+    "*5)* Danos materiais ou ambientais\n" +
+    "*6)* Turismo (poucas pessoas no local)\n" +
+    "*7)* Saída de moradores\n\n" +
+    "_Exemplo: 1,4,5 ou 2,6_",
+
+  rendaQuando:
+    "📅 *8.2 Quando começou?*\n\n" +
+    "Digite o mês e ano:\n\n" +
+    "_Formato: MM/AAAA_\n" +
+    "_Exemplo: 11/2015_",
+
+  rendaValor:
+    "💰 *8.3 Quanto perdeu por mês:*\n\n" +
+    "Digite o valor em reais que perdeu de renda mensal (apenas números):\n\n" +
+    "_Exemplo: 1500 (para R$ 1.500,00)_\n" +
+    "_Digite 0 se não consegue estimar_",
+
+  // SEÇÃO 9: PROBLEMAS COM ÁGUA
+  aguaProblemas:
+    "🚰 *9. Problemas com Água*\n\n" +
+    "Você teve falta de água, água contaminada ou instável depois do rompimento?\n\n" +
+    "❓ *Seu abastecimento de água foi afetado?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
+  aguaTipos:
+    "💧 *9.1 Tipo de problema:*\n\n" +
+    "Digite o *número* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
+    "*1)* Ficou sem água\n" +
+    "*2)* Ficava oscilando\n" +
+    "*3)* Contaminada\n\n" +
+    "_Exemplo: 1,3 ou 2_",
+
+  aguaContinua:
+    "⏰ *9.2 Ainda continua?*\n\n" + "👉 *Sim* ou *Não*",
+
+  aguaTempo:
+    "📅 *9.3 Desde quando e por quanto tempo?*\n\n" +
+    "Descreva desde quando começou e por quanto tempo durou:\n\n" +
+    "_Exemplo: Desde novembro/2015, durou 6 meses_\n" +
+    "_Se ainda continua, informe apenas desde quando_",
+
+  aguaGastos:
+    "💸 *9.4 Teve gastos com:*\n\n" +
+    "Digite o *número* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
+    "*1)* Compra de água\n" +
+    "*2)* Poço ou cisterna\n" +
+    "*3)* Transporte\n" +
+    "*4)* Outros\n" +
+    "*5)* Não tive despesas\n\n" +
+    "_Exemplo: 1,3 ou 2,4_",
+
+  aguaOutros:
+    "📝 *Você marcou 'Outros' - descreva quais gastos:*\n\n" +
+    "Digite uma descrição dos outros gastos com água:",
+
+  aguaValor:
+    "💰 *9.5 Gasto mensal:*\n\n" +
+    "Digite o valor em reais que gasta por mês com água (apenas números):\n\n" +
+    "_Exemplo: 150 (para R$ 150,00)_\n" +
+    "_Digite 0 se não tem gastos ou marcou 'Não tive despesas'_",
+
+  // SEÇÃO 11: USO DO RIO E DA TERRA
+  rioTerraRio:
+    "🌊 *11. Uso do Rio e da Terra*\n\n" +
+    "Você usava o rio ou a terra para algo e teve que parar?\n\n" +
+    "❓ *Perdeu o uso do rio ou mar?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
+  rioTerraTerra:
+    "🌱 *Perdeu o uso da terra?*\n\n" +
+    "❓ *Você usava a terra para algo e teve que parar?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
+  rioTerraUsos:
+    "🎯 *11.1 Qual era o seu uso?*\n\n" +
+    "Digite o *número* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
+    "*1)* Pesca\n" +
+    "*2)* Navegação\n" +
+    "*3)* Esporte\n" +
+    "*4)* Cerimônias\n" +
+    "*5)* Para plantar/comer\n" +
+    "*6)* Criar animais\n" +
+    "*7)* Atividades com a família\n" +
+    "*8)* Tradições ou cultos\n" +
+    "*9)* Outros\n\n" +
+    "_Exemplo: 1,5,7 ou 2,4,8_",
+
+  rioTerraOutros:
+    "📝 *Você marcou 'Outros' - descreva quais usos:*\n\n" +
+    "Digite uma descrição dos outros usos do rio/terra:",
+
+  rioTerraQuando:
+    "📅 *11.2 Quando percebeu a perda?*\n\n" +
+    "Digite o mês e ano:\n\n" +
+    "_Formato: MM/AAAA_\n" +
+    "_Exemplo: 11/2015_",
+
+  // SEÇÃO 13: INDENIZAÇÕES OU AÇÕES
+  indenizacaoProcesso:
+    "⚖️ *13. Indenizações ou Ações*\n\n" +
+    "Para entender sua situação, precisamos saber se você já entrou com ação judicial ou recebeu algum dinheiro.\n\n" +
+    "❓ *Você já processou a Samarco/Renova?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
+  indenizacaoRecebidas:
+    "💰 *13.1 Você já recebeu alguma dessas indenizações?*\n\n" +
+    "Digite o *número* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
+    "*1)* AFE\n" +
+    "*2)* PIM (conhecido como os 1.000 reais)\n" +
+    "*3)* PID (os 35 mil reais)\n" +
+    "*4)* Sistema NÓVEL (os 15 mil reais)\n" +
+    "*5)* Não recebi nada\n\n" +
+    "_Exemplo: 1,2 ou 3,4_",
+
+  indenizacaoQuando:
+    "📅 *13.2 Quando recebeu?*\n\n" +
+    "Digite o mês e ano da última indenização recebida:\n\n" +
+    "_Formato: MM/AAAA_\n" +
+    "_Exemplo: 03/2020_",
+
+  indenizacaoCadastrado:
+    "📋 *13.3 Está cadastrado para receber?*\n\n" +
+    "❓ *Você está cadastrado para receber indenizações?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
+  indenizacaoContato:
+    "📞 *13.4 Já foi contatado pela Renova/Samarco?*\n\n" +
+    "❓ *Você já foi contatado pela Renova ou Samarco?*\n\n" +
+    "👉 *Sim* ou *Não*",
+
   // Mensagens finais
   final:
     "✅ *Cadastro Finalizado!*\n\nSuas informações foram registradas com sucesso.\n\nEntraremos em contato em breve!",
@@ -1236,17 +1380,503 @@ async function fluxoPerguntas(client, msg) {
       break;
 
     case "secao8":
-      // Aqui você pode adicionar a próxima seção (seção 8)
+      // Iniciar seção 8 - Prejuízo na Renda
+      await avancar("renda_prejuizo", mensagens.rendaPrejuizo);
+      break;
+
+    case "renda_prejuizo":
+      if (["sim", "s", "ok", "foi", "sim foi"].includes(userMessage)) {
+        estado.rendaPrejuizo = true;
+        await avancar("renda_motivos", mensagens.rendaMotivos);
+      } else if (["não", "nao", "n", "não foi"].includes(userMessage)) {
+        estado.rendaPrejuizo = false;
+        // Pular para próxima seção (seção 9)
+        await avancar("secao9", "✅ *Seção Renda registrada!*\n\nVamos para a próxima seção...");
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se sua renda foi prejudicada\n• *NÃO* se não foi prejudicada"
+        );
+      }
+      break;
+
+    case "renda_motivos":
+      // Processar seleção de motivos da perda de renda
+      const motivosRendaMap = {
+        '1': 'Pesca',
+        '2': 'Agricultura', 
+        '3': 'Pecuária',
+        '4': 'Fechamento da Samarco',
+        '5': 'Danos materiais ou ambientais',
+        '6': 'Turismo (poucas pessoas no local)',
+        '7': 'Saída de moradores'
+      };
+
+      const motivosRendaSelecionados = userRaw.toLowerCase()
+        .replace(/[^1-7,]/g, '')
+        .split(',')
+        .map(opt => opt.trim())
+        .filter(opt => opt in motivosRendaMap);
+
+      if (motivosRendaSelecionados.length === 0) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
+          "Digite os números dos motivos da perda de renda\n\n" +
+          "_Exemplo: 1,4,5 ou 2,6_"
+        );
+        return;
+      }
+
+      const motivosRendaTexto = motivosRendaSelecionados.map(opt => motivosRendaMap[opt]);
+      estado.rendaMotivos = motivosRendaTexto;
+
+      console.log(`✅ Motivos da perda de renda: ${motivosRendaTexto.join(', ')}`);
+
+      await avancar("renda_quando", mensagens.rendaQuando);
+      break;
+
+    case "renda_quando":
+      // Validar formato MM/AAAA
+      const regexDataRenda = /^(\d{1,2})\/(\d{4})$/;
+      const matchDataRenda = userRaw.match(regexDataRenda);
+      
+      if (!matchDataRenda) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Formato inválido. Use:\n\n*MM/AAAA*\n\n_Exemplo: 11/2015_"
+        );
+        return;
+      }
+
+      const [, mesRenda, anoRenda] = matchDataRenda;
+      estado.rendaQuando = {
+        mes: mesRenda.padStart(2, '0'),
+        ano: anoRenda
+      };
+
+      await avancar("renda_valor", mensagens.rendaValor);
+      break;
+
+    case "renda_valor":
+      // Validar valor numérico
+      const valorRendaLimpo = userRaw.replace(/[^\d]/g, '');
+      
+      if (!/^\d+$/.test(valorRendaLimpo)) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Digite apenas números:\n\n_Exemplo: 1500 (para R$ 1.500,00)_\n_Digite 0 se não consegue estimar_"
+        );
+        return;
+      }
+
+      estado.rendaValor = parseInt(valorRendaLimpo);
+      
+      // Finalizar seção 8
+      await avancar("secao9", "✅ *Seção Prejuízo na Renda concluída!*\n\nVamos para a próxima seção...");
+      break;
+
+    case "secao9":
+      // Iniciar seção 9 - Problemas com Água
+      await avancar("agua_problemas", mensagens.aguaProblemas);
+      break;
+
+    case "agua_problemas":
+      if (["sim", "s", "ok", "foi", "sim foi"].includes(userMessage)) {
+        estado.aguaProblemas = true;
+        await avancar("agua_tipos", mensagens.aguaTipos);
+      } else if (["não", "nao", "n", "não foi"].includes(userMessage)) {
+        estado.aguaProblemas = false;
+        // Pular para próxima seção (seção 10)
+        await avancar("secao10", "✅ *Seção Água registrada!*\n\nVamos para a próxima seção...");
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se o abastecimento de água foi afetado\n• *NÃO* se não foi afetado"
+        );
+      }
+      break;
+
+    case "agua_tipos":
+      // Processar seleção de tipos de problemas com água
+      const tiposAguaMap = {
+        '1': 'Ficou sem água',
+        '2': 'Ficava oscilando',
+        '3': 'Contaminada'
+      };
+
+      const tiposAguaSelecionados = userRaw.toLowerCase()
+        .replace(/[^1-3,]/g, '')
+        .split(',')
+        .map(opt => opt.trim())
+        .filter(opt => opt in tiposAguaMap);
+
+      if (tiposAguaSelecionados.length === 0) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
+          "Digite os números dos problemas que teve\n\n" +
+          "_Exemplo: 1,3 ou 2_"
+        );
+        return;
+      }
+
+      const tiposAguaTexto = tiposAguaSelecionados.map(opt => tiposAguaMap[opt]);
+      estado.aguaTipos = tiposAguaTexto;
+
+      console.log(`✅ Tipos de problemas com água: ${tiposAguaTexto.join(', ')}`);
+
+      await avancar("agua_continua", mensagens.aguaContinua);
+      break;
+
+    case "agua_continua":
+      if (["sim", "s", "ok", "continua", "ainda"].includes(userMessage)) {
+        estado.aguaContinua = true;
+      } else if (["não", "nao", "n", "parou", "não continua"].includes(userMessage)) {
+        estado.aguaContinua = false;
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se ainda continua\n• *NÃO* se já parou"
+        );
+        return;
+      }
+      await avancar("agua_tempo", mensagens.aguaTempo);
+      break;
+
+    case "agua_tempo":
+      estado.aguaTempo = userRaw.trim();
+      await avancar("agua_gastos", mensagens.aguaGastos);
+      break;
+
+    case "agua_gastos":
+      // Processar seleção de tipos de gastos com água
+      const gastosAguaMap = {
+        '1': 'Compra de água',
+        '2': 'Poço ou cisterna',
+        '3': 'Transporte',
+        '4': 'Outros',
+        '5': 'Não tive despesas'
+      };
+
+      const gastosAguaSelecionados = userRaw.toLowerCase()
+        .replace(/[^1-5,]/g, '')
+        .split(',')
+        .map(opt => opt.trim())
+        .filter(opt => opt in gastosAguaMap);
+
+      if (gastosAguaSelecionados.length === 0) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
+          "Digite os números dos gastos que teve\n\n" +
+          "_Exemplo: 1,3 ou 5 (se não teve despesas)_"
+        );
+        return;
+      }
+
+      const gastosAguaTexto = gastosAguaSelecionados.map(opt => gastosAguaMap[opt]);
+      estado.aguaGastos = gastosAguaTexto;
+
+      console.log(`✅ Gastos com água: ${gastosAguaTexto.join(', ')}`);
+
+      // Se selecionou "Outros", perguntar qual
+      if (gastosAguaSelecionados.includes('4')) {
+        await avancar("agua_outros", mensagens.aguaOutros);
+      } 
+      // Se selecionou "Não tive despesas", pular para próxima seção
+      else if (gastosAguaSelecionados.includes('5')) {
+        estado.aguaValor = 0;
+        await avancar("secao10", "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção...");
+      } 
+      else {
+        await avancar("agua_valor", mensagens.aguaValor);
+      }
+      break;
+
+    case "agua_outros":
+      estado.aguaOutros = userRaw.trim();
+      await avancar("agua_valor", mensagens.aguaValor);
+      break;
+
+    case "agua_valor":
+      // Validar valor numérico
+      const valorAguaLimpo = userRaw.replace(/[^\d]/g, '');
+      
+      if (!/^\d+$/.test(valorAguaLimpo)) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Digite apenas números:\n\n_Exemplo: 150 (para R$ 150,00)_\n_Digite 0 se não tem gastos_"
+        );
+        return;
+      }
+
+      estado.aguaValor = parseInt(valorAguaLimpo);
+      
+      // Finalizar seção 9
+      await avancar("secao10", "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção...");
+      break;
+
+    case "secao10":
+      // Ir direto para seção 11 - Uso do Rio e da Terra
+      await avancar("rio_terra_rio", mensagens.rioTerraRio);
+      break;
+
+    case "rio_terra_rio":
+      if (["sim", "s", "ok", "perdi", "sim perdi"].includes(userMessage)) {
+        estado.rioTerraRio = true;
+        estado.rioTerraAlgumUso = true; // Marca que houve algum uso perdido
+        await avancar("rio_terra_terra", mensagens.rioTerraTerra);
+      } else if (["não", "nao", "n", "não perdi"].includes(userMessage)) {
+        estado.rioTerraRio = false;
+        // Perguntar sobre a terra mesmo se não perdeu o rio
+        await avancar("rio_terra_terra", mensagens.rioTerraTerra);
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se perdeu o uso do rio/mar\n• *NÃO* se não perdeu"
+        );
+      }
+      break;
+
+    case "rio_terra_terra":
+      if (["sim", "s", "ok", "perdi", "sim perdi"].includes(userMessage)) {
+        estado.rioTerraTerra = true;
+        estado.rioTerraAlgumUso = true; // Marca que houve algum uso perdido
+        await avancar("rio_terra_usos", mensagens.rioTerraUsos);
+      } else if (["não", "nao", "n", "não perdi"].includes(userMessage)) {
+        estado.rioTerraTerra = false;
+        
+        // Se não perdeu nem rio nem terra, pular para seção 12
+        if (!estado.rioTerraAlgumUso) {
+          await avancar("secao12", "✅ *Seção Uso do Rio e Terra registrada!*\n\nVamos para a próxima seção...");
+        } else {
+          // Se perdeu pelo menos um (rio), continuar com os usos
+          await avancar("rio_terra_usos", mensagens.rioTerraUsos);
+        }
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se perdeu o uso da terra\n• *NÃO* se não perdeu"
+        );
+      }
+      break;
+
+    case "rio_terra_usos":
+      // Processar seleção de tipos de usos
+      const usosRioTerraMap = {
+        '1': 'Pesca',
+        '2': 'Navegação',
+        '3': 'Esporte',
+        '4': 'Cerimônias',
+        '5': 'Para plantar/comer',
+        '6': 'Criar animais',
+        '7': 'Atividades com a família',
+        '8': 'Tradições ou cultos',
+        '9': 'Outros'
+      };
+
+      const usosRioTerraSelecionados = userRaw.toLowerCase()
+        .replace(/[^1-9,]/g, '')
+        .split(',')
+        .map(opt => opt.trim())
+        .filter(opt => opt in usosRioTerraMap);
+
+      if (usosRioTerraSelecionados.length === 0) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
+          "Digite os números dos usos que teve\n\n" +
+          "_Exemplo: 1,5,7 ou 2,4,8_"
+        );
+        return;
+      }
+
+      const usosRioTerraTexto = usosRioTerraSelecionados.map(opt => usosRioTerraMap[opt]);
+      estado.rioTerraUsos = usosRioTerraTexto;
+
+      console.log(`✅ Usos do rio/terra: ${usosRioTerraTexto.join(', ')}`);
+
+      // Se selecionou "Outros", perguntar qual
+      if (usosRioTerraSelecionados.includes('9')) {
+        await avancar("rio_terra_outros", mensagens.rioTerraOutros);
+      } else {
+        await avancar("rio_terra_quando", mensagens.rioTerraQuando);
+      }
+      break;
+
+    case "rio_terra_outros":
+      estado.rioTerraOutros = userRaw.trim();
+      await avancar("rio_terra_quando", mensagens.rioTerraQuando);
+      break;
+
+    case "rio_terra_quando":
+      // Validar formato MM/AAAA
+      const regexDataRioTerra = /^(\d{1,2})\/(\d{4})$/;
+      const matchDataRioTerra = userRaw.match(regexDataRioTerra);
+      
+      if (!matchDataRioTerra) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Formato inválido. Use:\n\n*MM/AAAA*\n\n_Exemplo: 11/2015_"
+        );
+        return;
+      }
+
+      const [, mesRioTerra, anoRioTerra] = matchDataRioTerra;
+      estado.rioTerraQuando = {
+        mes: mesRioTerra.padStart(2, '0'),
+        ano: anoRioTerra
+      };
+
+      // Finalizar seção 11
+      await avancar("secao12", "✅ *Seção Uso do Rio e Terra concluída!*\n\nVamos para a próxima seção...");
+      break;
+
+    case "secao12":
+      // Ir direto para seção 13 - Indenizações ou Ações
+      await avancar("indenizacao_processo", mensagens.indenizacaoProcesso);
+      break;
+
+    case "indenizacao_processo":
+      if (["sim", "s", "ok", "processei", "sim processei"].includes(userMessage)) {
+        estado.indenizacaoProcesso = true;
+      } else if (["não", "nao", "n", "não processei"].includes(userMessage)) {
+        estado.indenizacaoProcesso = false;
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se já processou a Samarco/Renova\n• *NÃO* se não processou"
+        );
+        return;
+      }
+      await avancar("indenizacao_recebidas", mensagens.indenizacaoRecebidas);
+      break;
+
+    case "indenizacao_recebidas":
+      // Processar seleção de indenizações recebidas
+      const indenizacoesMap = {
+        '1': 'AFE',
+        '2': 'PIM (conhecido como os 1.000 reais)',
+        '3': 'PID (os 35 mil reais)',
+        '4': 'Sistema NÓVEL (os 15 mil reais)',
+        '5': 'Não recebi nada'
+      };
+
+      const indenizacoesSelecionadas = userRaw.toLowerCase()
+        .replace(/[^1-5,]/g, '')
+        .split(',')
+        .map(opt => opt.trim())
+        .filter(opt => opt in indenizacoesMap);
+
+      if (indenizacoesSelecionadas.length === 0) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
+          "Digite os números das indenizações que recebeu\n\n" +
+          "_Exemplo: 1,2 ou 5 (se não recebeu nada)_"
+        );
+        return;
+      }
+
+      const indenizacoesTexto = indenizacoesSelecionadas.map(opt => indenizacoesMap[opt]);
+      estado.indenizacaoRecebidas = indenizacoesTexto;
+
+      console.log(`✅ Indenizações recebidas: ${indenizacoesTexto.join(', ')}`);
+
+      // Se selecionou "Não recebi nada", pular pergunta sobre quando recebeu
+      if (indenizacoesSelecionadas.includes('5')) {
+        await avancar("indenizacao_cadastrado", mensagens.indenizacaoCadastrado);
+      } else {
+        await avancar("indenizacao_quando", mensagens.indenizacaoQuando);
+      }
+      break;
+
+    case "indenizacao_quando":
+      // Validar formato MM/AAAA
+      const regexDataIndenizacao = /^(\d{1,2})\/(\d{4})$/;
+      const matchDataIndenizacao = userRaw.match(regexDataIndenizacao);
+      
+      if (!matchDataIndenizacao) {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Formato inválido. Use:\n\n*MM/AAAA*\n\n_Exemplo: 03/2020_"
+        );
+        return;
+      }
+
+      const [, mesIndenizacao, anoIndenizacao] = matchDataIndenizacao;
+      estado.indenizacaoQuando = {
+        mes: mesIndenizacao.padStart(2, '0'),
+        ano: anoIndenizacao
+      };
+
+      await avancar("indenizacao_cadastrado", mensagens.indenizacaoCadastrado);
+      break;
+
+    case "indenizacao_cadastrado":
+      if (["sim", "s", "ok", "estou", "sim estou"].includes(userMessage)) {
+        estado.indenizacaoCadastrado = true;
+      } else if (["não", "nao", "n", "não estou"].includes(userMessage)) {
+        estado.indenizacaoCadastrado = false;
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se está cadastrado para receber\n• *NÃO* se não está cadastrado"
+        );
+        return;
+      }
+      await avancar("indenizacao_contato", mensagens.indenizacaoContato);
+      break;
+
+    case "indenizacao_contato":
+      if (["sim", "s", "ok", "fui", "sim fui"].includes(userMessage)) {
+        estado.indenizacaoContato = true;
+      } else if (["não", "nao", "n", "não fui"].includes(userMessage)) {
+        estado.indenizacaoContato = false;
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❓ Por favor, responda:\n\n• *SIM* se já foi contatado\n• *NÃO* se não foi contatado"
+        );
+        return;
+      }
+
+      // Finalizar seção 13 e questionário completo
+      await avancar("finalizar", "✅ *Seção Indenizações concluída!*\n\n🎉 *Questionário completo!*\n\nSeus dados estão sendo salvos...");
+      break;
+
+    case "finalizar":
+      // Salvar dados e finalizar questionário
+      await salvarDadosCompletos(client, id, estado);
+      
       await client.sendText(
         id,
-        "⚠️ *Questionário em desenvolvimento*\n\n" +
-        "Próximas seções serão adicionadas em breve.\n" +
-        "Seus dados de todas as seções foram salvos!\n\n" +
-        "Obrigado pela paciência! 🙏"
+        "🎉 *Parabéns! Cadastro finalizado com sucesso!*\n\n" +
+        "✅ Todas as suas informações foram registradas\n" +
+        "📊 Seus dados foram salvos no sistema\n" +
+        "📞 Entraremos em contato em breve\n\n" +
+        "*Obrigado pela sua participação!* 🙏"
       );
-
-      // Salvar dados e finalizar por enquanto
-      await salvarDadosCompletos(client, id, estado);
+      
       limparEstado(id);
       break;    default:
       console.log(`⚠️ Etapa não reconhecida: ${etapa3}`);
@@ -1350,9 +1980,41 @@ async function salvarDadosCompletos(client, id, estado) {
       custo_vida_quando_ano: estado.custoVidaQuando?.ano || "",
       custo_vida_valor_mensal: estado.custoVidaValor || 0,
 
-      status: "secoes_completas_ate_custo_vida",
+      // Dados de prejuízo na renda
+      renda_prejudicada: estado.rendaPrejuizo || false,
+      renda_motivos: estado.rendaMotivos ? estado.rendaMotivos.join('; ') : "",
+      renda_quando_mes: estado.rendaQuando?.mes || "",
+      renda_quando_ano: estado.rendaQuando?.ano || "",
+      renda_valor_perdido: estado.rendaValor || 0,
+
+      // Dados de problemas com água
+      agua_problemas: estado.aguaProblemas || false,
+      agua_tipos: estado.aguaTipos ? estado.aguaTipos.join('; ') : "",
+      agua_continua: estado.aguaContinua || false,
+      agua_tempo_descricao: estado.aguaTempo || "",
+      agua_gastos_tipos: estado.aguaGastos ? estado.aguaGastos.join('; ') : "",
+      agua_outros: estado.aguaOutros || "",
+      agua_valor_mensal: estado.aguaValor || 0,
+
+      // Dados de uso do rio e terra
+      rio_terra_perdeu_rio: estado.rioTerraRio || false,
+      rio_terra_perdeu_terra: estado.rioTerraTerra || false,
+      rio_terra_usos: estado.rioTerraUsos ? estado.rioTerraUsos.join('; ') : "",
+      rio_terra_outros: estado.rioTerraOutros || "",
+      rio_terra_quando_mes: estado.rioTerraQuando?.mes || "",
+      rio_terra_quando_ano: estado.rioTerraQuando?.ano || "",
+
+      // Dados de indenizações ou ações
+      indenizacao_processou: estado.indenizacaoProcesso || false,
+      indenizacao_tipos_recebidas: estado.indenizacaoRecebidas ? estado.indenizacaoRecebidas.join('; ') : "",
+      indenizacao_quando_mes: estado.indenizacaoQuando?.mes || "",
+      indenizacao_quando_ano: estado.indenizacaoQuando?.ano || "",
+      indenizacao_cadastrado: estado.indenizacaoCadastrado || false,
+      indenizacao_foi_contatado: estado.indenizacaoContato || false,
+
+      status: "questionario_completo",
       observacoes:
-        "Seções de saúde física, emocional, perda de bens, mudança de casa, alimentação e custo de vida concluídas",
+        "Questionário completo: todas as seções de impactos e indenizações foram preenchidas",
     };
 
     console.log("📊 Dados preparados:", dadosParaSalvar);
