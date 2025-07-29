@@ -57,7 +57,7 @@ async function fluxoEndereco(client, msg) {
   switch (estado.etapaEndereco) {
     case "cep":
       // Aceita formatos: 12345678 ou 12345-678
-      const cepLimpo = userMessage.replace(/\D/g, ''); // Remove caracteres não numéricos
+      const cepLimpo = userMessage.replace(/\D/g, ""); // Remove caracteres não numéricos
       if (!/^\d{8}$/.test(cepLimpo)) {
         await client.sendText(
           id,
