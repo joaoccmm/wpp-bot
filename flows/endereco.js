@@ -21,7 +21,7 @@ async function enviarMensagemSeguraEndereco(
 }
 
 const mensagensEndereco = {
-  cep: "6️⃣ Informe seu *CEP* (somente números):",
+  cep: "6️⃣ Informe seu *CEP* (formato: 12345-678 ou 12345678):",
   rua: "7️⃣ Informe o *nome da rua* ou *logradouro*:",
   numero: "8️⃣ Informe o *número* da residência:",
   complemento: "9️⃣ Informe o *complemento* (ou digite 'nenhum'):",
@@ -56,14 +56,16 @@ async function fluxoEndereco(client, msg) {
 
   switch (estado.etapaEndereco) {
     case "cep":
-      if (!/^\d{8}$/.test(userMessage)) {
+      // Aceita formatos: 12345678 ou 12345-678
+      const cepLimpo = userMessage.replace(/\D/g, ''); // Remove caracteres não numéricos
+      if (!/^\d{8}$/.test(cepLimpo)) {
         await client.sendText(
           id,
-          "❌ CEP inválido. Envie os 8 dígitos do CEP."
+          "❌ CEP inválido. Envie o CEP no formato 12345-678 ou 12345678."
         );
         return;
       }
-      estado.cep = userMessage;
+      estado.cep = cepLimpo; // Salva apenas os números
       estado.etapaEndereco = "rua";
       setEstado(id, estado);
       await client.sendText(id, mensagensEndereco.rua);

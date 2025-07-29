@@ -79,7 +79,6 @@ const mensagens = {
   saudeQuando:
     "📅 *2.4 Quando começou a perceber que era por causa da barragem?*\n\n" +
     "Digite o mês e ano (exemplo: 11/2015) seguido da descrição:\n\n" +
-    "_Formato: MM/AAAA - descrição_\n" +
     "_Exemplo: 11/2015 - por causa de exames_",
 
   saudeDiagnostico:
@@ -124,7 +123,6 @@ const mensagens = {
   emocionalQuando:
     "📅 *3.3 Quando começou?*\n\n" +
     "Digite o mês e ano:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 11/2015_",
 
   emocionalExiste:
@@ -179,7 +177,6 @@ const mensagens = {
   bensQuando:
     "📅 *4.4 Quando percebeu a perda?*\n\n" +
     "Digite o mês e ano:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 11/2015_",
 
   // SEÇÃO 5: MUDANÇA DE CASA
@@ -206,7 +203,6 @@ const mensagens = {
   mudancaQuando:
     "📅 *5.2 Quando se mudou?*\n\n" +
     "Digite o mês e ano:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 11/2015_",
 
   mudancaVoltou:
@@ -233,7 +229,6 @@ const mensagens = {
   alimentacaoQuando:
     "📅 *6.1 Quando isso aconteceu?*\n\n" +
     "Digite o mês e ano:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 11/2015_",
 
   alimentacaoSemFonte:
@@ -278,7 +273,6 @@ const mensagens = {
   custoVidaQuando:
     "📅 *7.2 Desde quando?*\n\n" +
     "Digite o mês e ano:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 11/2015_",
 
   custoVidaValor:
@@ -309,7 +303,6 @@ const mensagens = {
   rendaQuando:
     "📅 *8.2 Quando começou?*\n\n" +
     "Digite o mês e ano:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 11/2015_",
 
   rendaValor:
@@ -333,8 +326,7 @@ const mensagens = {
     "*3)* Contaminada\n\n" +
     "_Exemplo: 1,3 ou 2_",
 
-  aguaContinua:
-    "⏰ *9.2 Ainda continua?*\n\n" + "👉 *Sim* ou *Não*",
+  aguaContinua: "⏰ *9.2 Ainda continua?*\n\n" + "👉 *Sim* ou *Não*",
 
   aguaTempo:
     "📅 *9.3 Desde quando e por quanto tempo?*\n\n" +
@@ -395,7 +387,6 @@ const mensagens = {
   rioTerraQuando:
     "📅 *11.2 Quando percebeu a perda?*\n\n" +
     "Digite o mês e ano:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 11/2015_",
 
   // SEÇÃO 13: INDENIZAÇÕES OU AÇÕES
@@ -418,7 +409,6 @@ const mensagens = {
   indenizacaoQuando:
     "📅 *13.2 Quando recebeu?*\n\n" +
     "Digite o mês e ano da última indenização recebida:\n\n" +
-    "_Formato: MM/AAAA_\n" +
     "_Exemplo: 03/2020_",
 
   indenizacaoCadastrado:
@@ -1286,13 +1276,18 @@ async function fluxoPerguntas(client, msg) {
       break;
 
     case "custo_vida_aumento":
-      if (["sim", "s", "ok", "aumentou", "sim aumentou"].includes(userMessage)) {
+      if (
+        ["sim", "s", "ok", "aumentou", "sim aumentou"].includes(userMessage)
+      ) {
         estado.custoVidaAumento = true;
         await avancar("custo_vida_tipos", mensagens.custoVidaTipos);
       } else if (["não", "nao", "n", "não aumentou"].includes(userMessage)) {
         estado.custoVidaAumento = false;
         // Pular para próxima seção (seção 8)
-        await avancar("secao8", "✅ *Seção Custo de Vida registrada!*\n\nVamos para a próxima seção...");
+        await avancar(
+          "secao8",
+          "✅ *Seção Custo de Vida registrada!*\n\nVamos para a próxima seção..."
+        );
       } else {
         await enviarComSeguranca(
           client,
@@ -1305,34 +1300,37 @@ async function fluxoPerguntas(client, msg) {
     case "custo_vida_tipos":
       // Processar seleção de tipos de gastos
       const tiposCustoMap = {
-        '1': 'Alimentação',
-        '2': 'Moradia',
-        '3': 'Transporte',
-        '4': 'Lazer',
-        '5': 'Vestuário'
+        1: "Alimentação",
+        2: "Moradia",
+        3: "Transporte",
+        4: "Lazer",
+        5: "Vestuário",
       };
 
-      const tiposCustoSelecionados = userRaw.toLowerCase()
-        .replace(/[^1-5,]/g, '')
-        .split(',')
-        .map(opt => opt.trim())
-        .filter(opt => opt in tiposCustoMap);
+      const tiposCustoSelecionados = userRaw
+        .toLowerCase()
+        .replace(/[^1-5,]/g, "")
+        .split(",")
+        .map((opt) => opt.trim())
+        .filter((opt) => opt in tiposCustoMap);
 
       if (tiposCustoSelecionados.length === 0) {
         await enviarComSeguranca(
           client,
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
-          "Digite os números dos gastos que aumentaram\n\n" +
-          "_Exemplo: 1,3,5 ou 2,4_"
+            "Digite os números dos gastos que aumentaram\n\n" +
+            "_Exemplo: 1,3,5 ou 2,4_"
         );
         return;
       }
 
-      const tiposCustoTexto = tiposCustoSelecionados.map(opt => tiposCustoMap[opt]);
+      const tiposCustoTexto = tiposCustoSelecionados.map(
+        (opt) => tiposCustoMap[opt]
+      );
       estado.custoVidaTipos = tiposCustoTexto;
 
-      console.log(`✅ Tipos de custo aumentado: ${tiposCustoTexto.join(', ')}`);
+      console.log(`✅ Tipos de custo aumentado: ${tiposCustoTexto.join(", ")}`);
 
       await avancar("custo_vida_quando", mensagens.custoVidaQuando);
       break;
@@ -1341,7 +1339,7 @@ async function fluxoPerguntas(client, msg) {
       // Validar formato MM/AAAA
       const regexDataCusto = /^(\d{1,2})\/(\d{4})$/;
       const matchDataCusto = userRaw.match(regexDataCusto);
-      
+
       if (!matchDataCusto) {
         await enviarComSeguranca(
           client,
@@ -1353,8 +1351,8 @@ async function fluxoPerguntas(client, msg) {
 
       const [, mesCusto, anoCusto] = matchDataCusto;
       estado.custoVidaQuando = {
-        mes: mesCusto.padStart(2, '0'),
-        ano: anoCusto
+        mes: mesCusto.padStart(2, "0"),
+        ano: anoCusto,
       };
 
       await avancar("custo_vida_valor", mensagens.custoVidaValor);
@@ -1362,8 +1360,8 @@ async function fluxoPerguntas(client, msg) {
 
     case "custo_vida_valor":
       // Validar valor numérico
-      const valorCustoLimpo = userRaw.replace(/[^\d]/g, '');
-      
+      const valorCustoLimpo = userRaw.replace(/[^\d]/g, "");
+
       if (!/^\d+$/.test(valorCustoLimpo)) {
         await enviarComSeguranca(
           client,
@@ -1374,9 +1372,12 @@ async function fluxoPerguntas(client, msg) {
       }
 
       estado.custoVidaValor = parseInt(valorCustoLimpo);
-      
+
       // Finalizar seção 7
-      await avancar("secao8", "✅ *Seção Custo de Vida concluída!*\n\nVamos para a próxima seção...");
+      await avancar(
+        "secao8",
+        "✅ *Seção Custo de Vida concluída!*\n\nVamos para a próxima seção..."
+      );
       break;
 
     case "secao8":
@@ -1391,7 +1392,10 @@ async function fluxoPerguntas(client, msg) {
       } else if (["não", "nao", "n", "não foi"].includes(userMessage)) {
         estado.rendaPrejuizo = false;
         // Pular para próxima seção (seção 9)
-        await avancar("secao9", "✅ *Seção Renda registrada!*\n\nVamos para a próxima seção...");
+        await avancar(
+          "secao9",
+          "✅ *Seção Renda registrada!*\n\nVamos para a próxima seção..."
+        );
       } else {
         await enviarComSeguranca(
           client,
@@ -1404,36 +1408,41 @@ async function fluxoPerguntas(client, msg) {
     case "renda_motivos":
       // Processar seleção de motivos da perda de renda
       const motivosRendaMap = {
-        '1': 'Pesca',
-        '2': 'Agricultura', 
-        '3': 'Pecuária',
-        '4': 'Fechamento da Samarco',
-        '5': 'Danos materiais ou ambientais',
-        '6': 'Turismo (poucas pessoas no local)',
-        '7': 'Saída de moradores'
+        1: "Pesca",
+        2: "Agricultura",
+        3: "Pecuária",
+        4: "Fechamento da Samarco",
+        5: "Danos materiais ou ambientais",
+        6: "Turismo (poucas pessoas no local)",
+        7: "Saída de moradores",
       };
 
-      const motivosRendaSelecionados = userRaw.toLowerCase()
-        .replace(/[^1-7,]/g, '')
-        .split(',')
-        .map(opt => opt.trim())
-        .filter(opt => opt in motivosRendaMap);
+      const motivosRendaSelecionados = userRaw
+        .toLowerCase()
+        .replace(/[^1-7,]/g, "")
+        .split(",")
+        .map((opt) => opt.trim())
+        .filter((opt) => opt in motivosRendaMap);
 
       if (motivosRendaSelecionados.length === 0) {
         await enviarComSeguranca(
           client,
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
-          "Digite os números dos motivos da perda de renda\n\n" +
-          "_Exemplo: 1,4,5 ou 2,6_"
+            "Digite os números dos motivos da perda de renda\n\n" +
+            "_Exemplo: 1,4,5 ou 2,6_"
         );
         return;
       }
 
-      const motivosRendaTexto = motivosRendaSelecionados.map(opt => motivosRendaMap[opt]);
+      const motivosRendaTexto = motivosRendaSelecionados.map(
+        (opt) => motivosRendaMap[opt]
+      );
       estado.rendaMotivos = motivosRendaTexto;
 
-      console.log(`✅ Motivos da perda de renda: ${motivosRendaTexto.join(', ')}`);
+      console.log(
+        `✅ Motivos da perda de renda: ${motivosRendaTexto.join(", ")}`
+      );
 
       await avancar("renda_quando", mensagens.rendaQuando);
       break;
@@ -1442,7 +1451,7 @@ async function fluxoPerguntas(client, msg) {
       // Validar formato MM/AAAA
       const regexDataRenda = /^(\d{1,2})\/(\d{4})$/;
       const matchDataRenda = userRaw.match(regexDataRenda);
-      
+
       if (!matchDataRenda) {
         await enviarComSeguranca(
           client,
@@ -1454,8 +1463,8 @@ async function fluxoPerguntas(client, msg) {
 
       const [, mesRenda, anoRenda] = matchDataRenda;
       estado.rendaQuando = {
-        mes: mesRenda.padStart(2, '0'),
-        ano: anoRenda
+        mes: mesRenda.padStart(2, "0"),
+        ano: anoRenda,
       };
 
       await avancar("renda_valor", mensagens.rendaValor);
@@ -1463,8 +1472,8 @@ async function fluxoPerguntas(client, msg) {
 
     case "renda_valor":
       // Validar valor numérico
-      const valorRendaLimpo = userRaw.replace(/[^\d]/g, '');
-      
+      const valorRendaLimpo = userRaw.replace(/[^\d]/g, "");
+
       if (!/^\d+$/.test(valorRendaLimpo)) {
         await enviarComSeguranca(
           client,
@@ -1475,9 +1484,12 @@ async function fluxoPerguntas(client, msg) {
       }
 
       estado.rendaValor = parseInt(valorRendaLimpo);
-      
+
       // Finalizar seção 8
-      await avancar("secao9", "✅ *Seção Prejuízo na Renda concluída!*\n\nVamos para a próxima seção...");
+      await avancar(
+        "secao9",
+        "✅ *Seção Prejuízo na Renda concluída!*\n\nVamos para a próxima seção..."
+      );
       break;
 
     case "secao9":
@@ -1492,7 +1504,10 @@ async function fluxoPerguntas(client, msg) {
       } else if (["não", "nao", "n", "não foi"].includes(userMessage)) {
         estado.aguaProblemas = false;
         // Pular para próxima seção (seção 10)
-        await avancar("secao10", "✅ *Seção Água registrada!*\n\nVamos para a próxima seção...");
+        await avancar(
+          "secao10",
+          "✅ *Seção Água registrada!*\n\nVamos para a próxima seção..."
+        );
       } else {
         await enviarComSeguranca(
           client,
@@ -1505,32 +1520,37 @@ async function fluxoPerguntas(client, msg) {
     case "agua_tipos":
       // Processar seleção de tipos de problemas com água
       const tiposAguaMap = {
-        '1': 'Ficou sem água',
-        '2': 'Ficava oscilando',
-        '3': 'Contaminada'
+        1: "Ficou sem água",
+        2: "Ficava oscilando",
+        3: "Contaminada",
       };
 
-      const tiposAguaSelecionados = userRaw.toLowerCase()
-        .replace(/[^1-3,]/g, '')
-        .split(',')
-        .map(opt => opt.trim())
-        .filter(opt => opt in tiposAguaMap);
+      const tiposAguaSelecionados = userRaw
+        .toLowerCase()
+        .replace(/[^1-3,]/g, "")
+        .split(",")
+        .map((opt) => opt.trim())
+        .filter((opt) => opt in tiposAguaMap);
 
       if (tiposAguaSelecionados.length === 0) {
         await enviarComSeguranca(
           client,
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
-          "Digite os números dos problemas que teve\n\n" +
-          "_Exemplo: 1,3 ou 2_"
+            "Digite os números dos problemas que teve\n\n" +
+            "_Exemplo: 1,3 ou 2_"
         );
         return;
       }
 
-      const tiposAguaTexto = tiposAguaSelecionados.map(opt => tiposAguaMap[opt]);
+      const tiposAguaTexto = tiposAguaSelecionados.map(
+        (opt) => tiposAguaMap[opt]
+      );
       estado.aguaTipos = tiposAguaTexto;
 
-      console.log(`✅ Tipos de problemas com água: ${tiposAguaTexto.join(', ')}`);
+      console.log(
+        `✅ Tipos de problemas com água: ${tiposAguaTexto.join(", ")}`
+      );
 
       await avancar("agua_continua", mensagens.aguaContinua);
       break;
@@ -1538,7 +1558,9 @@ async function fluxoPerguntas(client, msg) {
     case "agua_continua":
       if (["sim", "s", "ok", "continua", "ainda"].includes(userMessage)) {
         estado.aguaContinua = true;
-      } else if (["não", "nao", "n", "parou", "não continua"].includes(userMessage)) {
+      } else if (
+        ["não", "nao", "n", "parou", "não continua"].includes(userMessage)
+      ) {
         estado.aguaContinua = false;
       } else {
         await enviarComSeguranca(
@@ -1559,45 +1581,50 @@ async function fluxoPerguntas(client, msg) {
     case "agua_gastos":
       // Processar seleção de tipos de gastos com água
       const gastosAguaMap = {
-        '1': 'Compra de água',
-        '2': 'Poço ou cisterna',
-        '3': 'Transporte',
-        '4': 'Outros',
-        '5': 'Não tive despesas'
+        1: "Compra de água",
+        2: "Poço ou cisterna",
+        3: "Transporte",
+        4: "Outros",
+        5: "Não tive despesas",
       };
 
-      const gastosAguaSelecionados = userRaw.toLowerCase()
-        .replace(/[^1-5,]/g, '')
-        .split(',')
-        .map(opt => opt.trim())
-        .filter(opt => opt in gastosAguaMap);
+      const gastosAguaSelecionados = userRaw
+        .toLowerCase()
+        .replace(/[^1-5,]/g, "")
+        .split(",")
+        .map((opt) => opt.trim())
+        .filter((opt) => opt in gastosAguaMap);
 
       if (gastosAguaSelecionados.length === 0) {
         await enviarComSeguranca(
           client,
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
-          "Digite os números dos gastos que teve\n\n" +
-          "_Exemplo: 1,3 ou 5 (se não teve despesas)_"
+            "Digite os números dos gastos que teve\n\n" +
+            "_Exemplo: 1,3 ou 5 (se não teve despesas)_"
         );
         return;
       }
 
-      const gastosAguaTexto = gastosAguaSelecionados.map(opt => gastosAguaMap[opt]);
+      const gastosAguaTexto = gastosAguaSelecionados.map(
+        (opt) => gastosAguaMap[opt]
+      );
       estado.aguaGastos = gastosAguaTexto;
 
-      console.log(`✅ Gastos com água: ${gastosAguaTexto.join(', ')}`);
+      console.log(`✅ Gastos com água: ${gastosAguaTexto.join(", ")}`);
 
       // Se selecionou "Outros", perguntar qual
-      if (gastosAguaSelecionados.includes('4')) {
+      if (gastosAguaSelecionados.includes("4")) {
         await avancar("agua_outros", mensagens.aguaOutros);
-      } 
+      }
       // Se selecionou "Não tive despesas", pular para próxima seção
-      else if (gastosAguaSelecionados.includes('5')) {
+      else if (gastosAguaSelecionados.includes("5")) {
         estado.aguaValor = 0;
-        await avancar("secao10", "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção...");
-      } 
-      else {
+        await avancar(
+          "secao10",
+          "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção..."
+        );
+      } else {
         await avancar("agua_valor", mensagens.aguaValor);
       }
       break;
@@ -1609,8 +1636,8 @@ async function fluxoPerguntas(client, msg) {
 
     case "agua_valor":
       // Validar valor numérico
-      const valorAguaLimpo = userRaw.replace(/[^\d]/g, '');
-      
+      const valorAguaLimpo = userRaw.replace(/[^\d]/g, "");
+
       if (!/^\d+$/.test(valorAguaLimpo)) {
         await enviarComSeguranca(
           client,
@@ -1621,9 +1648,12 @@ async function fluxoPerguntas(client, msg) {
       }
 
       estado.aguaValor = parseInt(valorAguaLimpo);
-      
+
       // Finalizar seção 9
-      await avancar("secao10", "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção...");
+      await avancar(
+        "secao10",
+        "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção..."
+      );
       break;
 
     case "secao10":
@@ -1656,10 +1686,13 @@ async function fluxoPerguntas(client, msg) {
         await avancar("rio_terra_usos", mensagens.rioTerraUsos);
       } else if (["não", "nao", "n", "não perdi"].includes(userMessage)) {
         estado.rioTerraTerra = false;
-        
+
         // Se não perdeu nem rio nem terra, pular para seção 12
         if (!estado.rioTerraAlgumUso) {
-          await avancar("secao12", "✅ *Seção Uso do Rio e Terra registrada!*\n\nVamos para a próxima seção...");
+          await avancar(
+            "secao12",
+            "✅ *Seção Uso do Rio e Terra registrada!*\n\nVamos para a próxima seção..."
+          );
         } else {
           // Se perdeu pelo menos um (rio), continuar com os usos
           await avancar("rio_terra_usos", mensagens.rioTerraUsos);
@@ -1676,41 +1709,44 @@ async function fluxoPerguntas(client, msg) {
     case "rio_terra_usos":
       // Processar seleção de tipos de usos
       const usosRioTerraMap = {
-        '1': 'Pesca',
-        '2': 'Navegação',
-        '3': 'Esporte',
-        '4': 'Cerimônias',
-        '5': 'Para plantar/comer',
-        '6': 'Criar animais',
-        '7': 'Atividades com a família',
-        '8': 'Tradições ou cultos',
-        '9': 'Outros'
+        1: "Pesca",
+        2: "Navegação",
+        3: "Esporte",
+        4: "Cerimônias",
+        5: "Para plantar/comer",
+        6: "Criar animais",
+        7: "Atividades com a família",
+        8: "Tradições ou cultos",
+        9: "Outros",
       };
 
-      const usosRioTerraSelecionados = userRaw.toLowerCase()
-        .replace(/[^1-9,]/g, '')
-        .split(',')
-        .map(opt => opt.trim())
-        .filter(opt => opt in usosRioTerraMap);
+      const usosRioTerraSelecionados = userRaw
+        .toLowerCase()
+        .replace(/[^1-9,]/g, "")
+        .split(",")
+        .map((opt) => opt.trim())
+        .filter((opt) => opt in usosRioTerraMap);
 
       if (usosRioTerraSelecionados.length === 0) {
         await enviarComSeguranca(
           client,
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
-          "Digite os números dos usos que teve\n\n" +
-          "_Exemplo: 1,5,7 ou 2,4,8_"
+            "Digite os números dos usos que teve\n\n" +
+            "_Exemplo: 1,5,7 ou 2,4,8_"
         );
         return;
       }
 
-      const usosRioTerraTexto = usosRioTerraSelecionados.map(opt => usosRioTerraMap[opt]);
+      const usosRioTerraTexto = usosRioTerraSelecionados.map(
+        (opt) => usosRioTerraMap[opt]
+      );
       estado.rioTerraUsos = usosRioTerraTexto;
 
-      console.log(`✅ Usos do rio/terra: ${usosRioTerraTexto.join(', ')}`);
+      console.log(`✅ Usos do rio/terra: ${usosRioTerraTexto.join(", ")}`);
 
       // Se selecionou "Outros", perguntar qual
-      if (usosRioTerraSelecionados.includes('9')) {
+      if (usosRioTerraSelecionados.includes("9")) {
         await avancar("rio_terra_outros", mensagens.rioTerraOutros);
       } else {
         await avancar("rio_terra_quando", mensagens.rioTerraQuando);
@@ -1726,7 +1762,7 @@ async function fluxoPerguntas(client, msg) {
       // Validar formato MM/AAAA
       const regexDataRioTerra = /^(\d{1,2})\/(\d{4})$/;
       const matchDataRioTerra = userRaw.match(regexDataRioTerra);
-      
+
       if (!matchDataRioTerra) {
         await enviarComSeguranca(
           client,
@@ -1738,12 +1774,15 @@ async function fluxoPerguntas(client, msg) {
 
       const [, mesRioTerra, anoRioTerra] = matchDataRioTerra;
       estado.rioTerraQuando = {
-        mes: mesRioTerra.padStart(2, '0'),
-        ano: anoRioTerra
+        mes: mesRioTerra.padStart(2, "0"),
+        ano: anoRioTerra,
       };
 
       // Finalizar seção 11
-      await avancar("secao12", "✅ *Seção Uso do Rio e Terra concluída!*\n\nVamos para a próxima seção...");
+      await avancar(
+        "secao12",
+        "✅ *Seção Uso do Rio e Terra concluída!*\n\nVamos para a próxima seção..."
+      );
       break;
 
     case "secao12":
@@ -1752,7 +1791,9 @@ async function fluxoPerguntas(client, msg) {
       break;
 
     case "indenizacao_processo":
-      if (["sim", "s", "ok", "processei", "sim processei"].includes(userMessage)) {
+      if (
+        ["sim", "s", "ok", "processei", "sim processei"].includes(userMessage)
+      ) {
         estado.indenizacaoProcesso = true;
       } else if (["não", "nao", "n", "não processei"].includes(userMessage)) {
         estado.indenizacaoProcesso = false;
@@ -1770,38 +1811,44 @@ async function fluxoPerguntas(client, msg) {
     case "indenizacao_recebidas":
       // Processar seleção de indenizações recebidas
       const indenizacoesMap = {
-        '1': 'AFE',
-        '2': 'PIM (conhecido como os 1.000 reais)',
-        '3': 'PID (os 35 mil reais)',
-        '4': 'Sistema NÓVEL (os 15 mil reais)',
-        '5': 'Não recebi nada'
+        1: "AFE",
+        2: "PIM (conhecido como os 1.000 reais)",
+        3: "PID (os 35 mil reais)",
+        4: "Sistema NÓVEL (os 15 mil reais)",
+        5: "Não recebi nada",
       };
 
-      const indenizacoesSelecionadas = userRaw.toLowerCase()
-        .replace(/[^1-5,]/g, '')
-        .split(',')
-        .map(opt => opt.trim())
-        .filter(opt => opt in indenizacoesMap);
+      const indenizacoesSelecionadas = userRaw
+        .toLowerCase()
+        .replace(/[^1-5,]/g, "")
+        .split(",")
+        .map((opt) => opt.trim())
+        .filter((opt) => opt in indenizacoesMap);
 
       if (indenizacoesSelecionadas.length === 0) {
         await enviarComSeguranca(
           client,
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
-          "Digite os números das indenizações que recebeu\n\n" +
-          "_Exemplo: 1,2 ou 5 (se não recebeu nada)_"
+            "Digite os números das indenizações que recebeu\n\n" +
+            "_Exemplo: 1,2 ou 5 (se não recebeu nada)_"
         );
         return;
       }
 
-      const indenizacoesTexto = indenizacoesSelecionadas.map(opt => indenizacoesMap[opt]);
+      const indenizacoesTexto = indenizacoesSelecionadas.map(
+        (opt) => indenizacoesMap[opt]
+      );
       estado.indenizacaoRecebidas = indenizacoesTexto;
 
-      console.log(`✅ Indenizações recebidas: ${indenizacoesTexto.join(', ')}`);
+      console.log(`✅ Indenizações recebidas: ${indenizacoesTexto.join(", ")}`);
 
       // Se selecionou "Não recebi nada", pular pergunta sobre quando recebeu
-      if (indenizacoesSelecionadas.includes('5')) {
-        await avancar("indenizacao_cadastrado", mensagens.indenizacaoCadastrado);
+      if (indenizacoesSelecionadas.includes("5")) {
+        await avancar(
+          "indenizacao_cadastrado",
+          mensagens.indenizacaoCadastrado
+        );
       } else {
         await avancar("indenizacao_quando", mensagens.indenizacaoQuando);
       }
@@ -1811,7 +1858,7 @@ async function fluxoPerguntas(client, msg) {
       // Validar formato MM/AAAA
       const regexDataIndenizacao = /^(\d{1,2})\/(\d{4})$/;
       const matchDataIndenizacao = userRaw.match(regexDataIndenizacao);
-      
+
       if (!matchDataIndenizacao) {
         await enviarComSeguranca(
           client,
@@ -1823,8 +1870,8 @@ async function fluxoPerguntas(client, msg) {
 
       const [, mesIndenizacao, anoIndenizacao] = matchDataIndenizacao;
       estado.indenizacaoQuando = {
-        mes: mesIndenizacao.padStart(2, '0'),
-        ano: anoIndenizacao
+        mes: mesIndenizacao.padStart(2, "0"),
+        ano: anoIndenizacao,
       };
 
       await avancar("indenizacao_cadastrado", mensagens.indenizacaoCadastrado);
@@ -1861,24 +1908,28 @@ async function fluxoPerguntas(client, msg) {
       }
 
       // Finalizar seção 13 e questionário completo
-      await avancar("finalizar", "✅ *Seção Indenizações concluída!*\n\n🎉 *Questionário completo!*\n\nSeus dados estão sendo salvos...");
+      await avancar(
+        "finalizar",
+        "✅ *Seção Indenizações concluída!*\n\n🎉 *Questionário completo!*\n\nSeus dados estão sendo salvos..."
+      );
       break;
 
     case "finalizar":
       // Salvar dados e finalizar questionário
       await salvarDadosCompletos(client, id, estado);
-      
+
       await client.sendText(
         id,
         "🎉 *Parabéns! Cadastro finalizado com sucesso!*\n\n" +
-        "✅ Todas as suas informações foram registradas\n" +
-        "📊 Seus dados foram salvos no sistema\n" +
-        "📞 Entraremos em contato em breve\n\n" +
-        "*Obrigado pela sua participação!* 🙏"
+          "✅ Todas as suas informações foram registradas\n" +
+          "📊 Seus dados foram salvos no sistema\n" +
+          "📞 Entraremos em contato em breve\n\n" +
+          "*Obrigado pela sua participação!* 🙏"
       );
-      
+
       limparEstado(id);
-      break;    default:
+      break;
+    default:
       console.log(`⚠️ Etapa não reconhecida: ${etapa3}`);
       await client.sendText(
         id,
@@ -1975,38 +2026,42 @@ async function salvarDadosCompletos(client, id, estado) {
 
       // Dados de custo de vida
       custo_vida_aumento: estado.custoVidaAumento || false,
-      custo_vida_tipos: estado.custoVidaTipos ? estado.custoVidaTipos.join('; ') : "",
+      custo_vida_tipos: estado.custoVidaTipos
+        ? estado.custoVidaTipos.join("; ")
+        : "",
       custo_vida_quando_mes: estado.custoVidaQuando?.mes || "",
       custo_vida_quando_ano: estado.custoVidaQuando?.ano || "",
       custo_vida_valor_mensal: estado.custoVidaValor || 0,
 
       // Dados de prejuízo na renda
       renda_prejudicada: estado.rendaPrejuizo || false,
-      renda_motivos: estado.rendaMotivos ? estado.rendaMotivos.join('; ') : "",
+      renda_motivos: estado.rendaMotivos ? estado.rendaMotivos.join("; ") : "",
       renda_quando_mes: estado.rendaQuando?.mes || "",
       renda_quando_ano: estado.rendaQuando?.ano || "",
       renda_valor_perdido: estado.rendaValor || 0,
 
       // Dados de problemas com água
       agua_problemas: estado.aguaProblemas || false,
-      agua_tipos: estado.aguaTipos ? estado.aguaTipos.join('; ') : "",
+      agua_tipos: estado.aguaTipos ? estado.aguaTipos.join("; ") : "",
       agua_continua: estado.aguaContinua || false,
       agua_tempo_descricao: estado.aguaTempo || "",
-      agua_gastos_tipos: estado.aguaGastos ? estado.aguaGastos.join('; ') : "",
+      agua_gastos_tipos: estado.aguaGastos ? estado.aguaGastos.join("; ") : "",
       agua_outros: estado.aguaOutros || "",
       agua_valor_mensal: estado.aguaValor || 0,
 
       // Dados de uso do rio e terra
       rio_terra_perdeu_rio: estado.rioTerraRio || false,
       rio_terra_perdeu_terra: estado.rioTerraTerra || false,
-      rio_terra_usos: estado.rioTerraUsos ? estado.rioTerraUsos.join('; ') : "",
+      rio_terra_usos: estado.rioTerraUsos ? estado.rioTerraUsos.join("; ") : "",
       rio_terra_outros: estado.rioTerraOutros || "",
       rio_terra_quando_mes: estado.rioTerraQuando?.mes || "",
       rio_terra_quando_ano: estado.rioTerraQuando?.ano || "",
 
       // Dados de indenizações ou ações
       indenizacao_processou: estado.indenizacaoProcesso || false,
-      indenizacao_tipos_recebidas: estado.indenizacaoRecebidas ? estado.indenizacaoRecebidas.join('; ') : "",
+      indenizacao_tipos_recebidas: estado.indenizacaoRecebidas
+        ? estado.indenizacaoRecebidas.join("; ")
+        : "",
       indenizacao_quando_mes: estado.indenizacaoQuando?.mes || "",
       indenizacao_quando_ano: estado.indenizacaoQuando?.ano || "",
       indenizacao_cadastrado: estado.indenizacaoCadastrado || false,
