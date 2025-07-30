@@ -2095,7 +2095,7 @@ async function fluxoPerguntas(client, msg) {
 
         await avancar(
           "finalizar",
-          `✅ *Obrigado!*\n\nRegistramos que você foi indicado por: *${estado.indicadoPor}*\n\n🎉 *Finalizando seu cadastro...*`
+          `✅ *Obrigado!*\n\nRegistramos que você foi indicado por: *${estado.indicadoPor}*\n\n Você confirma que todas as informações fornecidas são verdadeiras e reafirma sua autorização para que possamos incluí-lo(a) neste processo?`
         );
       } else {
         await enviarComSeguranca(
