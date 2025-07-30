@@ -107,6 +107,7 @@ async function inicializarPlanilha() {
       "documento_verso_enviado",
       "contrato_aceito",
       "texto_autorizacao",
+      "indicado_por",
       "status",
       "observacoes",
     ]);
@@ -123,10 +124,42 @@ async function salvarNoSheets(dados) {
   try {
     console.log("🔍 Iniciando salvamento no Sheets com dados:", dados);
 
+    // Tentar salvar localmente primeiro como backup
+    const fs = require("fs");
+    const path = require("path");
+
+    const backupDir = path.join(__dirname, "..", "backup_dados");
+    if (!fs.existsSync(backupDir)) {
+      fs.mkdirSync(backupDir, { recursive: true });
+    }
+
+    const backupFile = path.join(backupDir, `dados_${Date.now()}.json`);
+    fs.writeFileSync(backupFile, JSON.stringify(dados, null, 2));
+    console.log(`💾 Backup local salvo em: ${backupFile}`);
+
     if (!doc.auth) {
       console.log("🔧 Inicializando autenticação...");
       doc.auth = criarAuth();
-      await doc.loadInfo();
+
+      // Configurar timeout para evitar travamento
+      console.log("⏱️ Tentando carregar planilha (com timeout de 5s)...");
+
+      try {
+        await Promise.race([
+          doc.loadInfo(),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Timeout na conexão")), 5000)
+          ),
+        ]);
+        console.log("✅ Planilha carregada com sucesso!");
+      } catch (timeoutError) {
+        console.error(
+          "⚠️ Timeout na conexão com Google Sheets:",
+          timeoutError.message
+        );
+        console.log("📋 Dados já salvos localmente, continuando...");
+        return; // Retorna sem erro, dados já estão salvos localmente
+      }
     }
 
     const sheet = doc.sheetsByIndex[0];
@@ -220,18 +253,53 @@ async function salvarNoSheets(dados) {
       documento_verso_enviado: dados.documento_verso_enviado || "",
       contrato_aceito: dados.contrato_aceito || "",
       texto_autorizacao: dados.texto_autorizacao || "",
+      indicado_por: dados.indicado_por || "",
       status: dados.status || "",
       observacoes: dados.observacoes || "",
     };
 
     console.log("💾 Dados formatados para salvamento:", dadosParaSalvar);
 
-    await sheet.addRow(dadosParaSalvar);
-    console.log("✅ Dados salvos com sucesso na planilha!");
+    // Tentar salvar na planilha com timeout
+    const addRowPromise = sheet.addRow(dadosParaSalvar);
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(
+        () => reject(new Error("Timeout ao salvar na planilha")),
+        10000
+      );
+    });
+
+    try {
+      await Promise.race([addRowPromise, timeoutPromise]);
+      console.log("✅ Dados salvos com sucesso na planilha!");
+    } catch (saveError) {
+      console.error("⚠️ Erro ao salvar na planilha:", saveError.message);
+      console.log("📋 Dados já estão salvos localmente como backup");
+      // Não re-lança o erro pois os dados estão salvos localmente
+    }
   } catch (error) {
     console.error("❌ Erro detalhado ao salvar na planilha:", error);
     console.error("Stack trace:", error.stack);
-    throw error;
+
+    // Mesmo com erro, tentar salvar backup local se ainda não foi salvo
+    try {
+      const fs = require("fs");
+      const path = require("path");
+
+      const backupDir = path.join(__dirname, "..", "backup_dados");
+      if (!fs.existsSync(backupDir)) {
+        fs.mkdirSync(backupDir, { recursive: true });
+      }
+
+      const backupFile = path.join(backupDir, `dados_erro_${Date.now()}.json`);
+      fs.writeFileSync(backupFile, JSON.stringify(dados, null, 2));
+      console.log(`💾 Backup de emergência salvo em: ${backupFile}`);
+    } catch (backupError) {
+      console.error("❌ Erro também no backup local:", backupError);
+    }
+
+    // Não re-lança o erro para não quebrar o fluxo do usuário
+    console.log("⚠️ Continuando fluxo apesar do erro no Google Sheets");
   }
 }
 

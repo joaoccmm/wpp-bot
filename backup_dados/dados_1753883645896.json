@@ -1,0 +1,12 @@
+{
+  "id": "teste-indicacao-1753883645884",
+  "nome": "Teste Indicação",
+  "timestamp": "2025-07-30T13:54:05.884Z",
+  "cpf": "123.456.789-00",
+  "telefone": "(11) 99999-9999",
+  "email": "teste@teste.com",
+  "contrato_aceito": true,
+  "texto_autorizacao": "Eu Teste Indicação, li, concordo e autorizo...",
+  "indicado_por": "Dr. Igor",
+  "status": "questionario_completo"
+}

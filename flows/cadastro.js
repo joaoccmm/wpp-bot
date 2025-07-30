@@ -251,10 +251,7 @@ async function fluxoCadastro(client, msg) {
           id,
           "✅ *Dados confirmados!*\n\nAgora vamos para a segunda etapa: *endereço*."
         );
-        await client.sendText(
-          id,
-          "6️⃣ Informe seu *CEP* (formato: 12345-678 ou 12345678):"
-        );
+        await client.sendText(id, "6️⃣ Informe seu *CEP*:");
       } else if (
         ["não", "nao", "n", "errado", "incorreto"].includes(userMessage)
       ) {

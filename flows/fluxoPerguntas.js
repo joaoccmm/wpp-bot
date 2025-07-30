@@ -435,13 +435,24 @@ const mensagens = {
   // CONTRATO
   contratoEnvio:
     "📄 *Contrato de Autorização*\n\n" +
-    "Vou enviar o contrato padrão para você analisar.",
+    "Agora vou enviar o contrato para você:",
 
   contratoConfirmacao:
     "📝 *Confirmação do Contrato*\n\n" +
     "Após ler o contrato, confirme copiando e colando EXATAMENTE o texto abaixo:",
 
   contratoTexto: `💬 *COPIE E COLE:*\n\n"Eu [SEU NOME COMPLETO], li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."`,
+
+  // Pergunta sobre indicação
+  indicacao:
+    "🤝 *Antes de finalizar, gostaria de saber quem te indicou para participar deste processo.*\n\n" +
+    "*Escolha uma das opções abaixo:*\n\n" +
+    "👉 *1* - Dr. Igor\n" +
+    "👉 *2* - Matheus\n" +
+    "👉 *3* - Aline\n" +
+    "👉 *4* - Simony\n" +
+    "👉 *5* - João Victor\n\n" +
+    "Digite o *número* da opção:",
 
   // Mensagens finais
   final:
@@ -2023,6 +2034,7 @@ async function fluxoPerguntas(client, msg) {
 
     case "contrato_aceite":
       const textoUsuario = userRaw.trim();
+      console.log("🔍 Verificando texto de autorização:", textoUsuario);
 
       // Verificar se o texto contém os elementos essenciais
       const contemNome =
@@ -2036,6 +2048,13 @@ async function fluxoPerguntas(client, msg) {
         .includes("utilização dos meus dados");
       const contemIgor = textoUsuario.toLowerCase().includes("dr. igor");
 
+      console.log("✅ Validações:", {
+        contemNome,
+        contemConcordo,
+        contemDados,
+        contemIgor,
+      });
+
       if (contemNome && contemConcordo && contemDados && contemIgor) {
         // Salvar a autorização
         estado.contratoAceito = true;
@@ -2043,8 +2062,8 @@ async function fluxoPerguntas(client, msg) {
         console.log("✅ Contrato aceito pelo usuário");
 
         await avancar(
-          "finalizar",
-          "✅ *Contrato confirmado!*\n\n🎉 *Cadastro totalmente completo!*\n\nSeus dados estão sendo salvos..."
+          "indicacao",
+          "✅ *Contrato confirmado!*\n\n" + mensagens.indicacao
         );
       } else {
         await enviarComSeguranca(
@@ -2059,9 +2078,39 @@ async function fluxoPerguntas(client, msg) {
       }
       break;
 
+    case "indicacao":
+      const opcaoIndicacao = userRaw.trim();
+      const indicadores = {
+        1: "Dr. Igor",
+        2: "Matheus",
+        3: "Aline",
+        4: "Simony",
+        5: "João Victor",
+      };
+
+      if (indicadores[opcaoIndicacao]) {
+        estado.indicadoPor = indicadores[opcaoIndicacao];
+        console.log(`✅ Indicação registrada: ${estado.indicadoPor}`);
+
+        await avancar(
+          "finalizar",
+          `✅ *Obrigado!*\n\nRegistramos que você foi indicado por: *${estado.indicadoPor}*\n\n🎉 *Finalizando seu cadastro...*`
+        );
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ *Opção inválida.*\n\n" + mensagens.indicacao
+        );
+      }
+      break;
+
     case "finalizar":
+      console.log("🎯 ETAPA FINALIZAR ACIONADA!");
       // Salvar dados e finalizar questionário
+      console.log("📞 Chamando salvarDadosCompletos...");
       await salvarDadosCompletos(client, id, estado);
+      console.log("✅ salvarDadosCompletos concluído!");
 
       await client.sendText(
         id,
@@ -2073,6 +2122,7 @@ async function fluxoPerguntas(client, msg) {
       );
 
       limparEstado(id);
+      console.log("🏁 Processo finalizado completamente!");
       break;
     default:
       console.log(`⚠️ Etapa não reconhecida: ${etapa3}`);
@@ -2093,6 +2143,7 @@ async function salvarDadosCompletos(client, id, estado) {
   );
 
   try {
+    console.log("🔧 Preparando dados para salvamento...");
     // Preparar dados para salvamento
     const dadosParaSalvar = {
       timestamp: new Date().toISOString(),
@@ -2220,6 +2271,9 @@ async function salvarDadosCompletos(client, id, estado) {
       contrato_aceito: estado.contratoAceito || false,
       texto_autorizacao: estado.textoAutorizacao || "",
 
+      // Dados de indicação
+      indicado_por: estado.indicadoPor || "",
+
       status: "questionario_completo",
       observacoes:
         "Questionário completo: todas as seções de impactos, indenizações, documentos e contrato foram preenchidas",
@@ -2228,12 +2282,25 @@ async function salvarDadosCompletos(client, id, estado) {
     console.log("📊 Dados preparados:", dadosParaSalvar);
 
     // Salvar no Google Sheets
+    console.log("📤 Chamando salvarNoSheets...");
     await salvarNoSheets(dadosParaSalvar);
     console.log("✅ Dados salvos com sucesso no Google Sheets!");
 
     return true;
   } catch (error) {
     console.error("❌ Erro ao salvar dados:", error);
+    console.error("🔍 Stack trace:", error.stack);
+
+    // Notificar o usuário sobre o erro
+    try {
+      await client.sendText(
+        id,
+        "⚠️ Houve um problema ao salvar seus dados. Nossa equipe foi notificada e entrará em contato."
+      );
+    } catch (msgError) {
+      console.error("❌ Erro também ao enviar mensagem de erro:", msgError);
+    }
+
     throw error;
   }
 }
