@@ -37,13 +37,12 @@ async function sendMessage(client, id, message, tipo = "normal") {
 
 const mensagens = {
   saudacaoInicial:
-    "👋 *Olá!*\n\n  " +
+    "👋 *Olá!*\n\n" +
     "Sou a assistente virtual do Dr. Igor, responsável por realizar seu cadastro no processo jurídico relacionado à Holanda.\n\n" +
     "Este procedimento leva entre 10 e 15 minutos e é fundamental para dar continuidade ao seu atendimento.\n\n" +
     "Caso você esteja respondendo por outra pessoa, por favor, responda com base nos dados e vivências dela.\n\n" +
-    "💡 Dica: Digite *cancelar* a qualquer momento para encerrar.",
-
-  boasVindas: "Vamos começar?\n👉 Sim ou Não",
+    "💡 Dica: Digite *cancelar* a qualquer momento para encerrar.\n\n" +
+    "Vamos começar?\n👉 *Sim* ou *Não*",
 
   maiorIdade: "Você é maior de idade (18 anos ou mais)?\n👉 Sim ou Não",
 
@@ -91,11 +90,8 @@ async function fluxoCadastro(client, msg) {
 
   if (!estado) {
     setEstado(id, { etapa: "confirmar_inicio" });
-    // Enviar primeira mensagem
+    // Enviar mensagem unificada de saudação e pergunta inicial
     await sendMessage(client, id, mensagens.saudacaoInicial, "inicio_conversa");
-    // Aguardar um pouco e enviar segunda mensagem
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    await sendMessage(client, id, mensagens.boasVindas, "inicio_conversa");
     return;
   }
 

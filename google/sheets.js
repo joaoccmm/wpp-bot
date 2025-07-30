@@ -103,6 +103,10 @@ async function inicializarPlanilha() {
       "indenizacao_quando_ano",
       "indenizacao_cadastrado",
       "indenizacao_foi_contatado",
+      "documento_frente_enviado",
+      "documento_verso_enviado",
+      "contrato_aceito",
+      "texto_autorizacao",
       "status",
       "observacoes",
     ]);

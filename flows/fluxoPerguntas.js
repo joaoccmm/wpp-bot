@@ -47,18 +47,18 @@ async function enviarComSeguranca(client, id, mensagem) {
 const mensagens = {
   inicio:
     "📝 *Terceira Etapa - Questionário Final*\n\n" +
-    "Agora vamos fazer algumas perguntas para finalizar seu cadastro.\n\n" +
+    "Agora vamos fazer algumas perguntas para finalizar seu cadastro. Começaremos com questões sobre problemas de saúde física.\n\n" +
     "💡 Digite *cancelar* a qualquer momento para sair.",
 
-  // SEÇÃO 2: PROBLEMAS DE SAÚDE FÍSICA
+  // QUESTÃO 1: PROBLEMAS DE SAÚDE FÍSICA
   saudeProblemas:
-    "🏥 *2. Problemas de Saúde Física*\n\n" +
+    "🏥 *1. Problemas de Saúde Física*\n\n" +
     "Estamos perguntando se você teve algum problema de saúde no corpo depois do desastre. Isso ajuda a mostrar os danos à sua saúde.\n\n" +
     "❓ *Você teve problemas físicos depois da barragem?*\n\n" +
     "👉 *Sim* ou *Não*",
 
   saudeTipos:
-    "🩺 *2.1 Se sim, marque os que teve:*\n\n" +
+    "🩺 *1.1 Se sim, marque os que teve:*\n\n" +
     "Digite o *número* ou *letra* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
     "*a)* Problemas de pele\n" +
     "*b)* Dor de barriga\n" +
@@ -70,19 +70,19 @@ const mensagens = {
     "_Exemplo: a,c,e ou 1,3,5_",
 
   saudeOutros:
-    "📝 *2.2 Você marcou 'Outros' - descreva quais problemas:*\n\n" +
+    "📝 *1.2 Você marcou 'Outros' - descreva quais problemas:*\n\n" +
     "Digite uma descrição dos outros problemas de saúde que teve:",
 
   saudeContinua:
-    "⏰ *2.3 Esses sintomas ainda continuam?*\n\n" + "👉 *Sim* ou *Não*",
+    "⏰ *1.3 Esses sintomas ainda continuam?*\n\n" + "👉 *Sim* ou *Não*",
 
   saudeQuando:
-    "📅 *2.4 Quando começou a perceber que era por causa da barragem?*\n\n" +
+    "📅 *1.4 Quando começou a perceber que era por causa da barragem?*\n\n" +
     "Digite o mês e ano (exemplo: 11/2015) seguido da descrição:\n\n" +
     "_Exemplo: 11/2015 - por causa de exames_",
 
   saudeDiagnostico:
-    "🔬 *2.5 Recebeu algum diagnóstico médico?*\n\n" +
+    "🔬 *1.5 Recebeu algum diagnóstico médico?*\n\n" +
     "👉 *Sim* ou *Não*\n\n" +
     "_Se sim, você poderá descrever qual diagnóstico na próxima pergunta_",
 
@@ -91,22 +91,22 @@ const mensagens = {
     "Descreva o(s) diagnóstico(s) que recebeu:",
 
   saudeRenda:
-    "💰 *2.6 Esses problemas afetaram sua renda ou trabalho?*\n\n" +
+    "💰 *1.6 Esses problemas afetaram sua renda ou trabalho?*\n\n" +
     "👉 *Sim* ou *Não*",
 
   saudeRendaContinua:
-    "⏳ *2.7 Ainda continua afetando sua renda/trabalho?*\n\n" +
+    "⏳ *1.7 Ainda continua afetando sua renda/trabalho?*\n\n" +
     "👉 *Sim* ou *Não*",
 
-  // SEÇÃO 3: PROBLEMAS EMOCIONAIS OU PSICOLÓGICOS
+  // QUESTÃO 2: PROBLEMAS EMOCIONAIS OU PSICOLÓGICOS
   emocionalProblemas:
-    "🧠 *3. Problemas Emocionais ou Psicológicos*\n\n" +
+    "🧠 *2. Problemas Emocionais ou Psicológicos*\n\n" +
     "Algumas pessoas tiveram ansiedade, depressão ou tristeza profunda depois do rompimento. Queremos saber se isso aconteceu com você.\n\n" +
     "❓ *Você teve algum sofrimento emocional ou psicológico?*\n\n" +
     "👉 *Sim* ou *Não*",
 
   emocionalTipos:
-    "🧠 *3.1 Se sim, marque o que teve:*\n\n" +
+    "🧠 *2.1 Se sim, marque o que teve:*\n\n" +
     "Digite o *número* ou *letra* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
     "*a)* Depressão\n" +
     "*b)* Ansiedade\n" +
@@ -117,33 +117,33 @@ const mensagens = {
     "_Exemplo: a,b,c ou 1,2,3_",
 
   emocionalOutros:
-    "📝 *3.2 Você marcou 'Outro' - descreva qual problema emocional:*\n\n" +
+    "📝 *2.2 Você marcou 'Outro' - descreva qual problema emocional:*\n\n" +
     "Digite uma descrição do problema emocional que teve:",
 
   emocionalQuando:
-    "📅 *3.3 Quando começou?*\n\n" +
+    "📅 *2.3 Quando começou?*\n\n" +
     "Digite o mês e ano:\n\n" +
     "_Exemplo: 11/2015_",
 
   emocionalExiste:
-    "🕐 *3.4 Os sintomas ainda existem?*\n\n" + "👉 *Sim* ou *Não*",
+    "🕐 *2.4 Os sintomas ainda existem?*\n\n" + "👉 *Sim* ou *Não*",
 
   emocionalAtrapalhou:
-    "💼 *3.5 Te atrapalhou de viver ou trabalhar normalmente?*\n\n" +
+    "💼 *2.5 Te atrapalhou de viver ou trabalhar normalmente?*\n\n" +
     "👉 *Sim* ou *Não*",
 
   emocionalAtestado:
-    "📋 *3.6 Você teve atestado médico sobre isso?*\n\n" + "👉 *Sim* ou *Não*",
+    "📋 *2.6 Você teve atestado médico sobre isso?*\n\n" + "👉 *Sim* ou *Não*",
 
   emocionalGastos:
-    "💸 *3.7 Gastos com tratamento por mês:*\n\n" +
+    "💸 *2.7 Gastos com tratamento por mês:*\n\n" +
     "Digite o valor em reais que gasta por mês com tratamento (apenas números):\n\n" +
     "_Exemplo: 150 (para R$ 150,00)_\n" +
     "_Digite 0 se não tem gastos_",
 
-  // SEÇÃO 4: PERDA DE BENS
+  // QUESTÃO 3: PERDA DE BENS
   bensPerda:
-    "🏚️ *4. Perda de Bens*\n\n" +
+    "🏚️ *3. Perda de Bens*\n\n" +
     "Queremos saber se você perdeu algum bem, como casa, terra, plantações ou animais.\n\n" +
     "❓ *Você perdeu, teve destruído ou danificado algum bem?*\n\n" +
     "👉 *Sim* ou *Não*",
@@ -179,15 +179,15 @@ const mensagens = {
     "Digite o mês e ano:\n\n" +
     "_Exemplo: 11/2015_",
 
-  // SEÇÃO 5: MUDANÇA DE CASA
+  // QUESTÃO 4: MUDANÇA DE CASA
   mudancaCasa:
-    "🏠 *5. Mudança de Casa*\n\n" +
+    "🏠 *4. Mudança de Casa*\n\n" +
     "Algumas pessoas precisaram sair de casa depois do desastre. Vamos entender se isso aconteceu com você.\n\n" +
     "❓ *Você teve que se mudar?*\n\n" +
     "👉 *Sim* ou *Não*",
 
   mudancaMotivo:
-    "🏚️ *5.1 Por qual motivo?*\n\n" +
+    "🏚️ *4.1 Por qual motivo?*\n\n" +
     "Digite o *número* correspondente ao motivo (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
     "*1)* Casa destruída\n" +
     "*2)* Risco à saúde ou segurança\n" +
@@ -201,15 +201,15 @@ const mensagens = {
     "Digite uma descrição do motivo da mudança:",
 
   mudancaQuando:
-    "📅 *5.2 Quando se mudou?*\n\n" +
+    "📅 *4.2 Quando se mudou?*\n\n" +
     "Digite o mês e ano:\n\n" +
     "_Exemplo: 11/2015_",
 
   mudancaVoltou:
-    "🔄 *5.3 Conseguiu voltar para o local antigo?*\n\n" + "👉 *Sim* ou *Não*",
+    "🔄 *4.3 Conseguiu voltar para o local antigo?*\n\n" + "👉 *Sim* ou *Não*",
 
   mudancaMoradia:
-    "🏡 *5.4 Nova moradia foi:*\n\n" +
+    "🏡 *4.4 Nova moradia foi:*\n\n" +
     "Digite o *número* correspondente:\n\n" +
     "*1)* Paga por você\n" +
     "*2)* Fornecida por ONG (exceto Renova)\n" +
@@ -217,17 +217,17 @@ const mensagens = {
     "_Escolha apenas uma opção_",
 
   mudancaGastos:
-    "💰 *5.5 Você teve gastos com a mudança?*\n\n" + "👉 *Sim* ou *Não*",
+    "💰 *4.5 Você teve gastos com a mudança?*\n\n" + "👉 *Sim* ou *Não*",
 
-  // SEÇÃO 6: ALIMENTAÇÃO
+  // QUESTÃO 5: ALIMENTAÇÃO
   alimentacaoFonte:
-    "🍽️ *6. Alimentação*\n\n" +
+    "🍽️ *5. Alimentação*\n\n" +
     "Queremos saber se você perdeu sua fonte de alimentação e teve que gastar mais com comida.\n\n" +
     "❓ *Você perdeu sua fonte de comida (pesca, plantio, criação)?*\n\n" +
     "👉 *Sim* ou *Não*",
 
   alimentacaoQuando:
-    "📅 *6.1 Quando isso aconteceu?*\n\n" +
+    "📅 *5.1 Quando isso aconteceu?*\n\n" +
     "Digite o mês e ano:\n\n" +
     "_Exemplo: 11/2015_",
 
@@ -255,7 +255,7 @@ const mensagens = {
 
   // SEÇÃO 7: AUMENTO NO CUSTO DE VIDA
   custoVidaAumento:
-    "💰 *7. Aumento no Custo de Vida*\n\n" +
+    "💰 *6. Aumento no Custo de Vida*\n\n" +
     "Depois do desastre, muita gente começou a gastar mais com transporte, moradia, alimentação etc. Isso aconteceu com você?\n\n" +
     "❓ *Seu custo de vida aumentou?*\n\n" +
     "👉 *Sim* ou *Não*",
@@ -283,7 +283,7 @@ const mensagens = {
 
   // SEÇÃO 8: PREJUÍZO NA RENDA
   rendaPrejuizo:
-    "👷 *8. Prejuízo na Renda*\n\n" +
+    "👷 *7. Prejuízo na Renda*\n\n" +
     "Queremos entender se você perdeu renda por causa da tragédia.\n\n" +
     "❓ *Sua renda foi prejudicada?*\n\n" +
     "👉 *Sim* ou *Não*",
@@ -313,7 +313,7 @@ const mensagens = {
 
   // SEÇÃO 9: PROBLEMAS COM ÁGUA
   aguaProblemas:
-    "🚰 *9. Problemas com Água*\n\n" +
+    "🚰 *8. Problemas com Água*\n\n" +
     "Você teve falta de água, água contaminada ou instável depois do rompimento?\n\n" +
     "❓ *Seu abastecimento de água foi afetado?*\n\n" +
     "👉 *Sim* ou *Não*",
@@ -356,7 +356,7 @@ const mensagens = {
 
   // SEÇÃO 11: USO DO RIO E DA TERRA
   rioTerraRio:
-    "🌊 *11. Uso do Rio e da Terra*\n\n" +
+    "🌊 *9. Uso do Rio e da Terra*\n\n" +
     "Você usava o rio ou a terra para algo e teve que parar?\n\n" +
     "❓ *Perdeu o uso do rio ou mar?*\n\n" +
     "👉 *Sim* ou *Não*",
@@ -389,15 +389,15 @@ const mensagens = {
     "Digite o mês e ano:\n\n" +
     "_Exemplo: 11/2015_",
 
-  // SEÇÃO 13: INDENIZAÇÕES OU AÇÕES
+  // QUESTÃO 10: INDENIZAÇÕES OU AÇÕES
   indenizacaoProcesso:
-    "⚖️ *13. Indenizações ou Ações*\n\n" +
+    "⚖️ *10. Indenizações ou Ações*\n\n" +
     "Para entender sua situação, precisamos saber se você já entrou com ação judicial ou recebeu algum dinheiro.\n\n" +
     "❓ *Você já processou a Samarco/Renova?*\n\n" +
     "👉 *Sim* ou *Não*",
 
   indenizacaoRecebidas:
-    "💰 *13.1 Você já recebeu alguma dessas indenizações?*\n\n" +
+    "💰 *10.1 Você já recebeu alguma dessas indenizações?*\n\n" +
     "Digite o *número* correspondente (pode escolher mais de uma opção, separadas por vírgula):\n\n" +
     "*1)* AFE\n" +
     "*2)* PIM (conhecido como os 1.000 reais)\n" +
@@ -420,6 +420,29 @@ const mensagens = {
     "📞 *13.4 Já foi contatado pela Renova/Samarco?*\n\n" +
     "❓ *Você já foi contatado pela Renova ou Samarco?*\n\n" +
     "👉 *Sim* ou *Não*",
+
+  // DOCUMENTOS
+  documentoFrente:
+    "📄 *Envio de Documento Oficial*\n\n" +
+    "Para finalizar seu cadastro, precisamos de uma foto de um documento oficial com foto (RG, CNH ou Passaporte).\n\n" +
+    "📸 *Envie uma foto da FRENTE do documento*\n\n" +
+    "💡 *Se seu documento tem apenas frente única, envie a mesma foto agora e na próxima etapa.*",
+
+  documentoVerso:
+    "📸 *Agora envie uma foto do VERSO do documento*\n\n" +
+    "💡 *Se seu documento tem apenas frente única (como CNH nova), envie a mesma foto da frente novamente.*",
+
+  // CONTRATO
+  contratoEnvio:
+    "📄 *Contrato de Autorização*\n\n" +
+    "Agora vou enviar o contrato padrão para você analisar.\n\n" +
+    "📋 Por favor, leia com atenção e depois confirme sua concordância.",
+
+  contratoConfirmacao:
+    "📝 *Confirmação do Contrato*\n\n" +
+    "Após ler o contrato, confirme copiando e colando EXATAMENTE o texto que vou enviar na próxima mensagem:",
+
+  contratoTexto: `💬 *COPIE E COLE:*\n\n"Eu [SEU NOME COMPLETO], li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."`,
 
   // Mensagens finais
   final:
@@ -447,6 +470,24 @@ async function fluxoPerguntas(client, msg) {
 
   const etapa3 = estado.etapa3.trim().toLowerCase();
 
+  // Função helper para processar múltiplas escolhas (aceita com ou sem vírgula)
+  const processarMultiplaEscolha = (userRaw, opcoesMapa, regexCaracteres) => {
+    const textoLimpo = userRaw.toLowerCase().replace(regexCaracteres, "");
+
+    // Se contém vírgula, faz split normal
+    if (textoLimpo.includes(",")) {
+      return textoLimpo
+        .split(",")
+        .map((opt) => opt.trim())
+        .filter((opt) => opt !== "" && opt in opcoesMapa);
+    }
+
+    // Se não contém vírgula, trata cada caractere como uma opção
+    return textoLimpo
+      .split("")
+      .filter((opt) => opt !== "" && opt in opcoesMapa);
+  };
+
   // Função helper para avançar entre etapas
   const avancar = async (proximaEtapa, mensagem) => {
     console.log(`🔄 Avançando de "${etapa3}" para "${proximaEtapa}"`);
@@ -455,6 +496,32 @@ async function fluxoPerguntas(client, msg) {
     console.log(`📤 Enviando mensagem: "${mensagem.substring(0, 50)}..."`);
     await enviarComSeguranca(client, id, mensagem);
     console.log(`✅ Função avancar concluída para etapa "${proximaEtapa}"`);
+  };
+
+  // Função para finalizar seção e iniciar automaticamente a próxima
+  const finalizarSecaoEIniciarProxima = async (
+    nomeSecaoAtual,
+    proximaEtapa,
+    mensagemProximaEtapa
+  ) => {
+    // Enviar mensagem de finalização
+    await enviarComSeguranca(
+      client,
+      id,
+      `✅ *${nomeSecaoAtual} concluída!*\n\n`
+    );
+
+    // Aguardar um pouco para mostrar a finalização
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // Iniciar automaticamente a próxima seção
+    console.log(`🔄 Auto-iniciando próxima seção: ${proximaEtapa}`);
+    estado.etapa3 = proximaEtapa;
+    setEstado(id, estado);
+    await enviarComSeguranca(client, id, mensagemProximaEtapa);
+    console.log(
+      `✅ Seção "${nomeSecaoAtual}" finalizada e "${proximaEtapa}" iniciada automaticamente`
+    );
   };
 
   switch (etapa3) {
@@ -504,12 +571,11 @@ async function fluxoPerguntas(client, msg) {
         7: "Outros",
       };
 
-      const opcoesSelecionadas = userRaw
-        .toLowerCase()
-        .replace(/[^a-g1-7,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in tiposMap);
+      const opcoesSelecionadas = processarMultiplaEscolha(
+        userRaw,
+        tiposMap,
+        /[^a-g1-7,]/g
+      );
 
       if (opcoesSelecionadas.length === 0) {
         await enviarComSeguranca(
@@ -517,7 +583,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite *a,b,c* ou *1,2,3* (as opções que teve)\n\n" +
-            "_Exemplo: a,c,e ou 1,3,5_"
+            "_Exemplo: a,c,e ou 1,3,5 ou ace ou 135_"
         );
         return;
       }
@@ -614,10 +680,11 @@ async function fluxoPerguntas(client, msg) {
         await avancar("saude_renda_continua", mensagens.saudeRendaContinua);
       } else if (["não", "nao", "n", "não afetou"].includes(userMessage)) {
         estado.saudeRenda = false;
-        // Finalizar seção 2, ir para próxima
-        await avancar(
-          "proxima_secao",
-          "✅ *Seção de Saúde Física concluída!*\n\nVamos para a próxima seção..."
+        // Finalizar seção de saúde e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 1: Problemas de Saúde Física",
+          "emocional_problemas",
+          mensagens.emocionalProblemas
         );
       } else {
         await enviarComSeguranca(
@@ -644,16 +711,12 @@ async function fluxoPerguntas(client, msg) {
         return;
       }
 
-      // Finalizar seção 2
-      await avancar(
-        "proxima_secao",
-        "✅ *Seção de Saúde Física concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção de saúde e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 1: Problemas de Saúde Física",
+        "emocional_problemas",
+        mensagens.emocionalProblemas
       );
-      break;
-
-    case "proxima_secao":
-      // Iniciar seção 3 - Problemas Emocionais
-      await avancar("emocional_problemas", mensagens.emocionalProblemas);
       break;
 
     case "emocional_problemas":
@@ -664,10 +727,11 @@ async function fluxoPerguntas(client, msg) {
         ["não", "nao", "n", "nenhum", "não tive"].includes(userMessage)
       ) {
         estado.emocionalProblemas = false;
-        // Pular para próxima seção (seção 4)
-        await avancar(
-          "secao4",
-          "✅ *Seção Emocional registrada!*\n\nVamos para a próxima seção..."
+        // Finalizar seção emocional e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 2: Problemas Emocionais",
+          "bens_perda",
+          mensagens.bensPerda
         );
       } else {
         await enviarComSeguranca(
@@ -695,12 +759,11 @@ async function fluxoPerguntas(client, msg) {
         6: "Outro",
       };
 
-      const opcoesEmocionalSelecionadas = userRaw
-        .toLowerCase()
-        .replace(/[^a-f1-6,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in tiposEmocionalMap);
+      const opcoesEmocionalSelecionadas = processarMultiplaEscolha(
+        userRaw,
+        tiposEmocionalMap,
+        /[^a-f1-6,]/g
+      );
 
       if (opcoesEmocionalSelecionadas.length === 0) {
         await enviarComSeguranca(
@@ -708,7 +771,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite *a,b,c* ou *1,2,3* (as opções que teve)\n\n" +
-            "_Exemplo: a,c,e ou 1,3,5_"
+            "_Exemplo: a,c,e ou 1,3,5 ou ace ou 135_"
         );
         return;
       }
@@ -830,16 +893,12 @@ async function fluxoPerguntas(client, msg) {
 
       estado.emocionalGastos = parseInt(gastoLimpo);
 
-      // Finalizar seção 3
-      await avancar(
-        "secao4",
-        "✅ *Seção Emocional concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção emocional e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 2: Problemas Emocionais",
+        "bens_perda",
+        mensagens.bensPerda
       );
-      break;
-
-    case "secao4":
-      // Iniciar seção 4 - Perda de Bens
-      await avancar("bens_perda", mensagens.bensPerda);
       break;
 
     case "bens_perda":
@@ -850,10 +909,11 @@ async function fluxoPerguntas(client, msg) {
         ["não", "nao", "n", "nenhum", "não perdi"].includes(userMessage)
       ) {
         estado.bensPerda = false;
-        // Pular para próxima seção (seção 5)
-        await avancar(
-          "secao5",
-          "✅ *Seção Bens registrada!*\n\nVamos para a próxima seção..."
+        // Finalizar seção de bens e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 3: Perda de Bens",
+          "mudanca_casa",
+          mensagens.mudancaCasa
         );
       } else {
         await enviarComSeguranca(
@@ -878,12 +938,11 @@ async function fluxoPerguntas(client, msg) {
         9: "Construções",
       };
 
-      const opcoesBensSelecionadas = userRaw
-        .toLowerCase()
-        .replace(/[^1-9,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in tiposBensMap);
+      const opcoesBensSelecionadas = processarMultiplaEscolha(
+        userRaw,
+        tiposBensMap,
+        /[^1-9,]/g
+      );
 
       if (opcoesBensSelecionadas.length === 0) {
         await enviarComSeguranca(
@@ -891,7 +950,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos bens que você tinha\n\n" +
-            "_Exemplo: 1,3,5 ou 2,4,8_"
+            "_Exemplo: 1,3,5 ou 2,4,8 ou 135 ou 248_"
         );
         return;
       }
@@ -962,16 +1021,12 @@ async function fluxoPerguntas(client, msg) {
         ano: anoBens,
       };
 
-      // Finalizar seção 4
-      await avancar(
-        "secao5",
-        "✅ *Seção Perda de Bens concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção de bens e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 3: Perda de Bens",
+        "mudanca_casa",
+        mensagens.mudancaCasa
       );
-      break;
-
-    case "secao5":
-      // Iniciar seção 5 - Mudança de Casa
-      await avancar("mudanca_casa", mensagens.mudancaCasa);
       break;
 
     case "mudanca_casa":
@@ -980,10 +1035,11 @@ async function fluxoPerguntas(client, msg) {
         await avancar("mudanca_motivo", mensagens.mudancaMotivo);
       } else if (["não", "nao", "n", "não mudei"].includes(userMessage)) {
         estado.mudancaCasa = false;
-        // Pular para próxima seção (seção 6)
-        await avancar(
-          "secao6",
-          "✅ *Seção Mudança registrada!*\n\nVamos para a próxima seção..."
+        // Finalizar seção de mudança e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 4: Mudança de Casa",
+          "alimentacao_fonte",
+          mensagens.alimentacaoFonte
         );
       } else {
         await enviarComSeguranca(
@@ -1004,12 +1060,11 @@ async function fluxoPerguntas(client, msg) {
         5: "Outros",
       };
 
-      const motivosSelecionados = userRaw
-        .toLowerCase()
-        .replace(/[^1-5,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in motivosMudancaMap);
+      const motivosSelecionados = processarMultiplaEscolha(
+        userRaw,
+        motivosMudancaMap,
+        /[^1-5,]/g
+      );
 
       if (motivosSelecionados.length === 0) {
         await enviarComSeguranca(
@@ -1017,7 +1072,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos motivos\n\n" +
-            "_Exemplo: 1,2 ou 3,4_"
+            "_Exemplo: 1,2 ou 3,4 ou 12 ou 34_"
         );
         return;
       }
@@ -1126,16 +1181,12 @@ async function fluxoPerguntas(client, msg) {
         return;
       }
 
-      // Finalizar seção 5
-      await avancar(
-        "secao6",
-        "✅ *Seção Mudança de Casa concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção de mudança e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 4: Mudança de Casa",
+        "alimentacao_fonte",
+        mensagens.alimentacaoFonte
       );
-      break;
-
-    case "secao6":
-      // Iniciar seção 6 - Alimentação
-      await avancar("alimentacao_fonte", mensagens.alimentacaoFonte);
       break;
 
     case "alimentacao_fonte":
@@ -1144,10 +1195,11 @@ async function fluxoPerguntas(client, msg) {
         await avancar("alimentacao_quando", mensagens.alimentacaoQuando);
       } else if (["não", "nao", "n", "não perdi"].includes(userMessage)) {
         estado.alimentacaoFonte = false;
-        // Pular para próxima seção (seção 7)
-        await avancar(
-          "secao7",
-          "✅ *Seção Alimentação registrada!*\n\nVamos para a próxima seção..."
+        // Finalizar seção de alimentação e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 5: Alimentação",
+          "custo_vida_aumento",
+          mensagens.custoVidaAumento
         );
       } else {
         await enviarComSeguranca(
@@ -1208,12 +1260,11 @@ async function fluxoPerguntas(client, msg) {
         4: "Outros",
       };
 
-      const gastosAlimentacaoSelecionados = userRaw
-        .toLowerCase()
-        .replace(/[^1-4,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in gastosAlimentacaoMap);
+      const gastosAlimentacaoSelecionados = processarMultiplaEscolha(
+        userRaw,
+        gastosAlimentacaoMap,
+        /[^1-4,]/g
+      );
 
       if (gastosAlimentacaoSelecionados.length === 0) {
         await enviarComSeguranca(
@@ -1221,7 +1272,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos gastos que teve\n\n" +
-            "_Exemplo: 1,2 ou 3,4_"
+            "_Exemplo: 1,2 ou 3,4 ou 12 ou 34_"
         );
         return;
       }
@@ -1263,16 +1314,12 @@ async function fluxoPerguntas(client, msg) {
 
       estado.alimentacaoValor = parseInt(valorAlimentacaoLimpo);
 
-      // Finalizar seção 6
-      await avancar(
-        "secao7",
-        "✅ *Seção Alimentação concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção de alimentação e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 5: Alimentação",
+        "custo_vida_aumento",
+        mensagens.custoVidaAumento
       );
-      break;
-
-    case "secao7":
-      // Iniciar seção 7 - Aumento no Custo de Vida
-      await avancar("custo_vida_aumento", mensagens.custoVidaAumento);
       break;
 
     case "custo_vida_aumento":
@@ -1283,10 +1330,11 @@ async function fluxoPerguntas(client, msg) {
         await avancar("custo_vida_tipos", mensagens.custoVidaTipos);
       } else if (["não", "nao", "n", "não aumentou"].includes(userMessage)) {
         estado.custoVidaAumento = false;
-        // Pular para próxima seção (seção 8)
-        await avancar(
-          "secao8",
-          "✅ *Seção Custo de Vida registrada!*\n\nVamos para a próxima seção..."
+        // Finalizar seção de custo de vida e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 6: Aumento no Custo de Vida",
+          "renda_prejuizo",
+          mensagens.rendaPrejuizo
         );
       } else {
         await enviarComSeguranca(
@@ -1307,12 +1355,11 @@ async function fluxoPerguntas(client, msg) {
         5: "Vestuário",
       };
 
-      const tiposCustoSelecionados = userRaw
-        .toLowerCase()
-        .replace(/[^1-5,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in tiposCustoMap);
+      const tiposCustoSelecionados = processarMultiplaEscolha(
+        userRaw,
+        tiposCustoMap,
+        /[^1-5,]/g
+      );
 
       if (tiposCustoSelecionados.length === 0) {
         await enviarComSeguranca(
@@ -1320,7 +1367,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos gastos que aumentaram\n\n" +
-            "_Exemplo: 1,3,5 ou 2,4_"
+            "_Exemplo: 1,3,5 ou 2,4 ou 135 ou 24_"
         );
         return;
       }
@@ -1373,16 +1420,12 @@ async function fluxoPerguntas(client, msg) {
 
       estado.custoVidaValor = parseInt(valorCustoLimpo);
 
-      // Finalizar seção 7
-      await avancar(
-        "secao8",
-        "✅ *Seção Custo de Vida concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção de custo de vida e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 6: Aumento no Custo de Vida",
+        "renda_prejuizo",
+        mensagens.rendaPrejuizo
       );
-      break;
-
-    case "secao8":
-      // Iniciar seção 8 - Prejuízo na Renda
-      await avancar("renda_prejuizo", mensagens.rendaPrejuizo);
       break;
 
     case "renda_prejuizo":
@@ -1391,10 +1434,11 @@ async function fluxoPerguntas(client, msg) {
         await avancar("renda_motivos", mensagens.rendaMotivos);
       } else if (["não", "nao", "n", "não foi"].includes(userMessage)) {
         estado.rendaPrejuizo = false;
-        // Pular para próxima seção (seção 9)
-        await avancar(
-          "secao9",
-          "✅ *Seção Renda registrada!*\n\nVamos para a próxima seção..."
+        // Finalizar seção de renda e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 7: Prejuízo na Renda",
+          "agua_problemas",
+          mensagens.aguaProblemas
         );
       } else {
         await enviarComSeguranca(
@@ -1417,12 +1461,11 @@ async function fluxoPerguntas(client, msg) {
         7: "Saída de moradores",
       };
 
-      const motivosRendaSelecionados = userRaw
-        .toLowerCase()
-        .replace(/[^1-7,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in motivosRendaMap);
+      const motivosRendaSelecionados = processarMultiplaEscolha(
+        userRaw,
+        motivosRendaMap,
+        /[^1-7,]/g
+      );
 
       if (motivosRendaSelecionados.length === 0) {
         await enviarComSeguranca(
@@ -1430,7 +1473,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos motivos da perda de renda\n\n" +
-            "_Exemplo: 1,4,5 ou 2,6_"
+            "_Exemplo: 1,4,5 ou 2,6 ou 145 ou 26_"
         );
         return;
       }
@@ -1485,16 +1528,12 @@ async function fluxoPerguntas(client, msg) {
 
       estado.rendaValor = parseInt(valorRendaLimpo);
 
-      // Finalizar seção 8
-      await avancar(
-        "secao9",
-        "✅ *Seção Prejuízo na Renda concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção de renda e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 7: Prejuízo na Renda",
+        "agua_problemas",
+        mensagens.aguaProblemas
       );
-      break;
-
-    case "secao9":
-      // Iniciar seção 9 - Problemas com Água
-      await avancar("agua_problemas", mensagens.aguaProblemas);
       break;
 
     case "agua_problemas":
@@ -1503,10 +1542,11 @@ async function fluxoPerguntas(client, msg) {
         await avancar("agua_tipos", mensagens.aguaTipos);
       } else if (["não", "nao", "n", "não foi"].includes(userMessage)) {
         estado.aguaProblemas = false;
-        // Pular para próxima seção (seção 10)
-        await avancar(
-          "secao10",
-          "✅ *Seção Água registrada!*\n\nVamos para a próxima seção..."
+        // Finalizar seção de água e iniciar automaticamente a próxima
+        await finalizarSecaoEIniciarProxima(
+          "Questão 8: Problemas com Água",
+          "rio_terra_uso",
+          mensagens.rioTerraUso
         );
       } else {
         await enviarComSeguranca(
@@ -1525,12 +1565,11 @@ async function fluxoPerguntas(client, msg) {
         3: "Contaminada",
       };
 
-      const tiposAguaSelecionados = userRaw
-        .toLowerCase()
-        .replace(/[^1-3,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in tiposAguaMap);
+      const tiposAguaSelecionados = processarMultiplaEscolha(
+        userRaw,
+        tiposAguaMap,
+        /[^1-3,]/g
+      );
 
       if (tiposAguaSelecionados.length === 0) {
         await enviarComSeguranca(
@@ -1538,7 +1577,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos problemas que teve\n\n" +
-            "_Exemplo: 1,3 ou 2_"
+            "_Exemplo: 1,3 ou 2 ou 13_"
         );
         return;
       }
@@ -1588,12 +1627,11 @@ async function fluxoPerguntas(client, msg) {
         5: "Não tive despesas",
       };
 
-      const gastosAguaSelecionados = userRaw
-        .toLowerCase()
-        .replace(/[^1-5,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in gastosAguaMap);
+      const gastosAguaSelecionados = processarMultiplaEscolha(
+        userRaw,
+        gastosAguaMap,
+        /[^1-5,]/g
+      );
 
       if (gastosAguaSelecionados.length === 0) {
         await enviarComSeguranca(
@@ -1601,7 +1639,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos gastos que teve\n\n" +
-            "_Exemplo: 1,3 ou 5 (se não teve despesas)_"
+            "_Exemplo: 1,3 ou 5 ou 13 (se teve gastos com compra e transporte)_"
         );
         return;
       }
@@ -1617,12 +1655,13 @@ async function fluxoPerguntas(client, msg) {
       if (gastosAguaSelecionados.includes("4")) {
         await avancar("agua_outros", mensagens.aguaOutros);
       }
-      // Se selecionou "Não tive despesas", pular para próxima seção
+      // Se selecionou "Não tive despesas", finalizar seção e ir para próxima
       else if (gastosAguaSelecionados.includes("5")) {
         estado.aguaValor = 0;
-        await avancar(
-          "secao10",
-          "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção..."
+        await finalizarSecaoEIniciarProxima(
+          "Questão 8: Problemas com Água",
+          "rio_terra_rio",
+          mensagens.rioTerraRio
         );
       } else {
         await avancar("agua_valor", mensagens.aguaValor);
@@ -1649,16 +1688,12 @@ async function fluxoPerguntas(client, msg) {
 
       estado.aguaValor = parseInt(valorAguaLimpo);
 
-      // Finalizar seção 9
-      await avancar(
-        "secao10",
-        "✅ *Seção Problemas com Água concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção de água e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 8: Problemas com Água",
+        "rio_terra_rio",
+        mensagens.rioTerraRio
       );
-      break;
-
-    case "secao10":
-      // Ir direto para seção 11 - Uso do Rio e da Terra
-      await avancar("rio_terra_rio", mensagens.rioTerraRio);
       break;
 
     case "rio_terra_rio":
@@ -1687,11 +1722,12 @@ async function fluxoPerguntas(client, msg) {
       } else if (["não", "nao", "n", "não perdi"].includes(userMessage)) {
         estado.rioTerraTerra = false;
 
-        // Se não perdeu nem rio nem terra, pular para seção 12
+        // Se não perdeu nem rio nem terra, finalizar seção e ir para próxima
         if (!estado.rioTerraAlgumUso) {
-          await avancar(
-            "secao12",
-            "✅ *Seção Uso do Rio e Terra registrada!*\n\nVamos para a próxima seção..."
+          await finalizarSecaoEIniciarProxima(
+            "Questão 9: Uso do Rio e da Terra",
+            "indenizacao_processo",
+            mensagens.indenizacaoProcesso
           );
         } else {
           // Se perdeu pelo menos um (rio), continuar com os usos
@@ -1720,12 +1756,11 @@ async function fluxoPerguntas(client, msg) {
         9: "Outros",
       };
 
-      const usosRioTerraSelecionados = userRaw
-        .toLowerCase()
-        .replace(/[^1-9,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in usosRioTerraMap);
+      const usosRioTerraSelecionados = processarMultiplaEscolha(
+        userRaw,
+        usosRioTerraMap,
+        /[^1-9,]/g
+      );
 
       if (usosRioTerraSelecionados.length === 0) {
         await enviarComSeguranca(
@@ -1733,7 +1768,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números dos usos que teve\n\n" +
-            "_Exemplo: 1,5,7 ou 2,4,8_"
+            "_Exemplo: 1,5,7 ou 2,4,8 ou 157 ou 248_"
         );
         return;
       }
@@ -1778,16 +1813,12 @@ async function fluxoPerguntas(client, msg) {
         ano: anoRioTerra,
       };
 
-      // Finalizar seção 11
-      await avancar(
-        "secao12",
-        "✅ *Seção Uso do Rio e Terra concluída!*\n\nVamos para a próxima seção..."
+      // Finalizar seção do rio e terra e iniciar automaticamente a próxima
+      await finalizarSecaoEIniciarProxima(
+        "Questão 9: Uso do Rio e da Terra",
+        "indenizacao_processo",
+        mensagens.indenizacaoProcesso
       );
-      break;
-
-    case "secao12":
-      // Ir direto para seção 13 - Indenizações ou Ações
-      await avancar("indenizacao_processo", mensagens.indenizacaoProcesso);
       break;
 
     case "indenizacao_processo":
@@ -1818,12 +1849,11 @@ async function fluxoPerguntas(client, msg) {
         5: "Não recebi nada",
       };
 
-      const indenizacoesSelecionadas = userRaw
-        .toLowerCase()
-        .replace(/[^1-5,]/g, "")
-        .split(",")
-        .map((opt) => opt.trim())
-        .filter((opt) => opt in indenizacoesMap);
+      const indenizacoesSelecionadas = processarMultiplaEscolha(
+        userRaw,
+        indenizacoesMap,
+        /[^1-5,]/g
+      );
 
       if (indenizacoesSelecionadas.length === 0) {
         await enviarComSeguranca(
@@ -1831,7 +1861,7 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❓ Por favor, escolha uma ou mais opções válidas:\n\n" +
             "Digite os números das indenizações que recebeu\n\n" +
-            "_Exemplo: 1,2 ou 5 (se não recebeu nada)_"
+            "_Exemplo: 1,2 ou 5 ou 12 (se recebeu AFE e PIM)_"
         );
         return;
       }
@@ -1907,11 +1937,122 @@ async function fluxoPerguntas(client, msg) {
         return;
       }
 
-      // Finalizar seção 13 e questionário completo
-      await avancar(
-        "finalizar",
-        "✅ *Seção Indenizações concluída!*\n\n🎉 *Questionário completo!*\n\nSeus dados estão sendo salvos..."
-      );
+      // Ir para solicitação de documentos
+      await avancar("documento_frente", mensagens.documentoFrente);
+      break;
+
+    case "documento_frente":
+      // Verificar se é uma imagem
+      if (!msg.isMedia || msg.type !== "image") {
+        await enviarComSeguranca(
+          client,
+          id,
+          "📸 *Por favor, envie uma FOTO do documento.*\n\n" +
+            "❌ Só aceitamos imagens/fotos.\n" +
+            "✅ Tire uma foto clara da frente do seu documento oficial."
+        );
+        return;
+      }
+
+      // Salvar informação que recebeu a frente
+      estado.documentoFrente = true;
+      console.log("✅ Foto da frente do documento recebida");
+
+      await avancar("documento_verso", mensagens.documentoVerso);
+      break;
+
+    case "documento_verso":
+      // Verificar se é uma imagem
+      if (!msg.isMedia || msg.type !== "image") {
+        await enviarComSeguranca(
+          client,
+          id,
+          "📸 *Por favor, envie uma FOTO do verso do documento.*\n\n" +
+            "❌ Só aceitamos imagens/fotos.\n" +
+            "✅ Se o documento tem apenas frente única, envie a mesma foto da frente."
+        );
+        return;
+      }
+
+      // Salvar informação que recebeu o verso
+      estado.documentoVerso = true;
+      console.log("✅ Foto do verso do documento recebida");
+
+      // Ir para envio do contrato
+      await avancar("contrato_envio", mensagens.contratoEnvio);
+      break;
+
+    case "contrato_envio":
+      // Enviar o arquivo PDF do contrato
+      try {
+        console.log("📄 Enviando contrato PDF");
+        await client.sendFile(
+          id,
+          "contrato-padrao.pdf",
+          "contrato-padrao.pdf",
+          "📄 Contrato de Autorização"
+        );
+
+        // Aguardar um pouco para o arquivo ser processado
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        await avancar("contrato_confirmacao", mensagens.contratoConfirmacao);
+      } catch (error) {
+        console.error("❌ Erro ao enviar contrato:", error);
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ Ocorreu um erro ao enviar o contrato. Vou enviar o texto para você confirmar sua concordância."
+        );
+        await avancar("contrato_confirmacao", mensagens.contratoConfirmacao);
+      }
+      break;
+
+    case "contrato_confirmacao":
+      // Enviar o texto para copiar e colar
+      await enviarComSeguranca(client, id, mensagens.contratoTexto);
+
+      // Aguardar resposta do usuário
+      estado.etapa3 = "contrato_aceite";
+      setEstado(id, estado);
+      break;
+
+    case "contrato_aceite":
+      const textoUsuario = userRaw.trim();
+
+      // Verificar se o texto contém os elementos essenciais
+      const contemNome =
+        textoUsuario.toLowerCase().includes("eu ") &&
+        textoUsuario.includes(",");
+      const contemConcordo = textoUsuario
+        .toLowerCase()
+        .includes("li, concordo e autorizo");
+      const contemDados = textoUsuario
+        .toLowerCase()
+        .includes("utilização dos meus dados");
+      const contemIgor = textoUsuario.toLowerCase().includes("dr. igor");
+
+      if (contemNome && contemConcordo && contemDados && contemIgor) {
+        // Salvar a autorização
+        estado.contratoAceito = true;
+        estado.textoAutorizacao = textoUsuario;
+        console.log("✅ Contrato aceito pelo usuário");
+
+        await avancar(
+          "finalizar",
+          "✅ *Contrato confirmado!*\n\n🎉 *Cadastro totalmente completo!*\n\nSeus dados estão sendo salvos..."
+        );
+      } else {
+        await enviarComSeguranca(
+          client,
+          id,
+          "❌ *Texto incorreto.*\n\n" +
+            "Por favor, copie e cole EXATAMENTE o texto que enviei, substituindo apenas '[SEU NOME COMPLETO]' pelo seu nome.\n\n" +
+            "Vou reenviar o texto:"
+        );
+
+        await enviarComSeguranca(client, id, mensagens.contratoTexto);
+      }
       break;
 
     case "finalizar":
@@ -2067,9 +2208,17 @@ async function salvarDadosCompletos(client, id, estado) {
       indenizacao_cadastrado: estado.indenizacaoCadastrado || false,
       indenizacao_foi_contatado: estado.indenizacaoContato || false,
 
+      // Dados de documentos
+      documento_frente_enviado: estado.documentoFrente || false,
+      documento_verso_enviado: estado.documentoVerso || false,
+
+      // Dados do contrato
+      contrato_aceito: estado.contratoAceito || false,
+      texto_autorizacao: estado.textoAutorizacao || "",
+
       status: "questionario_completo",
       observacoes:
-        "Questionário completo: todas as seções de impactos e indenizações foram preenchidas",
+        "Questionário completo: todas as seções de impactos, indenizações, documentos e contrato foram preenchidas",
     };
 
     console.log("📊 Dados preparados:", dadosParaSalvar);
