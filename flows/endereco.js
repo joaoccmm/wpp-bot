@@ -21,18 +21,19 @@ async function enviarMensagemSeguraEndereco(
 }
 
 const mensagensEndereco = {
-  cep: "6️⃣ Informe seu *CEP* (formato: 12345-678 ou 12345678):",
+  cep: "6️⃣ Informe seu *CEP*:",
   rua: "7️⃣ Informe o *nome da rua* ou *logradouro*:",
   numero: "8️⃣ Informe o *número* da residência:",
   complemento: "9️⃣ Informe o *complemento* (ou digite 'nenhum'):",
   bairro: "🔟 Informe o *bairro*:",
   confirmacao: (estado) =>
-    `� *Confirmação de Endereço*\n\n` +
+    `🏠 *Confirmação de Endereço*\n\n` +
     `*CEP:* ${estado.cep}\n` +
-    `*Endereço:* ${estado.rua}, Nº ${estado.numero}\n` +
+    `*Endereço:* ${estado.rua}, *Nº* ${estado.numero}\n` +
     `*Complemento:* ${estado.complemento}\n` +
     `*Bairro:* ${estado.bairro}\n\n` +
-    `As informações estão corretas?\n\n✅ *Sim*  |  ❌ *Não*`,
+    `❓ *Os dados estão corretos?*\n\n` +
+    `👉 Digite *Sim* para confirmar ou *Não* para corrigir`,
 };
 
 async function fluxoEndereco(client, msg) {

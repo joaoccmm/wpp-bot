@@ -37,10 +37,11 @@ async function sendMessage(client, id, message, tipo = "normal") {
 
 const mensagens = {
   saudacaoInicial:
-    "Olá! 👋 Sou a assistente virtual do Dr. Igor, responsável por realizar seu cadastro no processo jurídico relacionado à Holanda.\n\n" +
+    "👋 *Olá!*\n\n  " +
+    "Sou a assistente virtual do Dr. Igor, responsável por realizar seu cadastro no processo jurídico relacionado à Holanda.\n\n" +
     "Este procedimento leva entre 10 e 15 minutos e é fundamental para dar continuidade ao seu atendimento.\n\n" +
     "Caso você esteja respondendo por outra pessoa, por favor, responda com base nos dados e vivências dela.\n\n" +
-    "Se desejar encerrar o atendimento a qualquer momento, digite *cancelar*.",
+    "💡 Dica: Digite *cancelar* a qualquer momento para encerrar.",
 
   boasVindas: "Vamos começar?\n👉 Sim ou Não",
 
@@ -254,7 +255,10 @@ async function fluxoCadastro(client, msg) {
           id,
           "✅ *Dados confirmados!*\n\nAgora vamos para a segunda etapa: *endereço*."
         );
-        await client.sendText(id, "6️⃣ Informe seu *CEP* (formato: 12345-678 ou 12345678):");
+        await client.sendText(
+          id,
+          "6️⃣ Informe seu *CEP* (formato: 12345-678 ou 12345678):"
+        );
       } else if (
         ["não", "nao", "n", "errado", "incorreto"].includes(userMessage)
       ) {
