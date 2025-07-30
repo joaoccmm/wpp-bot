@@ -216,6 +216,10 @@ async function salvarNoSheets(dados) {
       indenizacao_quando_ano: dados.indenizacao_quando_ano || "",
       indenizacao_cadastrado: dados.indenizacao_cadastrado || "",
       indenizacao_foi_contatado: dados.indenizacao_foi_contatado || "",
+      documento_frente_enviado: dados.documento_frente_enviado || "",
+      documento_verso_enviado: dados.documento_verso_enviado || "",
+      contrato_aceito: dados.contrato_aceito || "",
+      texto_autorizacao: dados.texto_autorizacao || "",
       status: dados.status || "",
       observacoes: dados.observacoes || "",
     };

@@ -425,22 +425,21 @@ const mensagens = {
   documentoFrente:
     "📄 *Envio de Documento Oficial*\n\n" +
     "Para finalizar seu cadastro, precisamos de uma foto de um documento oficial com foto (RG, CNH ou Passaporte).\n\n" +
-    "📸 *Envie uma foto da FRENTE do documento*\n\n" +
+    "📸 *Envie uma foto ou arquivo da FRENTE do documento*\n\n" +
     "💡 *Se seu documento tem apenas frente única, envie a mesma foto agora e na próxima etapa.*",
 
   documentoVerso:
-    "📸 *Agora envie uma foto do VERSO do documento*\n\n" +
+    "📸 *Agora envie uma foto ou arquivo do VERSO do documento*\n\n" +
     "💡 *Se seu documento tem apenas frente única (como CNH nova), envie a mesma foto da frente novamente.*",
 
   // CONTRATO
   contratoEnvio:
     "📄 *Contrato de Autorização*\n\n" +
-    "Agora vou enviar o contrato padrão para você analisar.\n\n" +
-    "📋 Por favor, leia com atenção e depois confirme sua concordância.",
+    "Vou enviar o contrato padrão para você analisar.",
 
   contratoConfirmacao:
     "📝 *Confirmação do Contrato*\n\n" +
-    "Após ler o contrato, confirme copiando e colando EXATAMENTE o texto que vou enviar na próxima mensagem:",
+    "Após ler o contrato, confirme copiando e colando EXATAMENTE o texto abaixo:",
 
   contratoTexto: `💬 *COPIE E COLE:*\n\n"Eu [SEU NOME COMPLETO], li, concordo e autorizo a utilização dos meus dados no processo e que o Dr. Igor assine em meu nome."`,
 
@@ -538,10 +537,11 @@ async function fluxoPerguntas(client, msg) {
         ["não", "nao", "n", "nenhum", "não tive"].includes(userMessage)
       ) {
         estado.saudeProblemas = false;
-        // Pular para próxima seção (seção 3)
-        await avancar(
-          "proxima_secao",
-          "✅ *Informações registradas!*\n\nVamos para a próxima seção..."
+        // Pular para próxima seção (problemas emocionais)
+        await finalizarSecaoEIniciarProxima(
+          "Problemas de Saúde Física",
+          "emocional_problemas",
+          mensagens.emocionalProblemas
         );
       } else {
         await enviarComSeguranca(
@@ -1545,8 +1545,8 @@ async function fluxoPerguntas(client, msg) {
         // Finalizar seção de água e iniciar automaticamente a próxima
         await finalizarSecaoEIniciarProxima(
           "Questão 8: Problemas com Água",
-          "rio_terra_uso",
-          mensagens.rioTerraUso
+          "rio_terra_rio",
+          mensagens.rioTerraRio
         );
       } else {
         await enviarComSeguranca(
@@ -1942,41 +1942,23 @@ async function fluxoPerguntas(client, msg) {
       break;
 
     case "documento_frente":
-      // Verificar se é uma imagem
-      if (!msg.isMedia || msg.type !== "image") {
-        await enviarComSeguranca(
-          client,
-          id,
-          "📸 *Por favor, envie uma FOTO do documento.*\n\n" +
-            "❌ Só aceitamos imagens/fotos.\n" +
-            "✅ Tire uma foto clara da frente do seu documento oficial."
-        );
-        return;
-      }
+      // Aceitar qualquer arquivo/foto como documento da frente
+      console.log("📸 Arquivo da frente do documento recebido");
 
       // Salvar informação que recebeu a frente
       estado.documentoFrente = true;
-      console.log("✅ Foto da frente do documento recebida");
+      console.log("✅ Documento da frente recebido");
 
       await avancar("documento_verso", mensagens.documentoVerso);
       break;
 
     case "documento_verso":
-      // Verificar se é uma imagem
-      if (!msg.isMedia || msg.type !== "image") {
-        await enviarComSeguranca(
-          client,
-          id,
-          "📸 *Por favor, envie uma FOTO do verso do documento.*\n\n" +
-            "❌ Só aceitamos imagens/fotos.\n" +
-            "✅ Se o documento tem apenas frente única, envie a mesma foto da frente."
-        );
-        return;
-      }
+      // Aceitar qualquer arquivo/foto como documento do verso
+      console.log("📸 Arquivo do verso do documento recebido");
 
       // Salvar informação que recebeu o verso
       estado.documentoVerso = true;
-      console.log("✅ Foto do verso do documento recebida");
+      console.log("✅ Documento do verso recebido");
 
       // Ir para envio do contrato
       await avancar("contrato_envio", mensagens.contratoEnvio);
@@ -1996,7 +1978,22 @@ async function fluxoPerguntas(client, msg) {
         // Aguardar um pouco para o arquivo ser processado
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        await avancar("contrato_confirmacao", mensagens.contratoConfirmacao);
+        // Enviar automaticamente a confirmação do contrato
+        await enviarComSeguranca(client, id, mensagens.contratoConfirmacao);
+
+        // Aguardar um pouco antes do próximo envio
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Enviar automaticamente o texto para copiar e colar com o nome do usuário
+        const textoComNome = mensagens.contratoTexto.replace(
+          "[SEU NOME COMPLETO]",
+          estado.nome || "[SEU NOME COMPLETO]"
+        );
+        await enviarComSeguranca(client, id, textoComNome);
+
+        // Ir direto para aguardar a resposta
+        estado.etapa3 = "contrato_aceite";
+        setEstado(id, estado);
       } catch (error) {
         console.error("❌ Erro ao enviar contrato:", error);
         await enviarComSeguranca(
@@ -2004,17 +2001,24 @@ async function fluxoPerguntas(client, msg) {
           id,
           "❌ Ocorreu um erro ao enviar o contrato. Vou enviar o texto para você confirmar sua concordância."
         );
-        await avancar("contrato_confirmacao", mensagens.contratoConfirmacao);
+
+        // Enviar automaticamente a confirmação do contrato
+        await enviarComSeguranca(client, id, mensagens.contratoConfirmacao);
+
+        // Aguardar um pouco antes do próximo envio
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Enviar automaticamente o texto para copiar e colar com o nome do usuário
+        const textoComNome = mensagens.contratoTexto.replace(
+          "[SEU NOME COMPLETO]",
+          estado.nome || "[SEU NOME COMPLETO]"
+        );
+        await enviarComSeguranca(client, id, textoComNome);
+
+        // Ir direto para aguardar a resposta
+        estado.etapa3 = "contrato_aceite";
+        setEstado(id, estado);
       }
-      break;
-
-    case "contrato_confirmacao":
-      // Enviar o texto para copiar e colar
-      await enviarComSeguranca(client, id, mensagens.contratoTexto);
-
-      // Aguardar resposta do usuário
-      estado.etapa3 = "contrato_aceite";
-      setEstado(id, estado);
       break;
 
     case "contrato_aceite":
