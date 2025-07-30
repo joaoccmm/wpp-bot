@@ -1971,12 +1971,13 @@ async function fluxoPerguntas(client, msg) {
       estado.documentoVerso = true;
       console.log("✅ Documento do verso recebido");
 
-      // Ir para envio do contrato
-      await avancar("contrato_envio", mensagens.contratoEnvio);
-      break;
+      // Enviar mensagem e seguir automaticamente para o contrato
+      await enviarComSeguranca(client, id, mensagens.contratoEnvio);
 
-    case "contrato_envio":
-      // Enviar o arquivo PDF do contrato
+      // Aguardar um pouco antes de enviar o PDF
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Enviar o arquivo PDF do contrato automaticamente
       try {
         console.log("📄 Enviando contrato PDF");
         await client.sendFile(
@@ -2002,7 +2003,7 @@ async function fluxoPerguntas(client, msg) {
         );
         await enviarComSeguranca(client, id, textoComNome);
 
-        // Ir direto para aguardar a resposta
+        // Ir direto para aguardar a resposta do contrato
         estado.etapa3 = "contrato_aceite";
         setEstado(id, estado);
       } catch (error) {
@@ -2141,6 +2142,17 @@ async function salvarDadosCompletos(client, id, estado) {
     "📦 Estado completo antes do salvamento:",
     JSON.stringify(estado, null, 2)
   );
+
+  // Debug específico para verificar campos importantes
+  console.log("🔍 DEBUG - Verificando campos importantes:");
+  console.log("- saudeProblemas:", estado.saudeProblemas);
+  console.log("- saudeTipos:", estado.saudeTipos);
+  console.log("- emocionalProblemas:", estado.emocionalProblemas);
+  console.log("- emocionalTipos:", estado.emocionalTipos);
+  console.log("- bensPerda:", estado.bensPerda);
+  console.log("- bensTipos:", estado.bensTipos);
+  console.log("- contratoAceito:", estado.contratoAceito);
+  console.log("- indicadoPor:", estado.indicadoPor);
 
   try {
     console.log("🔧 Preparando dados para salvamento...");
