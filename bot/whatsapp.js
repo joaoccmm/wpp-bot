@@ -164,8 +164,31 @@ async function iniciarBot() {
 
       const estado = getEstado(id);
 
+      // Permitir apenas o número autorizado iniciar o fluxo
+      const numeroAutorizado = "553384123027@c.us";
+
+      if (id !== numeroAutorizado) {
+        await client.sendText(
+          id,
+          "⚠️ Este número não está autorizado a iniciar o atendimento."
+        );
+        return;
+      }
+
+      // Só inicia o fluxo se o comando for enviado pelo número autorizado
       if (!estado) {
-        await fluxoCadastro(client, msg);
+        if (
+          ["iniciar", "começar", "comecar", "bot", "start"].includes(
+            userMessage
+          )
+        ) {
+          await fluxoCadastro(client, msg);
+        } else {
+          await client.sendText(
+            id,
+            "🤖 Para iniciar o atendimento, digite *iniciar* ou *começar*."
+          );
+        }
         return;
       }
 
