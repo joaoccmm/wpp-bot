@@ -1,0 +1,111 @@
+// Teste para verificar se os dados estão sendo salvos na tabela Google Sheets
+const { salvarNoSheets } = require("./google/sheets");
+const { obterEstado, setEstado } = require("./utils/estados");
+
+async function testeSalvamentoTabela() {
+  const id = "teste-salvamento@c.us";
+
+  // Simular estado completo do usuário
+  const estadoCompleto = {
+    timestamp: new Date().toISOString(),
+    id: "teste-salvamento@c.us",
+    nome: "João Teste",
+    cpf: "12345678900",
+    nascimento: "01/01/1990",
+    telefone: "11999999999",
+    email: "joao@teste.com",
+    cep: "01234567",
+    rua: "Rua Teste",
+    numero: "123",
+    complemento: "Apto 1",
+    bairro: "Centro",
+    saude_problemas: true,
+    saude_tipos: "Problemas de pele; Dor de barriga",
+    saude_outros: "Dor de cabeça",
+    saude_continua: true,
+    saude_quando_mes: "01",
+    saude_quando_ano: "2023",
+    saude_quando_descricao: "Desde janeiro",
+    saude_diagnostico: true,
+    saude_diagnostico_qual: "Dermatite",
+    saude_renda_afetou: true,
+    saude_renda_continua: false,
+    emocional_problemas: true,
+    emocional_tipos: "Ansiedade; Estresse",
+    emocional_outros: "Insônia",
+    emocional_quando_mes: "02",
+    emocional_quando_ano: "2023",
+    emocional_existe: true,
+    emocional_atrapalhou: true,
+    emocional_atestado: false,
+    emocional_gastos: 200,
+    bens_perda: true,
+    bens_tipos: "Casa; Carro",
+    bens_valor_antes: 100000,
+    bens_valor_depois: 50000,
+    bens_quando_mes: "03",
+    bens_quando_ano: "2023",
+    bens_perda_valor: 50000,
+    mudanca_casa: true,
+    mudanca_motivo: "Destruição",
+    mudanca_outros: "Contaminação",
+    mudanca_quando_mes: "04",
+    mudanca_quando_ano: "2023",
+    mudanca_voltou: false,
+    mudanca_moradia_tipo: "Alugada",
+    mudanca_gastos: true,
+    alimentacao_fonte_perda: true,
+    alimentacao_quando_mes: "05",
+    alimentacao_quando_ano: "2023",
+    alimentacao_sem_fonte: true,
+    alimentacao_gastos_tipos: "Compra de água",
+    alimentacao_outros: "Filtro",
+    alimentacao_valor_mensal: 100,
+    custo_vida_aumento: true,
+    custo_vida_tipos: "Medicamentos",
+    custo_vida_quando_mes: "06",
+    custo_vida_quando_ano: "2023",
+    custo_vida_valor_mensal: 150,
+    renda_prejudicada: true,
+    renda_motivos: "Doença",
+    renda_quando_mes: "07",
+    renda_quando_ano: "2023",
+    renda_valor_perdido: 500,
+    agua_problemas: true,
+    agua_tipos: "Falta de água",
+    agua_continua: true,
+    agua_tempo_descricao: "Há 1 ano",
+    agua_gastos_tipos: "Compra de água",
+    agua_outros: "Filtro",
+    agua_valor_mensal: 80,
+    rio_terra_perdeu_rio: true,
+    rio_terra_perdeu_terra: false,
+    rio_terra_usos: "Lazer; Agricultura",
+    rio_terra_outros: "Pesca",
+    rio_terra_quando_mes: "08",
+    rio_terra_quando_ano: "2023",
+    indenizacao_processou: false,
+    indenizacao_tipos_recebidas: "",
+    indenizacao_quando_mes: "",
+    indenizacao_quando_ano: "",
+    indenizacao_cadastrado: true,
+    indenizacao_foi_contatado: false,
+    documento_frente_enviado: true,
+    documento_verso_enviado: true,
+    contrato_aceito: true,
+    texto_autorizacao: "Eu João Teste, autorizo...",
+    indicado_por: "Matheus",
+    status: "questionario_completo",
+    observacoes: "Teste completo.",
+  };
+
+  try {
+    console.log("🧪 Testando salvamento na tabela...");
+    await salvarNoSheets(estadoCompleto);
+    console.log("✅ Dados enviados para a tabela com sucesso!");
+  } catch (error) {
+    console.error("❌ Erro ao salvar na tabela:", error);
+  }
+}
+
+testeSalvamentoTabela();
