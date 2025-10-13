@@ -6,18 +6,17 @@ const { enviarMensagemRobusta } = require("../utils/envioRobusto");
 const path = require("path");
 const fs = require("fs");
 
-// Função para enviar mensagem com proteção anti-bot (versão simplificada)
+// Função para enviar mensagem com proteção anti-bot
 async function enviarMensagemSegura(client, id, mensagem, tipo = "normal") {
   try {
     console.log(
       `📤 [DEBUG] Enviando mensagem para ${id}: ${mensagem.substring(0, 50)}...`
     );
 
-    // Delay simples de 1-2 segundos
-    const delay = Math.floor(Math.random() * 1000) + 1000; // 1-2 segundos
+    const delay = Math.floor(Math.random() * 1000) + 1000;
     await new Promise((resolve) => setTimeout(resolve, delay));
 
-    // Enviar mensagem diretamente
+    // Envio direto
     await client.sendText(id, mensagem);
 
     console.log(`✅ [DEBUG] Mensagem enviada com sucesso para ${id}`);
@@ -27,11 +26,11 @@ async function enviarMensagemSegura(client, id, mensagem, tipo = "normal") {
   }
 }
 
-// Função helper para envio mais simples
+// Função helper para envio seguro
 async function enviarComSeguranca(client, id, mensagem) {
   console.log(`📤 Enviando: ${mensagem.substring(0, 100)}...`);
 
-  // Delay de 1.5 segundos fixo
+  const delay = 1500;
   await new Promise((resolve) => setTimeout(resolve, 1500));
 
   try {
@@ -43,7 +42,7 @@ async function enviarComSeguranca(client, id, mensagem) {
   }
 }
 
-// Estrutura de mensagens limpa - pronta para nova configuração
+// Estrutura de mensagens
 const mensagens = {
   inicio:
     "📝 *Terceira Etapa - Questionário Final*\n\n" +

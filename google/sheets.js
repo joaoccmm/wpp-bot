@@ -18,9 +18,6 @@ async function inicializarPlanilha() {
     const sheet = doc.sheetsByIndex[0];
     console.log("📄 Aba selecionada:", sheet.title);
 
-    // console.log("🔧 Configurando cabeçalhos...");
-    // await sheet.setHeaderRow([ ... ]);
-
     console.log("✅ Planilha inicializada com sucesso!");
   } catch (error) {
     console.error("❌ Erro ao inicializar planilha:", error.message);
@@ -33,7 +30,6 @@ async function salvarNoSheets(dados) {
   try {
     console.log("🔍 Iniciando salvamento no Sheets com dados:", dados);
 
-    // Tentar salvar localmente primeiro como backup
     const fs = require("fs");
     const path = require("path");
 
@@ -50,7 +46,6 @@ async function salvarNoSheets(dados) {
       console.log("🔧 Inicializando autenticação...");
       doc.auth = criarAuth();
 
-      // Configurar timeout para evitar travamento
       console.log("⏱️ Tentando carregar planilha (com timeout de 5s)...");
 
       try {
@@ -67,7 +62,7 @@ async function salvarNoSheets(dados) {
           timeoutError.message
         );
         console.log("📋 Dados já salvos localmente, continuando...");
-        return; // Retorna sem erro, dados já estão salvos localmente
+        return;
       }
     }
 
@@ -169,7 +164,6 @@ async function salvarNoSheets(dados) {
 
     console.log("💾 Dados formatados para salvamento:", dadosParaSalvar);
 
-    // Tentar salvar na planilha com timeout
     const addRowPromise = sheet.addRow(dadosParaSalvar);
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(
@@ -184,13 +178,11 @@ async function salvarNoSheets(dados) {
     } catch (saveError) {
       console.error("⚠️ Erro ao salvar na planilha:", saveError.message);
       console.log("📋 Dados já estão salvos localmente como backup");
-      // Não re-lança o erro pois os dados estão salvos localmente
     }
   } catch (error) {
     console.error("❌ Erro detalhado ao salvar na planilha:", error);
     console.error("Stack trace:", error.stack);
 
-    // Mesmo com erro, tentar salvar backup local se ainda não foi salvo
     try {
       const fs = require("fs");
       const path = require("path");
@@ -207,7 +199,6 @@ async function salvarNoSheets(dados) {
       console.error("❌ Erro também no backup local:", backupError);
     }
 
-    // Não re-lança o erro para não quebrar o fluxo do usuário
     console.log("⚠️ Continuando fluxo apesar do erro no Google Sheets");
   }
 }

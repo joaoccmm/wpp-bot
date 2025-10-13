@@ -1,7 +1,6 @@
 const { getEstado, setEstado, limparEstado } = require("../utils/estados");
 const { protecao } = require("../utils/protecaoAntiBot");
 
-// Helper para enviar mensagens com log e proteção anti-bot
 async function sendMessage(client, id, message, tipo = "normal") {
   try {
     console.log(
@@ -10,22 +9,18 @@ async function sendMessage(client, id, message, tipo = "normal") {
       }`
     );
 
-    // Aplicar proteções anti-bot
     await protecao.delayInteligente(tipo, id, {
       client,
       chatId: id,
       mensagemLonga: message.length > 100,
     });
 
-    // Simular digitação
     await protecao.simularDigitando(client, id);
 
-    // Adicionar variação natural
     const mensagemVariada = protecao.adicionarVariacaoNatural(message);
 
     await client.sendText(id, mensagemVariada);
 
-    // Registrar atividade
     protecao.registrarAtividade(id);
 
     console.log(`✅ Mensagem enviada com sucesso com proteção anti-bot`);
@@ -86,11 +81,8 @@ async function fluxoCadastro(client, msg) {
   const userMessage = (msg.body || "").trim().toLowerCase();
   let estado = getEstado(id);
 
-  // Não precisa mais verificar "cancelar" aqui pois é tratado globalmente no whatsapp.js
-
   if (!estado) {
     setEstado(id, { etapa: "confirmar_inicio" });
-    // Enviar mensagem unificada de saudação e pergunta inicial
     await sendMessage(client, id, mensagens.saudacaoInicial, "inicio_conversa");
     return;
   }
@@ -180,10 +172,8 @@ async function fluxoCadastro(client, msg) {
 
     case "cpf":
       const cpfInput = msg.body || "";
-      // Remover pontos e hífen para validação
       const cpfLimpo = cpfInput.replace(/[.-]/g, "");
 
-      // Validar se tem 11 dígitos após limpeza
       if (!/^\d{11}$/.test(cpfLimpo)) {
         await client.sendText(
           id,
@@ -192,7 +182,6 @@ async function fluxoCadastro(client, msg) {
         return;
       }
 
-      // Salvar CPF limpo (apenas números)
       estado.cpf = cpfLimpo;
       estado.etapa = "nascimento";
       setEstado(id, estado);
@@ -212,10 +201,8 @@ async function fluxoCadastro(client, msg) {
 
     case "telefone":
       const telefoneInput = msg.body || "";
-      // Remover espaços, traços e parênteses para validação
       const telefoneLimpo = telefoneInput.replace(/[\s\-\(\)]/g, "");
 
-      // Validar se tem 10 ou 11 dígitos após limpeza
       if (!/^\d{10,11}$/.test(telefoneLimpo)) {
         await client.sendText(
           id,
@@ -224,7 +211,6 @@ async function fluxoCadastro(client, msg) {
         return;
       }
 
-      // Salvar telefone limpo (apenas números)
       estado.telefone = telefoneLimpo;
       estado.etapa = "email";
       setEstado(id, estado);
@@ -236,13 +222,11 @@ async function fluxoCadastro(client, msg) {
       estado.etapa = "confirmar_dados";
       setEstado(id, estado);
 
-      // Mostrar resumo dos dados para confirmação
       await client.sendText(id, mensagens.confirmacao(estado));
       break;
 
     case "confirmar_dados":
       if (["sim", "s", "ok", "correto", "certo"].includes(userMessage)) {
-        // Dados confirmados, prosseguir para endereço
         estado.etapa = "endereco";
         estado.etapaEndereco = "cep";
         setEstado(id, estado);
@@ -255,7 +239,6 @@ async function fluxoCadastro(client, msg) {
       } else if (
         ["não", "nao", "n", "errado", "incorreto"].includes(userMessage)
       ) {
-        // Solicitar correção
         estado.etapa = "escolher_correcao";
         setEstado(id, estado);
         await client.sendText(id, mensagens.corrigirDados);
@@ -314,7 +297,6 @@ async function fluxoCadastro(client, msg) {
         case "todos":
         case "recomeçar":
         case "recomeco":
-          // Limpar dados mas manter na primeira etapa
           estado = { etapa: "nome" };
           setEstado(id, estado);
           await client.sendText(

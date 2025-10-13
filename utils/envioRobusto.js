@@ -8,11 +8,9 @@ async function enviarMensagemRobusta(client, id, mensagem, tentativasMax = 3) {
     try {
       console.log(`🔄 Tentativa ${i}/${tentativasMax}`);
 
-      // Delay simples e confiável (1-2 segundos)
       const delay = 1000 + Math.floor(Math.random() * 1000);
       await new Promise((resolve) => setTimeout(resolve, delay));
 
-      // Envio direto
       await client.sendText(id, mensagem);
 
       console.log(`✅ [ROBUSTO] Sucesso na tentativa ${i}`);
@@ -25,7 +23,6 @@ async function enviarMensagemRobusta(client, id, mensagem, tentativasMax = 3) {
         return false;
       }
 
-      // Aguardar antes da próxima tentativa
       await new Promise((resolve) => setTimeout(resolve, i * 1000));
     }
   }

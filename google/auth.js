@@ -5,7 +5,6 @@ function criarAuth() {
 
   if (process.env.GOOGLE_CREDENTIALS) {
     try {
-      // Em produção (Railway), usar variável de ambiente
       credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
       console.log("✅ Usando credenciais do environment (Railway)");
     } catch (error) {
@@ -15,7 +14,6 @@ function criarAuth() {
     }
   } else {
     try {
-      // Em desenvolvimento, usar arquivo local
       credentials = require("../credenciais-google.json");
       console.log("✅ Usando credenciais do arquivo local");
     } catch (error) {

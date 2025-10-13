@@ -9,7 +9,7 @@ const protecaoSimples = {
     console.log(
       `📤 Enviando mensagem simples para ${id}: ${mensagem.substring(0, 50)}...`
     );
-    await this.delaySimples(1000); // 1 segundo apenas
+    await this.delaySimples(1000);
     await client.sendText(id, mensagem);
     console.log(`✅ Mensagem enviada com sucesso`);
   },
